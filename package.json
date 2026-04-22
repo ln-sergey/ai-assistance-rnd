@@ -1,0 +1,27 @@
+{
+  "name": "ai-bench",
+  "version": "0.1.0",
+  "private": true,
+  "description": "R&D-бенчмарк LLM-провайдеров для модерации отзывов маркетплейса",
+  "packageManager": "pnpm@9.10.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "eval:text": "promptfoo eval -c configs/text-moderation.yaml",
+    "eval:image": "promptfoo eval -c configs/image-moderation.yaml",
+    "view": "promptfoo view"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "promptfoo": "^0.121.7",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.11",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4"
+  }
+}
