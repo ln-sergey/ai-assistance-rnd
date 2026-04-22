@@ -1,6 +1,7 @@
 .env
 node_modules/
 .promptfoo-cache/
+.cache/
 reports/*.json
 *.log
 *.DS_Store

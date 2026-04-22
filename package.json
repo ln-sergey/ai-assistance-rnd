@@ -10,6 +10,7 @@
   "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test providers/*.test.ts",
     "eval:text": "promptfoo eval -c configs/text-moderation.yaml",
     "eval:image": "promptfoo eval -c configs/image-moderation.yaml",
     "view": "promptfoo view"
