@@ -40,6 +40,12 @@ R&D-бенчмарк LLM-провайдеров для модерации пол
 + GIGACHAT_SCOPE).
 Qwen отложен — не пытайся добавить DashScope / OpenRouter без запроса.
 
+GigaChat OAuth на `ngw.devices.sberbank.ru` требует доверия к корневому
+сертификату Минцифры — через `NODE_EXTRA_CA_CERTS`. Если `pnpm smoke` даёт
+`fetch failed` на GigaChat — это всегда TLS, не ретрай и не трогай код.
+Инструкция и шаблон `.claude/settings.local.json.example` — в
+`providers/README.md`, раздел «TLS: сертификат Минцифры».
+
 
 ## Конвенции кода
 

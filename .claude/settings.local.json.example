@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+
+  "_comment": "ШАБЛОН. Скопируйте в .claude/settings.local.json (он в .gitignore) и подставьте свой путь. NODE_EXTRA_CA_CERTS — путь к корневому сертификату Минцифры (russiantrustedca.pem); нужен для TLS к ngw.devices.sberbank.ru (OAuth GigaChat). Скачать: https://www.gosuslugi.ru/crt → «Сертификат Минцифры России». Переменная читается Node.js напрямую, код провайдеров трогать не нужно. Подробности — providers/README.md, раздел «TLS: сертификат Минцифры».",
+
+  "env": {
+    "NODE_EXTRA_CA_CERTS": "/ABSOLUTE/PATH/TO/russiantrustedca.pem"
+  }
+}

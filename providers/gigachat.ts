@@ -4,28 +4,50 @@
 //   * GigaChatOAuthClient — single-flight получение access_token с TTL-кэшем.
 //     Токен живёт 30 минут, обновляем за 2 минуты до истечения. Параллельные
 //     вызовы getAccessToken() во время refresh ждут один и тот же промис.
-//   * GigaChatClient — /chat/completions + /files (upload картинок). На 429/503
-//     и сетевые ошибки (ECONNRESET, ETIMEDOUT, undici `fetch failed`,
-//     AbortError при не-пользовательском сигнале) делает экспоненциальный
-//     backoff с джиттером. Уважает Retry-After, если пришёл.
+//   * GigaChatClient — /chat/completions + /files (upload картинок). Retry
+//     на 429/5xx и сетевых ошибках вынесен в _shared/retry.ts.
 //   * DiskFileIdCache — sha256(bytes) → file_id с TTL 24ч в `.cache/`.
-//     GigaChat удаляет загруженные файлы через ~48ч, 24ч — безопасный запас.
 //   * GigaChatProvider — default export, реализующий Promptfoo ApiProvider.
-//     Принимает промпт в виде строки или OpenAI-совместимого JSON (array of
-//     messages, content — string ИЛИ массив с text/image_url). Если входной
-//     формат содержит image_url с data-URL base64, провайдер загружает
-//     картинку в /files и кладёт file_id в messages[i].attachments, потому что
-//     GigaChat inline base64 в content не поддерживает.
+//     Принимает промпт в виде строки или OpenAI-совместимого JSON. Если в
+//     content есть image_url с data-URL, провайдер загружает картинку в
+//     /files и кладёт file_id в messages[i].attachments — inline base64
+//     GigaChat не поддерживает.
+//   * GIGACHAT_MOCK=1 — короткое замыкание для локальной разработки и CI
+//     без ключей: callApi возвращает детерминированную фикстуру.
 
 import { createHash, randomUUID } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 
+import { resolvePricingByTable, computePer1kCost } from './_shared/cost.js';
+import {
+  parseChatPrompt,
+  type ChatRole,
+  type ParsedPrompt as SharedParsedPrompt,
+} from './_shared/parse-prompt.js';
+import {
+  requestWithRetry as sharedRequestWithRetry,
+  computeBackoff,
+  isRetryableNetworkError,
+  parseRetryAfter,
+  safeReadText,
+} from './_shared/retry.js';
+import type {
+  PerTokenPricing,
+  PricingSource,
+  PromptfooProviderResponse,
+  ResolvedPricing,
+} from './_shared/types.js';
+
+// Re-export утилит, которые исторически импортировались из этого модуля —
+// чтобы тесты и внешний код не пришлось ломать.
+export { computeBackoff, isRetryableNetworkError };
+
 // ==========================================================================
 // Типы запроса/ответа GigaChat
 // ==========================================================================
 
-export type GigaChatRole = 'system' | 'user' | 'assistant' | 'function';
+export type GigaChatRole = ChatRole;
 
 export interface GigaChatMessage {
   role: GigaChatRole;
@@ -73,12 +95,7 @@ export interface GigaChatEnvConfig {
   apiUrl: string;
 }
 
-export interface GigaChatPricing {
-  /** Рубли за 1000 prompt-токенов. */
-  promptPer1k: number;
-  /** Рубли за 1000 completion-токенов. */
-  completionPer1k: number;
-}
+export type GigaChatPricing = PerTokenPricing;
 
 export interface GigaChatProviderConfig {
   /** ОБЯЗАТЕЛЬНОЕ поле. Дефолта нет намеренно — см. README/CLAUDE.md. */
@@ -93,6 +110,8 @@ export interface GigaChatProviderConfig {
   maxRetries?: number;
   /** Базовая задержка backoff, мс. По умолчанию 1000. */
   retryBaseMs?: number;
+  /** Таймаут одного HTTP-запроса, мс. По умолчанию 60 000. */
+  timeoutMs?: number;
 }
 
 // ==========================================================================
@@ -105,9 +124,8 @@ export interface GigaChatProviderConfig {
  * developers.sber.ru/docs/ru/gigachat/pricing и, если изменилось, обновлять
  * таблицу ИЛИ передавать config.pricing в YAML-конфиге.
  *
- * Ключ — имя модели без билд-суффикса (`:2.0.28.2`). Матчинг — longest-prefix:
- * для `GigaChat-2-Max-preview` попадём в `GigaChat-2-Max`. Неизвестная модель
- * → cost = 0 и metadata.pricingSource = 'none'.
+ * Матчинг — longest-prefix: для `GigaChat-2-Max-preview` попадём в
+ * `GigaChat-2-Max`. Неизвестная модель → cost = 0, metadata.pricingSource = 'none'.
  */
 export const DEFAULT_PRICING: Record<string, GigaChatPricing> = {
   // Линейка 2 (актуальная на 2026)
@@ -120,62 +138,24 @@ export const DEFAULT_PRICING: Record<string, GigaChatPricing> = {
   'GigaChat-Max': { promptPer1k: 1.95, completionPer1k: 1.95 },
 };
 
-export type PricingSource = 'config' | 'default-table' | 'merged' | 'none';
+export type { PricingSource, ResolvedPricing };
 
-export interface ResolvedPricing {
-  pricing: GigaChatPricing;
-  source: PricingSource;
-  /** Ключ, по которому произошёл матч в таблице. undefined → без матча. */
-  tableKey?: string;
-}
-
-export function resolvePricing(model: string, override?: Partial<GigaChatPricing>): ResolvedPricing {
-  const tableKey = Object.keys(DEFAULT_PRICING)
-    .filter((k) => model === k || model.startsWith(`${k}-`) || model.startsWith(`${k}:`))
-    .sort((a, b) => b.length - a.length)[0];
-  const fromTable = tableKey ? DEFAULT_PRICING[tableKey] : undefined;
-
-  const hasPromptOverride = override?.promptPer1k !== undefined;
-  const hasCompletionOverride = override?.completionPer1k !== undefined;
-
-  // Полный config-override — игнорируем таблицу.
-  if (hasPromptOverride && hasCompletionOverride) {
-    return {
-      pricing: {
-        promptPer1k: override.promptPer1k as number,
-        completionPer1k: override.completionPer1k as number,
-      },
-      source: 'config',
-      ...(tableKey !== undefined && { tableKey }),
-    };
-  }
-
-  // Таблица + возможно частичный override.
-  if (fromTable) {
-    return {
-      pricing: {
-        promptPer1k: override?.promptPer1k ?? fromTable.promptPer1k,
-        completionPer1k: override?.completionPer1k ?? fromTable.completionPer1k,
-      },
-      source: hasPromptOverride || hasCompletionOverride ? 'merged' : 'default-table',
-      ...(tableKey !== undefined && { tableKey }),
-    };
-  }
-
-  // Ни таблицы, ни полного override — cost будет нулём для пустых полей.
-  return {
-    pricing: {
-      promptPer1k: override?.promptPer1k ?? 0,
-      completionPer1k: override?.completionPer1k ?? 0,
-    },
-    source: hasPromptOverride || hasCompletionOverride ? 'merged' : 'none',
-  };
+export function resolvePricing(model: string, override?: Partial<GigaChatPricing>): ResolvedPricing<GigaChatPricing> {
+  return resolvePricingByTable<GigaChatPricing>({
+    table: DEFAULT_PRICING,
+    model,
+    ...(override !== undefined && { override }),
+    zeroValues: { promptPer1k: 0, completionPer1k: 0 },
+  });
 }
 
 export function computeCost(usage: GigaChatUsage, pricing: GigaChatPricing): number {
   // У GigaChat отдельного публичного тарифа на precached_prompt_tokens нет —
   // тарифицируем по цене обычного промпта (верхняя граница).
-  return (usage.prompt_tokens * pricing.promptPer1k + usage.completion_tokens * pricing.completionPer1k) / 1000;
+  return computePer1kCost(
+    { prompt: usage.prompt_tokens, completion: usage.completion_tokens },
+    pricing,
+  );
 }
 
 // ==========================================================================
@@ -408,6 +388,7 @@ export interface ChatCompletionOptions {
   maxRetries?: number;
   retryBaseMs?: number;
   signal?: AbortSignal;
+  timeoutMs?: number;
 }
 
 export interface ImageUploadInput {
@@ -440,13 +421,15 @@ export class GigaChatClient {
   ): Promise<GigaChatCompletionResponse> {
     const res = await this.requestWithRetry(
       `${this.env.apiUrl}/chat/completions`,
-      () =>
-        this.withAuth({
+      async () => {
+        const signal = combineSignals(opts.signal, opts.timeoutMs);
+        return this.withAuth({
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify(payload),
-          signal: opts.signal,
-        }),
+          ...(signal !== undefined && { signal }),
+        });
+      },
       opts,
     );
     return (await res.json()) as GigaChatCompletionResponse;
@@ -464,7 +447,7 @@ export class GigaChatClient {
 
     const res = await this.requestWithRetry(
       `${this.env.apiUrl}/files`,
-      () => {
+      async () => {
         const form = new FormData();
         const blob = new Blob([bytes], { type: input.mime });
         form.append('file', blob, filename);
@@ -494,147 +477,34 @@ export class GigaChatClient {
     return { ...init, headers };
   }
 
-  /**
-   * Единая обёртка для HTTP-запросов с retry. Ретраит:
-   *   * HTTP 429, 503
-   *   * Сетевые ошибки: ECONNRESET, ETIMEDOUT, EAI_AGAIN, ECONNREFUSED,
-   *     UND_ERR_*, undici `TypeError: fetch failed`, AbortError (если
-   *     пользователь не прислал свой signal)
-   * НЕ ретраит:
-   *   * 4xx кроме 429
-   *   * AbortError, если `opts.signal` пользователя уже aborted
-   */
   private async requestWithRetry(
     url: string,
     buildInit: () => Promise<RequestInit>,
     opts: ChatCompletionOptions,
   ): Promise<Response> {
-    const maxRetries = opts.maxRetries ?? 4;
-    const baseMs = opts.retryBaseMs ?? 1000;
-
-    let lastErr: unknown = null;
-
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
-      let res: Response;
-      try {
-        const init = await buildInit();
-        res = await this.fetchImpl(url, init);
-      } catch (e) {
-        // Пользовательский abort — не ретраим.
-        if (opts.signal?.aborted) throw e;
-        if (!isRetryableNetworkError(e) || attempt === maxRetries) throw e;
-        lastErr = e;
-        const waitMs = computeBackoff({ attempt, baseMs, jitter: this.jitter });
-        await this.sleep(waitMs);
-        continue;
-      }
-
-      if (res.status === 429 || res.status === 503) {
-        if (attempt === maxRetries) {
-          throw new Error(`GigaChat ${res.status} после ${maxRetries + 1} попыток: ${await safeReadText(res)}`);
-        }
-        const retryAfter = parseRetryAfter(res.headers.get('retry-after'));
-        const waitMs = computeBackoff({
-          attempt,
-          baseMs,
-          ...(retryAfter !== undefined && { retryAfterSeconds: retryAfter }),
-          jitter: this.jitter,
-        });
-        await this.sleep(waitMs);
-        continue;
-      }
-
-      if (!res.ok) {
-        throw new Error(`GigaChat ${res.status}: ${await safeReadText(res)}`);
-      }
-
-      return res;
-    }
-    // Технически недостижимо: цикл либо вернёт, либо бросит.
-    throw lastErr instanceof Error ? lastErr : new Error('GigaChat: retries exhausted');
+    return sharedRequestWithRetry({
+      url,
+      buildInit,
+      fetchImpl: this.fetchImpl,
+      sleep: this.sleep,
+      jitter: this.jitter,
+      ...(opts.maxRetries !== undefined && { maxRetries: opts.maxRetries }),
+      ...(opts.retryBaseMs !== undefined && { baseDelayMs: opts.retryBaseMs }),
+      ...(opts.signal !== undefined && { signal: opts.signal }),
+      // GigaChat исторически ретраил только 429 и 503 — 5xx в документации
+      // мельком, трогать поведение без повода не хочу.
+      shouldRetryStatus: (s) => s === 429 || s === 503,
+      errorPrefix: 'GigaChat',
+    });
   }
 }
 
 // ==========================================================================
-// Backoff + определение retryable-ошибок + утилиты
+// Backoff + утилиты (re-exports для обратной совместимости тестов)
 // ==========================================================================
 
-export interface BackoffInput {
-  attempt: number;
-  baseMs: number;
-  maxMs?: number;
-  retryAfterSeconds?: number;
-  jitter?: () => number;
-}
-
-export function computeBackoff(i: BackoffInput): number {
-  const max = i.maxMs ?? 30_000;
-  if (i.retryAfterSeconds !== undefined && Number.isFinite(i.retryAfterSeconds) && i.retryAfterSeconds >= 0) {
-    return Math.min(max, Math.round(i.retryAfterSeconds * 1000));
-  }
-  const exp = i.baseMs * 2 ** i.attempt;
-  const rnd = (i.jitter ?? Math.random)();
-  // Равномерный джиттер в диапазоне [0.75, 1.25] * exp
-  return Math.min(max, Math.round(exp * (0.75 + 0.5 * rnd)));
-}
-
-const RETRYABLE_CODES: ReadonlySet<string> = new Set([
-  'ECONNRESET',
-  'ETIMEDOUT',
-  'EAI_AGAIN',
-  'ECONNREFUSED',
-  'EPIPE',
-  'ENETUNREACH',
-  'ENOTFOUND',
-  'UND_ERR_SOCKET',
-  'UND_ERR_CONNECT_TIMEOUT',
-  'UND_ERR_HEADERS_TIMEOUT',
-  'UND_ERR_BODY_TIMEOUT',
-  'UND_ERR_RESPONSE_EXCEEDED_SIZE',
-]);
-
-export function isRetryableNetworkError(e: unknown): boolean {
-  if (!(e instanceof Error)) return false;
-
-  const rootCode = extractCode(e);
-  if (rootCode && RETRYABLE_CODES.has(rootCode)) return true;
-
-  // undici оборачивает низкоуровневую ошибку в TypeError, оригинал лежит в .cause
-  const cause = (e as { cause?: unknown }).cause;
-  const causeCode = extractCode(cause);
-  if (causeCode && RETRYABLE_CODES.has(causeCode)) return true;
-
-  // Generic `TypeError: fetch failed` без внятного кода — тоже ретраим.
-  if (e.name === 'TypeError' && /fetch failed/i.test(e.message)) return true;
-
-  // AbortError из-за таймаута (AbortSignal.timeout) или обрыва соединения
-  // на стороне undici. Пользовательский abort отсекаем выше в requestWithRetry
-  // по opts.signal.aborted, сюда он не попадает.
-  if (e.name === 'AbortError') return true;
-
-  return false;
-}
-
-function extractCode(e: unknown): string | undefined {
-  if (typeof e !== 'object' || e === null) return undefined;
-  const c = (e as { code?: unknown }).code;
-  return typeof c === 'string' ? c : undefined;
-}
-
-function parseRetryAfter(header: string | null): number | undefined {
-  if (header === null) return undefined;
-  const n = Number(header);
-  return Number.isFinite(n) && n >= 0 ? n : undefined;
-}
-
-async function safeReadText(res: Response): Promise<string> {
-  try {
-    const t = await res.text();
-    return t.slice(0, 200); // CLAUDE.md: не более 200 символов в диагностике
-  } catch {
-    return '<no body>';
-  }
-}
+export { computePer1kCost } from './_shared/cost.js';
+export { safeReadText, parseRetryAfter, withRetry, requestWithRetry } from './_shared/retry.js';
 
 function extFromMime(mime: string): string {
   switch (mime) {
@@ -652,8 +522,22 @@ function extFromMime(mime: string): string {
   }
 }
 
+function isRecord(x: unknown): x is Record<string, unknown> {
+  return typeof x === 'object' && x !== null && !Array.isArray(x);
+}
+
+/** Комбинирует пользовательский signal и таймаут. Node 20.3+ (AbortSignal.any). */
+function combineSignals(user?: AbortSignal, timeoutMs?: number): AbortSignal | undefined {
+  if (!timeoutMs) return user;
+  const timeoutSignal = AbortSignal.timeout(timeoutMs);
+  if (!user) return timeoutSignal;
+  const anyFn = (AbortSignal as unknown as { any?: (s: AbortSignal[]) => AbortSignal }).any;
+  if (typeof anyFn === 'function') return anyFn([user, timeoutSignal]);
+  return user;
+}
+
 // ==========================================================================
-// Парсинг промпта: строка или OpenAI-совместимый JSON
+// Парсинг промпта: обратно-совместимая обёртка над parseChatPrompt
 // ==========================================================================
 
 export interface ParsedPrompt {
@@ -663,73 +547,16 @@ export interface ParsedPrompt {
 }
 
 export function parsePrompt(raw: string): ParsedPrompt {
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(raw);
-  } catch {
-    return { messages: [{ role: 'user', content: raw }], images: [] };
-  }
-
-  const inputs: unknown[] | null = Array.isArray(parsed)
-    ? parsed
-    : isRecord(parsed) && Array.isArray((parsed as { messages?: unknown }).messages)
-      ? ((parsed as { messages: unknown[] }).messages)
-      : null;
-
-  if (!inputs) {
-    return { messages: [{ role: 'user', content: raw }], images: [] };
-  }
-
+  const parsed: SharedParsedPrompt = parseChatPrompt(raw);
   const messages: GigaChatMessage[] = [];
   const images: ParsedPrompt['images'] = [];
-
-  for (const m of inputs) {
-    if (!isRecord(m)) continue;
-    const role = normalizeRole(m.role);
-    const content = m.content;
-
-    if (typeof content === 'string') {
-      messages.push({ role, content });
-      continue;
+  parsed.messages.forEach((m, idx) => {
+    messages.push({ role: m.role, content: m.text });
+    for (const img of m.images) {
+      images.push({ messageIndex: idx, base64: img.base64, mime: img.mime });
     }
-
-    if (Array.isArray(content)) {
-      const texts: string[] = [];
-      for (const part of content) {
-        if (!isRecord(part)) continue;
-        if (part.type === 'text' && typeof part.text === 'string') {
-          texts.push(part.text);
-          continue;
-        }
-        if (part.type === 'image_url' && isRecord(part.image_url) && typeof part.image_url.url === 'string') {
-          const decoded = decodeDataUrl(part.image_url.url);
-          if (decoded) {
-            images.push({ messageIndex: messages.length, base64: decoded.base64, mime: decoded.mime });
-          }
-        }
-      }
-      messages.push({ role, content: texts.join('\n\n') });
-    }
-  }
-
+  });
   return { messages, images };
-}
-
-function normalizeRole(role: unknown): GigaChatRole {
-  if (role === 'system' || role === 'user' || role === 'assistant' || role === 'function') {
-    return role;
-  }
-  return 'user';
-}
-
-function decodeDataUrl(url: string): { base64: string; mime: string } | null {
-  const m = /^data:([^;,]+);base64,(.+)$/.exec(url);
-  if (!m || !m[1] || !m[2]) return null;
-  return { mime: m[1], base64: m[2] };
-}
-
-function isRecord(x: unknown): x is Record<string, unknown> {
-  return typeof x === 'object' && x !== null && !Array.isArray(x);
 }
 
 // ==========================================================================
@@ -741,21 +568,7 @@ export interface PromptfooProviderOptions {
   config?: GigaChatProviderConfig;
 }
 
-export interface PromptfooProviderResponse {
-  output?: string;
-  error?: string;
-  tokenUsage?: {
-    prompt?: number;
-    completion?: number;
-    total?: number;
-    cached?: number;
-    numRequests?: number;
-  };
-  cost?: number;
-  raw?: unknown;
-  latencyMs?: number;
-  metadata?: Record<string, unknown>;
-}
+export type { PromptfooProviderResponse };
 
 const oauthRegistry = new Map<string, GigaChatOAuthClient>();
 // Единственный дисковый кэш на процесс — его load/save потокобезопасны до
@@ -763,7 +576,20 @@ const oauthRegistry = new Map<string, GigaChatOAuthClient>();
 // по одной корутине на кейс, параллелизм ограничен --concurrency.
 let defaultFileCache: FileIdCacheAdapter | null = null;
 
+export function isGigaChatMock(): boolean {
+  return process.env.GIGACHAT_MOCK === '1';
+}
+
 function loadEnvConfig(): GigaChatEnvConfig {
+  // В mock-режиме ключи не нужны — провайдер вообще не полезет в сеть.
+  if (isGigaChatMock()) {
+    return {
+      authKey: 'mock-auth-key',
+      scope: process.env.GIGACHAT_SCOPE ?? 'GIGACHAT_API_PERS',
+      oauthUrl: 'https://mock.local/oauth',
+      apiUrl: 'https://mock.local/api/v1',
+    };
+  }
   const authKey = process.env.GIGACHAT_AUTH_KEY ?? '';
   const scope = process.env.GIGACHAT_SCOPE ?? 'GIGACHAT_API_PERS';
   const oauthUrl = process.env.GIGACHAT_OAUTH_URL ?? 'https://ngw.devices.sberbank.ru:9443/api/v2/oauth';
@@ -773,8 +599,6 @@ function loadEnvConfig(): GigaChatEnvConfig {
 }
 
 function getOAuthClient(env: GigaChatEnvConfig): GigaChatOAuthClient {
-  // Один токен на (scope, authKey, oauthUrl) — несколько провайдеров с одними
-  // ключами, но разными моделями делят один токен.
   const keyHash = createHash('sha256').update(env.authKey).digest('hex');
   const key = `${env.oauthUrl}|${env.scope}|${keyHash}`;
   let client = oauthRegistry.get(key);
@@ -792,11 +616,29 @@ function getDefaultFileCache(): FileIdCacheAdapter {
   return defaultFileCache;
 }
 
+/** Фикстура для GIGACHAT_MOCK=1 — детерминированный approve без нарушений. */
+export function gigachatMockResponse(model: string): GigaChatCompletionResponse {
+  return {
+    choices: [
+      {
+        message: { role: 'assistant', content: '{"violations":[],"verdict":"approve"}' },
+        index: 0,
+        finish_reason: 'stop',
+      },
+    ],
+    usage: { prompt_tokens: 100, completion_tokens: 15, total_tokens: 115 },
+    model: `${model}:mock`,
+    created: 0,
+    object: 'chat.completion',
+  };
+}
+
 export default class GigaChatProvider {
   readonly providerId: string;
   readonly providerConfig: GigaChatProviderConfig;
-  private readonly client: GigaChatClient;
-  private readonly resolvedPricing: ResolvedPricing;
+  private readonly client: GigaChatClient | null;
+  private readonly resolvedPricing: ResolvedPricing<GigaChatPricing>;
+  private readonly mock: boolean;
 
   constructor(options: PromptfooProviderOptions = {}) {
     const cfg = options.config;
@@ -808,13 +650,18 @@ export default class GigaChatProvider {
     }
     this.providerConfig = cfg;
     this.providerId = options.id ?? `gigachat:${cfg.model}`;
+    this.mock = isGigaChatMock();
 
-    const env = loadEnvConfig();
-    const oauth = getOAuthClient(env);
-    this.client = new GigaChatClient(env, {
-      oauth,
-      fileCache: getDefaultFileCache(),
-    });
+    if (this.mock) {
+      this.client = null;
+    } else {
+      const env = loadEnvConfig();
+      const oauth = getOAuthClient(env);
+      this.client = new GigaChatClient(env, {
+        oauth,
+        fileCache: getDefaultFileCache(),
+      });
+    }
     this.resolvedPricing = resolvePricing(cfg.model, cfg.pricing);
   }
 
@@ -833,6 +680,14 @@ export default class GigaChatProvider {
       if (messages.length === 0) {
         throw new Error('GigaChat: пустой список сообщений после парсинга промпта');
       }
+
+      if (this.mock) {
+        const res = gigachatMockResponse(this.providerConfig.model);
+        return this.buildResponse(res, t0, { mocked: true });
+      }
+
+      if (!this.client) throw new Error('GigaChat: клиент не инициализирован');
+
       if (images.length > 0) {
         await this.attachImages(messages, images);
       }
@@ -851,31 +706,11 @@ export default class GigaChatProvider {
       const res = await this.client.chatCompletion(payload, {
         ...(this.providerConfig.maxRetries !== undefined && { maxRetries: this.providerConfig.maxRetries }),
         ...(this.providerConfig.retryBaseMs !== undefined && { retryBaseMs: this.providerConfig.retryBaseMs }),
+        ...(this.providerConfig.timeoutMs !== undefined && { timeoutMs: this.providerConfig.timeoutMs }),
         ...(options?.abortSignal !== undefined && { signal: options.abortSignal }),
       });
 
-      const first = res.choices[0];
-      if (!first) throw new Error('GigaChat: пустой choices в ответе');
-
-      return {
-        output: first.message.content,
-        tokenUsage: {
-          prompt: res.usage.prompt_tokens,
-          completion: res.usage.completion_tokens,
-          total: res.usage.total_tokens,
-          ...(res.usage.precached_prompt_tokens !== undefined && { cached: res.usage.precached_prompt_tokens }),
-          numRequests: 1,
-        },
-        cost: computeCost(res.usage, this.resolvedPricing.pricing),
-        latencyMs: Date.now() - t0,
-        metadata: {
-          model: res.model,
-          finishReason: first.finish_reason,
-          pricingSource: this.resolvedPricing.source,
-          ...(this.resolvedPricing.tableKey !== undefined && { pricingTableKey: this.resolvedPricing.tableKey }),
-        },
-        raw: res,
-      };
+      return this.buildResponse(res, t0, { mocked: false });
     } catch (e) {
       return {
         error: e instanceof Error ? e.message : String(e),
@@ -884,13 +719,42 @@ export default class GigaChatProvider {
     }
   }
 
+  private buildResponse(
+    res: GigaChatCompletionResponse,
+    t0: number,
+    ctx: { mocked: boolean },
+  ): PromptfooProviderResponse {
+    const first = res.choices[0];
+    if (!first) throw new Error('GigaChat: пустой choices в ответе');
+    return {
+      output: first.message.content,
+      tokenUsage: {
+        prompt: res.usage.prompt_tokens,
+        completion: res.usage.completion_tokens,
+        total: res.usage.total_tokens,
+        ...(res.usage.precached_prompt_tokens !== undefined && { cached: res.usage.precached_prompt_tokens }),
+        numRequests: 1,
+      },
+      cost: computeCost(res.usage, this.resolvedPricing.pricing),
+      latencyMs: Date.now() - t0,
+      metadata: {
+        model: res.model,
+        finishReason: first.finish_reason,
+        pricingSource: this.resolvedPricing.source,
+        ...(this.resolvedPricing.tableKey !== undefined && { pricingTableKey: this.resolvedPricing.tableKey }),
+        ...(ctx.mocked && { mock: true }),
+      },
+      raw: res,
+    };
+  }
+
   private async attachImages(
     messages: GigaChatMessage[],
     images: ParsedPrompt['images'],
   ): Promise<void> {
+    if (!this.client) return;
     // GigaChat рекомендует ≤1 картинки на сообщение; если их больше — кладём все,
-    // API ответит ошибкой, и это будет видно в error/raw. Client-side hard-cap
-    // делать не стоит — это бенчмарк, хочется увидеть реальный ответ API.
+    // API ответит ошибкой, и это будет видно в error/raw.
     const byIndex = new Map<number, string[]>();
     for (const img of images) {
       const id = await this.client.uploadImage({ base64: img.base64, mime: img.mime });
