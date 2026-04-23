@@ -46,7 +46,7 @@ import {
  * Публичные Vision-классификаторы. Точный список — в доках:
  * https://yandex.cloud/ru/docs/vision/concepts/classifier
  * По умолчанию берём `moderation` (adult/gore/racy) и `quality` (фокус,
- * шум, освещённость). `support` (связь контекста с отзывом) — опциональный.
+ * шум, освещённость). `support` (связь контекста с карточкой) — опциональный.
  */
 export const DEFAULT_CLASSIFIER_MODELS: readonly string[] = ['moderation', 'quality'];
 

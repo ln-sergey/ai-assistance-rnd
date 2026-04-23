@@ -166,7 +166,7 @@ function gptSuccessPayload(): unknown {
         {
           message: {
             role: 'assistant',
-            text: '{"violations":[{"rule_id":"RVW-IMG-07","severity":"high","quote":"+7-900-111-22-33","confidence":0.9}],"verdict":"reject"}',
+            text: '{"violations":[{"rule_id":"IMG-07","severity":"high","quote":"+7-900-111-22-33","confidence":0.9}],"verdict":"reject"}',
           },
           status: 'ALTERNATIVE_STATUS_FINAL',
         },

@@ -2,7 +2,7 @@
   "name": "ai-bench",
   "version": "0.1.0",
   "private": true,
-  "description": "R&D-бенчмарк LLM-провайдеров для модерации отзывов маркетплейса",
+  "description": "R&D-бенчмарк LLM-провайдеров для модерации карточек продуктов маркетплейса туристических активностей",
   "packageManager": "pnpm@9.10.0",
   "engines": {
     "node": ">=20"
@@ -12,8 +12,8 @@
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test providers/*.test.ts",
     "smoke": "tsx scripts/smoke-test.ts",
-    "eval:text": "promptfoo eval -c configs/text-moderation.yaml",
-    "eval:image": "promptfoo eval -c configs/image-moderation.yaml",
+    "eval:text": "promptfoo eval -c configs/card-text-moderation.yaml",
+    "eval:image": "promptfoo eval -c configs/card-image-moderation.yaml",
     "view": "promptfoo view"
   },
   "dependencies": {

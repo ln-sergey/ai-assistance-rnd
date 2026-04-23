@@ -1,7 +1,11 @@
 # ai-bench
 
-R&D-бенчмарк LLM-провайдеров для модерации пользовательских отзывов
-(текст + фото) на маркетплейсе туристических активностей.
+R&D-бенчмарк LLM-провайдеров для модерации карточек продуктов (активностей —
+событий, экскурсий, туров): текст карточки и фото галереи, на маркетплейсе
+туристических активностей.
+
+Модерация пользовательских отзывов — Out of scope, перенесена на следующие
+итерации.
 
 Задача, scope, методика и критерии выбора — в [`ARCHITECTURE.md`](ARCHITECTURE.md).
 Правила работы в репозитории для Claude Code — в [`CLAUDE.md`](CLAUDE.md).
@@ -28,7 +32,7 @@ cp .env.example .env
 ```
 providers/   custom providers для Promptfoo (по одному на провайдера)
 prompts/     версионированные промпты — не перезаписывать
-datasets/    тестовые данные (text-reviews.csv, images/)
+datasets/    тестовые данные (product-cards.csv, images/)
 configs/     Promptfoo-конфиги (по одному на задачу)
 scripts/     синтез датасетов, агрегация метрик, конвертеры
 reports/     сгенерированные отчёты прогонов
@@ -41,13 +45,13 @@ rules.yaml   единственный источник таксономии
 
 ```bash
 # прогон одного конфига
-npx promptfoo eval -c configs/text-moderation.yaml
+npx promptfoo eval -c configs/card-text-moderation.yaml
 
 # прогон на подмножестве (первый запуск новой конфигурации)
-npx promptfoo eval -c configs/text-moderation.yaml --numTests 10
+npx promptfoo eval -c configs/card-text-moderation.yaml --numTests 10
 
 # несколько повторов для проверки стабильности
-npx promptfoo eval -c configs/text-moderation.yaml --repeat 3
+npx promptfoo eval -c configs/card-text-moderation.yaml --repeat 3
 
 # веб-UI с результатами
 npx promptfoo view

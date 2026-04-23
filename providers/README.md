@@ -126,7 +126,7 @@ pnpm smoke                                     # live — gigachat должен 
 
 ```bash
 YANDEX_MOCK=1 GIGACHAT_MOCK=1 pnpm test
-YANDEX_MOCK=1 npx promptfoo eval -c configs/text-moderation.yaml
+YANDEX_MOCK=1 npx promptfoo eval -c configs/card-text-moderation.yaml
 ```
 
 В мок-режиме:
