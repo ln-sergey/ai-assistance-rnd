@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "product_card.schema.json",
+  "title": "ProductCard",
+  "description": "Карточка туристической активности (тур / экскурсия / событие) на маркетплейсе Localtrip. Набор полей, на которых работает модерация текстовых правил rules.yaml (TXT-NN). Изображения в поле images — метаданные; бинарные файлы лежат в datasets/images/ и связываются по image_id.",
+  "type": "object",
+  "required": [
+    "id",
+    "product_type",
+    "title",
+    "short_description",
+    "full_description",
+    "program_items",
+    "services",
+    "location",
+    "contacts_block",
+    "schedule",
+    "images"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Стабильный идентификатор карточки в рамках датасета."
+    },
+    "product_type": {
+      "enum": ["tour", "excursion", "event"],
+      "description": "Тип активности. Используется для правила TXT-21 (несоответствие типу)."
+    },
+    "title": {
+      "type": "string",
+      "description": "Название активности. Поле для TXT-01."
+    },
+    "short_description": {
+      "type": "string",
+      "description": "Короткое описание (~1–2 предложения) для превью карточки."
+    },
+    "full_description": {
+      "type": "string",
+      "description": "Полное описание активности. Основное поле для TXT-02, TXT-04, TXT-07, TXT-19, TXT-20 и т.п."
+    },
+    "program_items": {
+      "type": "array",
+      "description": "Точки маршрута или элементы программы по порядку.",
+      "items": {
+        "type": "object",
+        "required": ["order", "title", "description"],
+        "additionalProperties": false,
+        "properties": {
+          "order": { "type": "integer", "minimum": 1 },
+          "title": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "services": {
+      "type": "array",
+      "description": "Услуги и удобства, входящие в стоимость или предлагаемые отдельно.",
+      "items": {
+        "type": "object",
+        "required": ["name", "description"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "location": {
+      "type": "object",
+      "required": ["address", "route_comment", "meeting_point_comment"],
+      "additionalProperties": false,
+      "properties": {
+        "address": { "type": "string" },
+        "route_comment": {
+          "type": "string",
+          "description": "Публичный комментарий к маршруту. Может быть пустой строкой."
+        },
+        "meeting_point_comment": {
+          "type": "string",
+          "description": "Публичный комментарий к точке сбора. Может быть пустой строкой."
+        }
+      }
+    },
+    "contacts_block": {
+      "type": "object",
+      "required": ["public_comment"],
+      "additionalProperties": false,
+      "properties": {
+        "public_comment": {
+          "type": "string",
+          "description": "Публичный комментарий к блоку контактов, который видит пользователь. Сами контакты организатора в карточке не публикуются по продуктовой логике — здесь ловятся попытки обойти правило (телефоны / мессенджеры в свободном тексте)."
+        }
+      }
+    },
+    "schedule": {
+      "type": "object",
+      "required": ["format"],
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "enum": ["once", "recurring", "ondemand"],
+          "description": "Формат проведения: разовое событие, регулярное, по запросу."
+        },
+        "dates": {
+          "type": "array",
+          "description": "Даты проведения в формате YYYY-MM-DD. Может отсутствовать для ondemand.",
+          "items": { "type": "string", "format": "date" }
+        },
+        "duration_minutes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Общая длительность активности в минутах. Для многодневных туров — суммарная."
+        }
+      }
+    },
+    "age_restriction": {
+      "type": ["string", "null"],
+      "description": "Возрастной ценз карточки, например '0+', '6+', '12+', '18+' или null."
+    },
+    "group_size": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "min": { "type": "integer", "minimum": 1 },
+        "max": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "languages": {
+      "type": "array",
+      "description": "Языки проведения (ISO-639-1: ru, en, …).",
+      "items": { "type": "string", "minLength": 2 }
+    },
+    "images": {
+      "type": "array",
+      "description": "Метаданные изображений галереи. Бинарные файлы — в datasets/images/<image_id>.jpg|.png, привязка по image_id.",
+      "items": {
+        "type": "object",
+        "required": ["image_id", "role"],
+        "additionalProperties": false,
+        "properties": {
+          "image_id": { "type": "string", "minLength": 1 },
+          "role": { "enum": ["cover", "gallery"] },
+          "caption": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}
