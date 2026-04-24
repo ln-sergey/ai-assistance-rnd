@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "annotations": {
+    "pmpoperator_v-kaliningrad-na-pyat-dney-leto-zaezdi-ezhednevno": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-22",
+          "severity": "high",
+          "field_path": "program_items[6].title",
+          "quote": "День 7",
+          "rationale": "В заголовке заявлено «пять дней», но программа содержит 7 дней — пункт «День 7» противоречит длительности из заголовка карточки."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "pmpoperator_karel-skiy-week-end-osen-zima-avtobus": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "pmpoperator_na-baskunchak-iz-volgograda": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "pmpoperator_perezagruzka-dlya-megapolisa-bez-interneta-televizora-sosedey": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-21",
+          "severity": "high",
+          "field_path": "full_description",
+          "quote": "Отдых без интернета, телевизора, соседей! В любой день недели и на любое количество дней!",
+          "rationale": "Карточка с product_type=excursion фактически описывает многодневное проживание в гостевых домах с произвольным числом ночей. Это другой тип сущности (тур или средство размещения), не экскурсия."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "pmpoperator_drevnie-sokrovischa-armenii": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "pmpoperator_ekskursiya-viborg-pogruzhenie-v-srednevekov-e": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "pmpoperator_ekskursiya-v-gatchinu-s-programmoy-legendi-starogo-zamka-dlya-shkol-nikov": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "pmpoperator_mezhdu-volgoy-i-donom": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "pmpoperator_roskosh-nizhney-volgi-kalmikiya-6-dney": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "pmpoperator_legendarnaya-rus-2-dnya-2020-2021": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "pmpoperator_ocharovanie-ol-hona-zima": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "pmpoperator_kray-lipetskiy-monastirskiy-sirniy-yablochniy": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "pmpoperator_novogodnyaya-armeniya-zaezd-30-12": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "pmpoperator_avtorskiy-tur-podmoskovnaya-shveytsariya-ili-usadeb-vdohnovenniy-kray": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    }
+  }
+}

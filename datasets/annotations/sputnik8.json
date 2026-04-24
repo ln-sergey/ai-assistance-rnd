@@ -1,0 +1,223 @@
+{
+  "version": 1,
+  "annotations": {
+    "sputnik8_74601": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_26447": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_51891": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_75898": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_60373": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_34689": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_57480": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-23",
+          "severity": "high",
+          "field_path": "title",
+          "quote": "Аренда яхты «BAYLINER 205 CAPRI»",
+          "rationale": "Карточка с product_type=excursion используется для публикации аренды катера. TXT-23 прямо запрещает использование карточки для аренды."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_62807": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_91198": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_88725": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_69147": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_79525": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_43046": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_90877": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_77641": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_54868": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_71759": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_86341": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_89700": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_74700": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_35776": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_68623": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_22635": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_79656": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_67880": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_48311": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_90956": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_35820": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_69440": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "sputnik8_51160": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    }
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "annotations": {
+    "afisha_concert_stendap-koncert-luchshie-shutki-6034707": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "afisha_concert_dmitriy-pevcov-i-pevcov-orkestr-6021770": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-19",
+          "severity": "medium",
+          "field_path": "short_description",
+          "quote": "Afisha.ru",
+          "rationale": "short_description содержит явное указание на сторонний сайт продажи билетов (Afisha.ru) — TXT-19, попытка перенести покупку вне платформы."
+        },
+        {
+          "rule_id": "TXT-26",
+          "severity": "medium",
+          "field_path": "full_description",
+          "quote": "<p>Дмитрий Анатольевич Певцов является театральным и киноактёром",
+          "rationale": "full_description содержит непочищенные HTML-теги (<p>…</p>) — технический мусор разметки, что подпадает под TXT-26."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "afisha_performance_obyknovennoe-chudo-74748": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "afisha_performance_zheleznaya-volya-64715": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "afisha_performance_don-zhuan-263122": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-19",
+          "severity": "medium",
+          "field_path": "short_description",
+          "quote": "Afisha.ru",
+          "rationale": "short_description содержит явное указание на сторонний сайт продажи билетов (Afisha.ru) — TXT-19, попытка перенести покупку вне платформы."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "afisha_performance_angel-moy-207639": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "afisha_concert_tanya-shamanina-6034924": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-19",
+          "severity": "medium",
+          "field_path": "short_description",
+          "quote": "Afisha.ru",
+          "rationale": "short_description содержит явное указание на сторонний сайт продажи билетов (Afisha.ru) — TXT-19, попытка перенести покупку вне платформы."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "afisha_performance_ya-pishu-dlya-bukvarya-244932": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "afisha_performance_anna-i-admiral-istoriya-lyubvi-116387": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    }
+  }
+}

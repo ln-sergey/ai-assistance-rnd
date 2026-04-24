@@ -1,0 +1,183 @@
+{
+  "version": 1,
+  "annotations": {
+    "scantour_top-mesta-karelii-3-ruskeala-kizhi-vodopady-iz-petrozavodska": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "scantour_kosmicheskij-novyj-god-v-karelii-iz-peterburga": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "scantour_prityagatelnaya-ladoga-krasota-vdohnovlyayushhaya-na-otkrytiya": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-20",
+          "severity": "high",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63",
+          "rationale": "short_description содержит прямой призыв забронировать тур по телефону вне платформы — явный TXT-20."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "scantour_sem-chudes-vologdy-na-novyj-god-iz-moskvy-ot-solnczevorota-do-zimnih-zabav": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "scantour_skazochnyj-velikij-ustyug-czelyj-den-v-votchine-deda-moroza": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-20",
+          "severity": "high",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63",
+          "rationale": "short_description содержит прямой призыв забронировать тур по телефону вне платформы — явный TXT-20."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "scantour_2-v-1-peterburg-ruskeala-kizhi-shhery": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-20",
+          "severity": "high",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63",
+          "rationale": "short_description содержит прямой призыв забронировать тур по телефону вне платформы — явный TXT-20."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "scantour_gran-tur-vsya-kareliya-i-splav-na-reke-shuya": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-20",
+          "severity": "high",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63",
+          "rationale": "short_description содержит прямой призыв забронировать тур по телефону вне платформы — явный TXT-20."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "scantour_zimnyaya-skazka-v-arhangelskoj-oblasti": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-20",
+          "severity": "high",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63",
+          "rationale": "short_description содержит прямой призыв забронировать тур по телефону вне платформы — явный TXT-20."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "scantour_bolshoe-puteshestvie-po-karelii-ptz": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "scantour_solovki-za-odin-den-iz-petrozavodska": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-20",
+          "severity": "high",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63",
+          "rationale": "short_description содержит прямой призыв забронировать тур по телефону вне платформы — явный TXT-20."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "scantour_valdaj-ivany-pereleski-lesnoj-kvest-i-chaj-iz-samovara": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-20",
+          "severity": "high",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63",
+          "rationale": "short_description содержит прямой призыв забронировать тур по телефону вне платформы — явный TXT-20."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "scantour_4-svobodnyh-dnya-v-karelii-glempingi-na-beregu-ladozhskogo-ozera-lajt": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-20",
+          "severity": "high",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63",
+          "rationale": "short_description содержит прямой призыв забронировать тур по телефону вне платформы — явный TXT-20."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "scantour_gatchina-imperatorskaya-ferma-i-syrnyj-master-klass": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-20",
+          "severity": "high",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63",
+          "rationale": "short_description содержит прямой призыв забронировать тур по телефону вне платформы — явный TXT-20."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    },
+    "scantour_top-mesta-karelii-2-valaam-shhery-master-klassy-iz-petrozavodska": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-20",
+          "severity": "high",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63",
+          "rationale": "short_description содержит прямой призыв забронировать тур по телефону вне платформы — явный TXT-20."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "manual:sergio"
+    }
+  }
+}

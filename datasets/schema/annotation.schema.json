@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "annotation.schema.json",
+  "title": "AnnotationStore",
+  "description": "Карта case_id → разметка нарушений на этой карточке. Один файл на источник.",
+  "type": "object",
+  "required": ["version", "annotations"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "const": 1 },
+    "annotations": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z0-9_-]+$": { "$ref": "#/$defs/annotation" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "annotation": {
+      "type": "object",
+      "required": ["expected_clean", "violations", "annotated_at", "annotator"],
+      "additionalProperties": false,
+      "properties": {
+        "expected_clean": { "type": "boolean" },
+        "violations": {
+          "type": "array",
+          "items": { "$ref": "test_case.schema.json#/$defs/violation_card" }
+        },
+        "notes": { "type": ["string", "null"] },
+        "annotated_at": { "type": "string", "format": "date" },
+        "annotator": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Свободная метка происхождения разметки: 'manual:sergio', 'claude-opus-4.7', 'gpt-5', 'gigachat-max-2.5'. Используется для трассировки."
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "expected_clean": { "const": true } }, "required": ["expected_clean"] },
+          "then": { "properties": { "violations": { "maxItems": 0 } } }
+        },
+        {
+          "if": { "properties": { "expected_clean": { "const": false } }, "required": ["expected_clean"] },
+          "then": { "properties": { "violations": { "minItems": 1 } } }
+        }
+      ]
+    }
+  }
+}

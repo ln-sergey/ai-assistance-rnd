@@ -27,7 +27,8 @@
     "parse:all": "pnpm parse:sputnik8 && pnpm parse:pmpoperator && pnpm parse:scantour && pnpm parse:afisha",
     "images:download": "tsx scripts/parse/download-images.ts",
     "parse:validate": "tsx scripts/parse/validate.ts",
-    "parse:summary": "tsx scripts/parse/summary.ts"
+    "parse:summary": "tsx scripts/parse/summary.ts",
+    "cases:generate": "tsx scripts/data/cases-generate.ts"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
