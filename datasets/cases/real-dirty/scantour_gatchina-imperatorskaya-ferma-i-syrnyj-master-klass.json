@@ -1,0 +1,83 @@
+{
+  "case_id": "scantour_gatchina-imperatorskaya-ferma-i-syrnyj-master-klass",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "scantour_gatchina-imperatorskaya-ferma-i-syrnyj-master-klass",
+    "product_type": "excursion",
+    "title": "Гатчина: императорская ферма и сырный мастер-класс",
+    "short_description": "Гатчина: императорская ферма и сырный мастер-класс. Подробное описание программы тура. Фото тура. Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+    "full_description": "Всего 41 км от Петербурга — и вы в императорской резиденции. Мы прогуляемся по местам, где царственные особы пили парное молоко и кормили коров, заглянем в постройки Дворцовой фермы, а затем превратимся в настоящих сыроделов! Вас ждет увлекательный мастер-класс по созданию сыра шевр, дегустация и свободное время в одном из красивейших парков России. А еще — обаяние старых улочек, Егерская слобода и возвращение в город с собственноручно изготовленным сыром в багаже.",
+    "program_items": [],
+    "services": [
+      {
+        "name": "Включено в стоимость: Транспортное обслуживание на большом туристическом автобусе 45-50 мест",
+        "description": "Транспортное обслуживание на большом туристическом автобусе 45-50 мест"
+      },
+      {
+        "name": "Включено в стоимость: Экскурсионное обслуживание гида-сопровождающего и местных гидов",
+        "description": "Экскурсионное обслуживание гида-сопровождающего и местных гидов"
+      },
+      {
+        "name": "Включено в стоимость: Все входные билеты по программе (Дворцовая ферама, Мастер-класс)",
+        "description": "Все входные билеты по программе (Дворцовая ферама, Мастер-класс)"
+      }
+    ],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": "Санкт-Петербург, м. «Звенигородская», ул. Звенигородская, д. 5\n Ориентир:\n (схема)"
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring",
+      "dates": [
+        "2026-05-10"
+      ]
+    },
+    "images": [
+      {
+        "image_id": "scantour_gatchina-imperatorskaya-ferma-i-syrnyj-master-klass_0",
+        "role": "cover",
+        "caption": null
+      },
+      {
+        "image_id": "scantour_gatchina-imperatorskaya-ferma-i-syrnyj-master-klass_1",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "scantour_gatchina-imperatorskaya-ferma-i-syrnyj-master-klass_2",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "scantour_gatchina-imperatorskaya-ferma-i-syrnyj-master-klass_3",
+        "role": "gallery",
+        "caption": null
+      }
+    ],
+    "languages": [
+      "ru"
+    ],
+    "age_restriction": "10+"
+  },
+  "expected_violations": [
+    {
+      "rule_id": "TXT-20",
+      "severity": "high",
+      "field_path": "short_description",
+      "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63",
+      "rationale": "short_description содержит прямой призыв забронировать тур по телефону вне платформы — явный TXT-20."
+    }
+  ],
+  "expected_clean": false,
+  "notes": null
+}

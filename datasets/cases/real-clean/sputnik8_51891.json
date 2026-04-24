@@ -1,0 +1,62 @@
+{
+  "case_id": "sputnik8_51891",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "sputnik8_51891",
+    "product_type": "excursion",
+    "title": "Кронштадт для любознательных",
+    "short_description": "Прогулка проходит по купеческой гавани, где вы увидите где находится абсолютный ноль, узнаете как работал Петровский док XVIII века, и кто создал беспроводную связь. Все основные достопримечательности не останутся без вашего внимания. Среди них памятник создателю города — Петру I и гавани, где стоят большие военные корабли, Макаровский мост, Якорна",
+    "full_description": "Прогулка проходит по купеческой гавани, где вы увидите где находится абсолютный ноль, узнаете как работал Петровский док XVIII века, и кто создал беспроводную связь. Все основные достопримечательности не останутся без вашего внимания. Среди них памятник создателю города — Петру I и гавани, где стоят большие военные корабли, Макаровский мост, Якорная площадь, памятник адмиралу Макарову и, конечно, Никольский морской собор. Если будет желание вы сможете за отдельную плату подняться под купол собора.",
+    "program_items": [],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": "Место начала"
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring",
+      "duration_minutes": 1583
+    },
+    "images": [
+      {
+        "image_id": "sputnik8_51891_0",
+        "role": "cover",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_51891_1",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_51891_2",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_51891_3",
+        "role": "gallery",
+        "caption": null
+      }
+    ],
+    "group_size": {
+      "max": 15
+    },
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [],
+  "expected_clean": true,
+  "notes": null
+}

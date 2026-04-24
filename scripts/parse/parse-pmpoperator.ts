@@ -55,10 +55,24 @@ function sectionByHeading(
   return result;
 }
 
-function extractFullDescription($: cheerio.CheerioAPI): string {
+function extractFullDescription(
+  $: cheerio.CheerioAPI,
+  programItems: ReadonlyArray<{ title: string; description: string }>,
+): string {
   const section = sectionByHeading($, /описание\s+тура/i);
-  if (!section) return '';
-  return normaliseText(section.find('.html-content').first().text());
+  const fromSection = section
+    ? normaliseText(section.find('.html-content').first().text())
+    : '';
+  if (fromSection.length >= MIN_FULL_DESCRIPTION) return fromSection;
+  // Часть авторских туров pmpoperator оставляет «Описание тура» пустым
+  // и заполняет только «Программа тура». Чтобы карточка не выпадала
+  // из бенчмарка, склеиваем дни программы — это и есть фактическое
+  // описание продукта.
+  const fromProgram = programItems
+    .map((p) => `${p.title}. ${p.description}`.trim())
+    .filter((s) => s.length > 0)
+    .join('\n\n');
+  return fromSection.length >= fromProgram.length ? fromSection : fromProgram;
 }
 
 function extractProgramItems(
@@ -155,9 +169,13 @@ function extractShortDescription(
     $('meta[property="og:description"]').attr('content') ??
     '';
   if (metaDesc.trim()) return normaliseText(metaDesc);
-  // fallback: первое предложение full_description
-  const firstSentence = fullDesc.split(/(?<=[.!?])\s+/)[0];
-  return firstSentence ? firstSentence.slice(0, 300) : '';
+  // Fallback: первое содержательное предложение full_description.
+  // Пропускаем мусорные «День 1.», «Программа.» и т.п.
+  const sentences = fullDesc.split(/(?<=[.!?])\s+/);
+  for (const s of sentences) {
+    if (s.length >= 40) return s.slice(0, 300);
+  }
+  return sentences[0]?.slice(0, 300) ?? '';
 }
 
 // Картинки: из .tour-slider img (полноразмерные) + из инлайн background-image
@@ -218,7 +236,12 @@ function buildCard(
   const title = normaliseText($('h1').first().text());
   if (!title) warnings.push('пустой title');
 
-  const fullDesc = extractFullDescription($);
+  // program_items нужны раньше full_description: для карточек, у которых
+  // секция «Описание тура» пустая, описание собирается из дней программы.
+  const programItems = extractProgramItems($);
+  if (programItems.length === 0) warnings.push('пустой program_items');
+
+  const fullDesc = extractFullDescription($, programItems);
   if (fullDesc.length < MIN_FULL_DESCRIPTION) {
     warnings.push(
       `full_description короче ${MIN_FULL_DESCRIPTION} символов (${fullDesc.length})`,
@@ -227,9 +250,6 @@ function buildCard(
 
   const shortDesc = extractShortDescription($, fullDesc);
   if (!shortDesc) warnings.push('пустой short_description');
-
-  const programItems = extractProgramItems($);
-  if (programItems.length === 0) warnings.push('пустой program_items');
 
   const services = [
     ...extractServicesFromSection(

@@ -1,0 +1,67 @@
+{
+  "case_id": "scantour_skazochnyj-velikij-ustyug-czelyj-den-v-votchine-deda-moroza",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "scantour_skazochnyj-velikij-ustyug-czelyj-den-v-votchine-deda-moroza",
+    "product_type": "excursion",
+    "title": "Сказочный Великий Устюг! Целый день в «Вотчине Деда Мороза»",
+    "short_description": "Сказочный Великий Устюг! Целый день в «Вотчине Деда Мороза». Подробное описание программы тура. Фото тура. Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+    "full_description": "",
+    "program_items": [],
+    "services": [
+      {
+        "name": "Включено в стоимость: Групповое транспортное обслуживание",
+        "description": "Групповое транспортное обслуживание"
+      },
+      {
+        "name": "Включено в стоимость: Обед в кафе",
+        "description": "Обед в кафе"
+      },
+      {
+        "name": "Включено в стоимость: Услуги сопровождающего, свидетельство о пребывании в Великом Устюге",
+        "description": "Услуги сопровождающего, свидетельство о пребывании в Великом Устюге"
+      },
+      {
+        "name": "Включено в стоимость: Программа в «Вотчине»",
+        "description": "Программа в «Вотчине»"
+      },
+      {
+        "name": "Включено в стоимость: Экскурсионные мероприятия (дом Деда Мороза, программа-встреча с зимним волшебник",
+        "description": "Экскурсионные мероприятия (дом Деда Мороза, программа-встреча с зимним волшебником и его помощниками «Сказочки на лавочках»)"
+      }
+    ],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": "Котлас Южный/Ядриха, ж/д станция\n Ориентир:\n на перроне у входа в здание вокзала (схема)"
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring"
+    },
+    "images": [],
+    "languages": [
+      "ru"
+    ],
+    "age_restriction": "16+"
+  },
+  "expected_violations": [
+    {
+      "rule_id": "TXT-20",
+      "severity": "high",
+      "field_path": "short_description",
+      "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63",
+      "rationale": "short_description содержит прямой призыв забронировать тур по телефону вне платформы — явный TXT-20."
+    }
+  ],
+  "expected_clean": false,
+  "notes": null
+}

@@ -1,0 +1,50 @@
+{
+  "case_id": "afisha_performance_obyknovennoe-chudo-74748",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "afisha_performance_obyknovennoe-chudo-74748",
+    "product_type": "event",
+    "title": "Обыкновенное чудо",
+    "short_description": "Обыкновенное чудо, постановка Новая драма, режиссер Марина Оленева. Информация о спектакле, описание, актеры, отзывы на Афише.",
+    "full_description": "",
+    "program_items": [
+      {
+        "order": 1,
+        "title": "Режиссёр: Марина Оленева",
+        "description": "Марина Оленева"
+      }
+    ],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": ""
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring"
+    },
+    "images": [
+      {
+        "image_id": "afisha_performance_obyknovennoe-chudo-74748_0",
+        "role": "cover",
+        "caption": null
+      }
+    ],
+    "age_restriction": null,
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [],
+  "expected_clean": true,
+  "notes": null
+}

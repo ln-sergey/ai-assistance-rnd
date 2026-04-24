@@ -1,0 +1,62 @@
+{
+  "case_id": "sputnik8_77641",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "sputnik8_77641",
+    "product_type": "excursion",
+    "title": "Стильная Москва: экскурсия-фотосессия по эпицентру шика",
+    "short_description": "• Самый инновационный торговый центр 19 века. • Барбершоп, где любил стричься Антон Чехов. • Магазин, в котором у Гоголя был открыт кредит. • Место, где хранили свои шубы москвички.",
+    "full_description": "Во время экскурсии вы увидите: • Самый инновационный торговый центр 19 века.\n• Барбершоп, где любил стричься Антон Чехов.\n• Магазин, в котором у Гоголя был открыт кредит.\n• Место, где хранили свои шубы москвички.",
+    "program_items": [],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": "Место начала"
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring",
+      "duration_minutes": 90
+    },
+    "images": [
+      {
+        "image_id": "sputnik8_77641_0",
+        "role": "cover",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_77641_1",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_77641_2",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_77641_3",
+        "role": "gallery",
+        "caption": null
+      }
+    ],
+    "group_size": {
+      "max": 4
+    },
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [],
+  "expected_clean": true,
+  "notes": null
+}

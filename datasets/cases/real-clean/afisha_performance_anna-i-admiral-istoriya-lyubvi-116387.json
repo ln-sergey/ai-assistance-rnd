@@ -1,0 +1,90 @@
+{
+  "case_id": "afisha_performance_anna-i-admiral-istoriya-lyubvi-116387",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "afisha_performance_anna-i-admiral-istoriya-lyubvi-116387",
+    "product_type": "event",
+    "title": "Анна и адмирал. История любви",
+    "short_description": "Анна и адмирал. История любви, постановка Музыкальный театр им. Загурского, режиссер Анна Фекета. Информация о спектакле, описание, актеры, отзывы на Афише.",
+    "full_description": "",
+    "program_items": [
+      {
+        "order": 1,
+        "title": "Режиссёр: Анна Фекета",
+        "description": "Анна Фекета"
+      },
+      {
+        "order": 2,
+        "title": "Актёр: Анна Рыбникова",
+        "description": "Анна Рыбникова"
+      },
+      {
+        "order": 3,
+        "title": "Актёр: Юрий Щерботкин",
+        "description": "Юрий Щерботкин"
+      },
+      {
+        "order": 4,
+        "title": "Актёр: Татьяна Кокина",
+        "description": "Татьяна Кокина"
+      },
+      {
+        "order": 5,
+        "title": "Актёр: Мария Стрельченко",
+        "description": "Мария Стрельченко"
+      },
+      {
+        "order": 6,
+        "title": "Актёр: Наталья Гладких",
+        "description": "Наталья Гладких"
+      },
+      {
+        "order": 7,
+        "title": "Актёр: Сергей Полухин",
+        "description": "Сергей Полухин"
+      },
+      {
+        "order": 8,
+        "title": "Актёр: Максим Колесников",
+        "description": "Максим Колесников"
+      },
+      {
+        "order": 9,
+        "title": "Актёр: Александр Жоров",
+        "description": "Александр Жоров"
+      }
+    ],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": ""
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring"
+    },
+    "images": [
+      {
+        "image_id": "afisha_performance_anna-i-admiral-istoriya-lyubvi-116387_0",
+        "role": "cover",
+        "caption": null
+      }
+    ],
+    "age_restriction": "16+",
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [],
+  "expected_clean": true,
+  "notes": null
+}

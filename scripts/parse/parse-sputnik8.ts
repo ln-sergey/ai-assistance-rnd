@@ -195,41 +195,26 @@ function extractSputnikGalleryUrls(html: string): string[] {
 }
 
 function extractFullDescription($: cheerio.CheerioAPI): string {
-  // Кандидаты контейнеров, ранжированные по длине текста.
-  const selectors = [
-    '[class*="description" i]',
-    '[class*="about" i]',
-    '[class*="content" i]',
-    '[data-testid*="description" i]',
-    'article',
-    'main',
-  ];
-  const seen = new Set<string>();
-  const chunks: string[] = [];
-  for (const sel of selectors) {
-    $(sel).each((_, el) => {
-      const text = normaliseText($(el).text());
-      if (text.length < 40) return;
-      // дедуп по первым 60 символам, чтобы не дублировать вложенные блоки
-      const key = text.slice(0, 60);
-      if (seen.has(key)) return;
-      seen.add(key);
-      chunks.push(text);
-    });
-    if (chunks.join('\n\n').length > 500) break;
+  // Канонический блок описания на странице активности sputnik8.
+  // Раньше тут был «выбираем самый длинный chunk среди всего, что
+  // подходит под [class*=description|about|content]» — но в этот фильтр
+  // попадали блоки отзывов, биографии гида и SEO-меню, и «самый длинный»
+  // оказывался не описанием продукта. Канонический селектор пуст у
+  // ~единиц карточек — для них падаем в fallback по <p> в body.
+  const canonical = $('.activity-page-description__details-content').first();
+  if (canonical.length > 0) {
+    const text = normaliseText(canonical.text());
+    if (text.length >= 40) return text;
   }
-  if (chunks.length === 0) {
-    // fallback: <p>-ы в body
-    const paras: string[] = [];
-    $('body p').each((_, el) => {
-      const text = normaliseText($(el).text());
-      if (text.length >= 40) paras.push(text);
-    });
-    return paras.slice(0, 30).join('\n\n');
-  }
-  // берём самый длинный chunk — обычно это основной блок
-  chunks.sort((a, b) => b.length - a.length);
-  return chunks[0] ?? '';
+  // Fallback: берём <p>-параграфы в body. Мы тут уже знаем, что
+  // канонического блока нет либо он почти пустой, поэтому это
+  // компромисс на случай редкого варианта вёрстки.
+  const paras: string[] = [];
+  $('body p').each((_, el) => {
+    const text = normaliseText($(el).text());
+    if (text.length >= 40) paras.push(text);
+  });
+  return paras.slice(0, 30).join('\n\n');
 }
 
 function extractProgramItems(

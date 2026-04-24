@@ -1,0 +1,72 @@
+{
+  "case_id": "pmpoperator_ekskursiya-v-gatchinu-s-programmoy-legendi-starogo-zamka-dlya-shkol-nikov",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "pmpoperator_ekskursiya-v-gatchinu-s-programmoy-legendi-starogo-zamka-dlya-shkol-nikov",
+    "product_type": "excursion",
+    "title": "Экскурсия в Гатчину с программой «Легенды старого замка» для школьников",
+    "short_description": "Приглашаем вас на захватывающую экскурсию в Гатчину, где вы окунётесь в мир древних легенд и историй!",
+    "full_description": "Приглашаем вас на захватывающую экскурсию в Гатчину, где вы окунётесь в мир древних легенд и историй! Вы узнаете о величественной истории этого места, раскроете тайны его музейных экспонатов и встретите сказочных персонажи, вдохновлявшие художников и писателей.",
+    "program_items": [],
+    "services": [
+      {
+        "name": "Входит в стоимость: транспортное обслуживание",
+        "description": "транспортное обслуживание"
+      },
+      {
+        "name": "Входит в стоимость: экскурсионное обслуживание",
+        "description": "экскурсионное обслуживание"
+      },
+      {
+        "name": "Входит в стоимость: программа «Легенды старого замка»",
+        "description": "программа «Легенды старого замка»"
+      },
+      {
+        "name": "Оплачивается отдельно: обед 550 руб.",
+        "description": "обед 550 руб."
+      },
+      {
+        "name": "Оплачивается отдельно: доп. час аренды транспорта по запросу",
+        "description": "доп. час аренды транспорта по запросу"
+      }
+    ],
+    "location": {
+      "address": "",
+      "route_comment": "Санкт-Петербург - Гатчина",
+      "meeting_point_comment": ""
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring"
+    },
+    "images": [
+      {
+        "image_id": "pmpoperator_ekskursiya-v-gatchinu-s-programmoy-legendi-starogo-zamka-dlya-shkol-nikov_0",
+        "role": "cover",
+        "caption": null
+      },
+      {
+        "image_id": "pmpoperator_ekskursiya-v-gatchinu-s-programmoy-legendi-starogo-zamka-dlya-shkol-nikov_1",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "pmpoperator_ekskursiya-v-gatchinu-s-programmoy-legendi-starogo-zamka-dlya-shkol-nikov_2",
+        "role": "gallery",
+        "caption": null
+      }
+    ],
+    "age_restriction": "6+"
+  },
+  "expected_violations": [],
+  "expected_clean": true,
+  "notes": null
+}

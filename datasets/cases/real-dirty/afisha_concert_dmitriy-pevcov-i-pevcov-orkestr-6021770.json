@@ -1,0 +1,65 @@
+{
+  "case_id": "afisha_concert_dmitriy-pevcov-i-pevcov-orkestr-6021770",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "afisha_concert_dmitriy-pevcov-i-pevcov-orkestr-6021770",
+    "product_type": "event",
+    "title": "Дмитрий Певцов и Певцовъ-оркестр",
+    "short_description": "Купить билеты на концерт Дмитрий Певцов и Певцовъ-оркестр, в Санкт-Петербурге, билеты по цене от 990,00 руб. 20.10.2026 в 19.00, ДК им. Ленсовета Дмитрий Певцов и Певцовъ-оркестр, электронные билеты на концерт на сайте Afisha.ru.",
+    "full_description": "<p>Дмитрий Анатольевич Певцов является театральным и киноактёром СССР/РФ. Имеет звание Заслуженного артиста РФ. Музыкант, исполнитель, преподаватель. С недавнего времени Певцов — депутат Госдумы, он состоит во фракции «Новые люди».</p>",
+    "program_items": [
+      {
+        "order": 1,
+        "title": "Исполнитель: Дмитрий Певцов",
+        "description": "Дмитрий Певцов"
+      }
+    ],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": ""
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring"
+    },
+    "images": [
+      {
+        "image_id": "afisha_concert_dmitriy-pevcov-i-pevcov-orkestr-6021770_0",
+        "role": "cover",
+        "caption": null
+      }
+    ],
+    "age_restriction": "6+",
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [
+    {
+      "rule_id": "TXT-19",
+      "severity": "medium",
+      "field_path": "short_description",
+      "quote": "Afisha.ru",
+      "rationale": "short_description содержит явное указание на сторонний сайт продажи билетов (Afisha.ru) — TXT-19, попытка перенести покупку вне платформы."
+    },
+    {
+      "rule_id": "TXT-26",
+      "severity": "medium",
+      "field_path": "full_description",
+      "quote": "<p>Дмитрий Анатольевич Певцов является театральным и киноактёром",
+      "rationale": "full_description содержит непочищенные HTML-теги (<p>…</p>) — технический мусор разметки, что подпадает под TXT-26."
+    }
+  ],
+  "expected_clean": false,
+  "notes": null
+}

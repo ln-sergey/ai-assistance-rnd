@@ -1,0 +1,44 @@
+{
+  "case_id": "afisha_concert_stendap-koncert-luchshie-shutki-6034707",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "afisha_concert_stendap-koncert-luchshie-shutki-6034707",
+    "product_type": "event",
+    "title": "Стендап Концерт: Лучшие Шутки",
+    "short_description": "Всё просто — комики рассказывают шутки, Вы смеётесь.",
+    "full_description": "Всё просто — комики рассказывают шутки, Вы смеётесь. Звучит как отличная сделка. Комики с ТВ и YouTube проектов расскажут свой лучший материал для того, чтобы Вы хорошо провели вечер в центре города.",
+    "program_items": [],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": ""
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring"
+    },
+    "images": [
+      {
+        "image_id": "afisha_concert_stendap-koncert-luchshie-shutki-6034707_0",
+        "role": "cover",
+        "caption": null
+      }
+    ],
+    "age_restriction": "18+",
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [],
+  "expected_clean": true,
+  "notes": null
+}

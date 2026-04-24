@@ -1,0 +1,65 @@
+{
+  "case_id": "afisha_performance_zheleznaya-volya-64715",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "afisha_performance_zheleznaya-volya-64715",
+    "product_type": "event",
+    "title": "Железная воля",
+    "short_description": "Железная воля, постановка Театр им. Ермоловой, режиссер Герман Энтин. Информация о спектакле, описание, актеры, отзывы на Афише.",
+    "full_description": "",
+    "program_items": [
+      {
+        "order": 1,
+        "title": "Режиссёр: Герман Энтин",
+        "description": "Герман Энтин"
+      },
+      {
+        "order": 2,
+        "title": "Актёр: Герман Энтин",
+        "description": "Герман Энтин"
+      },
+      {
+        "order": 3,
+        "title": "Актёр: Юрий Голышев",
+        "description": "Юрий Голышев"
+      },
+      {
+        "order": 4,
+        "title": "Актёр: Владимир Павлов",
+        "description": "Владимир Павлов"
+      }
+    ],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": ""
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring"
+    },
+    "images": [
+      {
+        "image_id": "afisha_performance_zheleznaya-volya-64715_0",
+        "role": "cover",
+        "caption": null
+      }
+    ],
+    "age_restriction": null,
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [],
+  "expected_clean": true,
+  "notes": null
+}

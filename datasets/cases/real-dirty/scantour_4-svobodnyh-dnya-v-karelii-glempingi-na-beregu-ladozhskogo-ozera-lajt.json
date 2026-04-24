@@ -1,0 +1,106 @@
+{
+  "case_id": "scantour_4-svobodnyh-dnya-v-karelii-glempingi-na-beregu-ladozhskogo-ozera-lajt",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "scantour_4-svobodnyh-dnya-v-karelii-glempingi-na-beregu-ladozhskogo-ozera-lajt",
+    "product_type": "tour",
+    "title": "Свободные дни в глэмпингах на берегу Ладожского озера. Лайт",
+    "short_description": "Свободные дни в глэмпингах на берегу Ладожского озера. Лайт. Подробное описание программы тура. Фото тура. Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+    "full_description": "",
+    "program_items": [
+      {
+        "order": 1,
+        "title": "1 ДЕНЬ",
+        "description": "Встреча на ж/д вокзале Сортавала | 15:00 – Заселение в глэмпинг | Свободное время | Ужин"
+      },
+      {
+        "order": 2,
+        "title": "2 ДЕНЬ",
+        "description": "Завтрак | Свободное время | Ужин"
+      },
+      {
+        "order": 3,
+        "title": "3 ДЕНЬ",
+        "description": "Завтрак | Свободное время | Ужин"
+      },
+      {
+        "order": 4,
+        "title": "4 ДЕНЬ",
+        "description": "Завтрак, освобождение номеров | 12:00 – Отправление на аэролодке на причал | Трансфер до ж/д вокзала Сортавала"
+      }
+    ],
+    "services": [
+      {
+        "name": "Включено в стоимость: Размещение в глэмпинге (3 ночи)",
+        "description": "Размещение в глэмпинге (3 ночи)"
+      },
+      {
+        "name": "Включено в стоимость: Трансфер на лодке по маршруту причал – глэмпинг – причал",
+        "description": "Трансфер на лодке по маршруту причал – глэмпинг – причал"
+      },
+      {
+        "name": "Включено в стоимость: Питание по программе: 3 завтрака, 3 ужина (ужины возможно заменить на обеды)",
+        "description": "Питание по программе: 3 завтрака, 3 ужина (ужины возможно заменить на обеды)"
+      },
+      {
+        "name": "Включено в стоимость: Баня фурако на 2 часа",
+        "description": "Баня фурако на 2 часа"
+      }
+    ],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": "Ж/д вокзал, Сортавала\n Ориентир:\n (схема)"
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring",
+      "duration_minutes": 5760
+    },
+    "images": [
+      {
+        "image_id": "scantour_4-svobodnyh-dnya-v-karelii-glempingi-na-beregu-ladozhskogo-ozera-lajt_0",
+        "role": "cover",
+        "caption": null
+      },
+      {
+        "image_id": "scantour_4-svobodnyh-dnya-v-karelii-glempingi-na-beregu-ladozhskogo-ozera-lajt_1",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "scantour_4-svobodnyh-dnya-v-karelii-glempingi-na-beregu-ladozhskogo-ozera-lajt_2",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "scantour_4-svobodnyh-dnya-v-karelii-glempingi-na-beregu-ladozhskogo-ozera-lajt_3",
+        "role": "gallery",
+        "caption": null
+      }
+    ],
+    "languages": [
+      "ru"
+    ],
+    "age_restriction": "5+"
+  },
+  "expected_violations": [
+    {
+      "rule_id": "TXT-20",
+      "severity": "high",
+      "field_path": "short_description",
+      "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63",
+      "rationale": "short_description содержит прямой призыв забронировать тур по телефону вне платформы — явный TXT-20."
+    }
+  ],
+  "expected_clean": false,
+  "notes": null
+}

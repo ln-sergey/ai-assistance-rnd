@@ -1,0 +1,52 @@
+{
+  "case_id": "afisha_concert_tanya-shamanina-6034924",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "afisha_concert_tanya-shamanina-6034924",
+    "product_type": "event",
+    "title": "Таня Шаманина",
+    "short_description": "Купить билеты на концерт Таня Шаманина, в Москве, билеты по цене от 1200,00 руб. 07.05.2026 в 20.00, Stereopeople Таня Шаманина, электронные билеты на концерт на сайте Afisha.ru.",
+    "full_description": "Ранее известная как Shanyana - солистка, автор и композитор популярного московского коллектива Guru Groove Foundation, с которым она выпустила 5 альбомов.\nТаня Шаманина - не только обладательница уникального голоса, но и автор, продюсер всех своих песен и ярчайших образов, а так-же автор песен многих российских артистов и вокальный продюсер.",
+    "program_items": [],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": ""
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring"
+    },
+    "images": [
+      {
+        "image_id": "afisha_concert_tanya-shamanina-6034924_0",
+        "role": "cover",
+        "caption": null
+      }
+    ],
+    "age_restriction": "16+",
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [
+    {
+      "rule_id": "TXT-19",
+      "severity": "medium",
+      "field_path": "short_description",
+      "quote": "Afisha.ru",
+      "rationale": "short_description содержит явное указание на сторонний сайт продажи билетов (Afisha.ru) — TXT-19, попытка перенести покупку вне платформы."
+    }
+  ],
+  "expected_clean": false,
+  "notes": null
+}

@@ -1,0 +1,59 @@
+{
+  "case_id": "sputnik8_51160",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "sputnik8_51160",
+    "product_type": "excursion",
+    "title": "Последний звонок на теплоходе «Легенда»",
+    "short_description": "Салат: • «Цезарь» с курицей (куриное филе, сыр «пармезан», листья «Романо» и «Айсберг», заправленные классическим соусом «Цезарь», помидоры «Черри»). Закуски: • Клубный сэндвич с сыром и ветчиной. • Картофель фри. • Пицца Пеперони 200 г. Горячее блюдо: • Аппетитное запеченое филе из курицы.",
+    "full_description": "Меню банкета:Салат:\n• «Цезарь» с курицей (куриное филе, сыр «пармезан», листья «Романо» и «Айсберг», заправленные классическим соусом «Цезарь», помидоры «Черри»).\nЗакуски:\n• Клубный сэндвич с сыром и ветчиной.\n• Картофель фри.\n• Пицца Пеперони 200 г.\nГорячее блюдо:\n• Аппетитное запеченое филе из курицы.\nДесерт:\n• Пирожное.\nНапитки:\n• Сок 200 мл/1 чел.",
+    "program_items": [],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": "На карте"
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring",
+      "duration_minutes": 4388
+    },
+    "images": [
+      {
+        "image_id": "sputnik8_51160_0",
+        "role": "cover",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_51160_1",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_51160_2",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_51160_3",
+        "role": "gallery",
+        "caption": null
+      }
+    ],
+    "group_size": {
+      "max": 150
+    }
+  },
+  "expected_violations": [],
+  "expected_clean": true,
+  "notes": null
+}
