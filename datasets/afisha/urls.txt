@@ -1,0 +1,16 @@
+# afisha URL candidates
+# harvested_at: 2026-04-24T18:22:40.982Z
+# sources: 4 creation-sitemap.xml
+# seed: 42
+# total: 9
+# by_type: concert:3, performance:6
+
+https://www.afisha.ru/concert/stendap-koncert-luchshie-shutki-6034707/
+https://www.afisha.ru/concert/dmitriy-pevcov-i-pevcov-orkestr-6021770/
+https://www.afisha.ru/performance/obyknovennoe-chudo-74748/
+https://www.afisha.ru/performance/zheleznaya-volya-64715/
+https://www.afisha.ru/performance/don-zhuan-263122/
+https://www.afisha.ru/performance/angel-moy-207639/
+https://www.afisha.ru/concert/tanya-shamanina-6034924/
+https://www.afisha.ru/performance/ya-pishu-dlya-bukvarya-244932/
+https://www.afisha.ru/performance/anna-i-admiral-istoriya-lyubvi-116387/

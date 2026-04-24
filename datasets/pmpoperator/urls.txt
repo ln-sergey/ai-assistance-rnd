@@ -1,0 +1,20 @@
+# pmpoperator URL candidates
+# harvested_at: 2026-04-24T18:04:59.693Z
+# sitemap: https://pmpoperator.ru/sitemap.xml
+# seed: 42
+# total: 14 (из 1317)
+
+https://pmpoperator.ru/tours/v-kaliningrad-na-pyat-dney-leto-zaezdi-ezhednevno
+https://pmpoperator.ru/tours/karel-skiy-week-end-osen-zima-avtobus
+https://pmpoperator.ru/tours/na-baskunchak-iz-volgograda
+https://pmpoperator.ru/tours/perezagruzka-dlya-megapolisa-bez-interneta-televizora-sosedey
+https://pmpoperator.ru/tours/drevnie-sokrovischa-armenii
+https://pmpoperator.ru/tours/ekskursiya-viborg-pogruzhenie-v-srednevekov-e
+https://pmpoperator.ru/tours/ekskursiya-v-gatchinu-s-programmoy-legendi-starogo-zamka-dlya-shkol-nikov
+https://pmpoperator.ru/tours/mezhdu-volgoy-i-donom
+https://pmpoperator.ru/tours/roskosh-nizhney-volgi-kalmikiya-6-dney
+https://pmpoperator.ru/tours/avtorskiy-tur-podmoskovnaya-shveytsariya-ili-usadeb-vdohnovenniy-kray
+https://pmpoperator.ru/tours/legendarnaya-rus-2-dnya-2020-2021
+https://pmpoperator.ru/tours/ocharovanie-ol-hona-zima
+https://pmpoperator.ru/tours/kray-lipetskiy-monastirskiy-sirniy-yablochniy
+https://pmpoperator.ru/tours/novogodnyaya-armeniya-zaezd-30-12

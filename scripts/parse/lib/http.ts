@@ -24,6 +24,9 @@ type RobotsChecker = ReturnType<typeof robotsParser>;
 export interface HttpClientOptions {
   source: string;
   datasetsDir: string;
+  // Дополнительные cookie на хост. Нужен для сайтов, которые без них бросают
+  // на SSO-bounce страницу (пример: afisha.ru + `SberIdFailed=1`).
+  cookiesByHost?: Record<string, string>;
 }
 
 export interface FetchHtmlResult {
@@ -215,15 +218,25 @@ export class HttpClient {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
     try {
+      const headersOut: Record<string, string> = {
+        'User-Agent': USER_AGENT,
+        'Accept-Language': ACCEPT_LANGUAGE,
+        Accept:
+          mode === 'text'
+            ? 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+            : 'image/*,*/*;q=0.8',
+      };
+      const host = (() => {
+        try {
+          return new URL(url).host;
+        } catch {
+          return '';
+        }
+      })();
+      const cookie = this.opts.cookiesByHost?.[host];
+      if (cookie) headersOut.Cookie = cookie;
       const res = await fetch(url, {
-        headers: {
-          'User-Agent': USER_AGENT,
-          'Accept-Language': ACCEPT_LANGUAGE,
-          Accept:
-            mode === 'text'
-              ? 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
-              : 'image/*,*/*;q=0.8',
-        },
+        headers: headersOut,
         signal: controller.signal,
         redirect: 'follow',
       });
