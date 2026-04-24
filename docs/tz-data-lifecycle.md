@@ -580,32 +580,48 @@ CLI-оверрайды.
 
 ## Acceptance checklist (итоговый)
 
-- [ ] `datasets/sources.config.json` создан, harvester'ы читают из
+- [x] `datasets/sources.config.json` создан, harvester'ы читают из
       него.
-- [ ] `pnpm harvest:sputnik8 -- --target=5 --seed=7` отдаёт 5 URL с
+- [x] `pnpm harvest:sputnik8 -- --target=5 --seed=7` отдаёт 5 URL с
       детерминированным shuffle.
-- [ ] `datasets/schema/annotation.schema.json` создан, валидируется
+- [x] `datasets/schema/annotation.schema.json` создан, валидируется
       ajv strict.
-- [ ] `datasets/annotations/{sputnik8,pmpoperator,scantour,afisha}.json`
+- [x] `datasets/annotations/{sputnik8,pmpoperator,scantour,afisha}.json`
       созданы; в сумме 67 записей (51 clean + 16 dirty).
-- [ ] `scripts/data/cases-generate.ts` создан;
+- [x] `scripts/data/cases-generate.ts` создан;
       `pnpm cases:generate` → 67 case-файлов.
-- [ ] `pnpm parse:validate-cases` → total=67, passed=67, errors=0.
-- [ ] `git diff datasets/cases/` после миграции пустой (1:1 с
+- [x] `tsx scripts/validate-cases.ts` → total=67, passed=67, errors=0.
+- [x] `git diff datasets/cases/` после миграции пустой (1:1 с
       pre-миграцией).
-- [ ] `scripts/generate-real-cases.ts` удалён.
-- [ ] `pnpm cards:delete`, `pnpm annotations:delete`,
+- [x] `scripts/generate-real-cases.ts` удалён.
+- [x] `pnpm cards:delete`, `pnpm annotations:delete`,
       `pnpm annotations:list`, `pnpm annotations:scaffold`,
       `pnpm annotations:commit` работают согласно Acceptance этапов
       3–4.
-- [ ] `--dry-run` и `--yes` поведение для деструктивных команд.
-- [ ] `datasets/annotations/pending/` в `.gitignore`.
-- [ ] `docs/annotation-guide.md` создан (~80 строк, шаблон промпта +
+- [x] `--dry-run` и `--yes` поведение для деструктивных команд.
+- [x] `datasets/annotations/pending/` в `.gitignore`.
+- [x] `docs/annotation-guide.md` создан (~80 строк, шаблон промпта +
       6-шаговый workflow).
-- [ ] `CLAUDE.md` и `datasets/README.md` обновлены: новые команды
+- [x] `CLAUDE.md` и `datasets/README.md` обновлены: новые команды
       перечислены, lifecycle описан.
-- [ ] `pnpm typecheck` чистый.
-- [ ] Commit с сообщением по шаблону из этапа 5.
+- [x] `pnpm typecheck` чистый.
+- [x] Sprint P4 разбит на 5 коммитов (этапы 1–4 + verification).
+
+## Sprint P4 — статус
+
+Завершён 2026-04-25. Stages 1–5 закоммичены отдельно:
+
+- этап 1 — `7cec01a feat: Sprint P4 этап 1 — configurable harvesters`
+- этап 2 — `71404c1 feat: Sprint P4 этап 2 — annotation store + cases-generate`
+- этап 3 — `cf970c2 feat: Sprint P4 этап 3 — команды удаления cards/annotations`
+- этап 4 — `c56e888 feat: Sprint P4 этап 4 — annotation workflow + lifecycle docs`
+- этап 5 — verification smoke (этот коммит)
+
+Smoke прогон на afisha: `cards:delete` → `annotations:delete` →
+`harvest:afisha` (9/9 URL детерминированы) → `parse:afisha` (9/9
+карточек) → `annotations:list` (9 pending) → `annotations:scaffold`
+(9 файлов) → restore annotations + `cases:generate` (67 cases) →
+`validate-cases` (67/67 passed). Все шаги pipeline'а отработали.
 
 ## Открытые вопросы для начала сессии
 
