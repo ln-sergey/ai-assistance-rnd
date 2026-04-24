@@ -44,11 +44,10 @@ R&D-бенчмарк LLM-провайдеров для модерации кар
 + GIGACHAT_SCOPE).
 Qwen отложен — не пытайся добавить DashScope / OpenRouter без запроса.
 
-GigaChat OAuth на `ngw.devices.sberbank.ru` требует доверия к корневому
-сертификату Минцифры — через `NODE_EXTRA_CA_CERTS`. Если `pnpm smoke` даёт
-`fetch failed` на GigaChat — это всегда TLS, не ретрай и не трогай код.
-Инструкция и шаблон `.claude/settings.local.json.example` — в
-`providers/README.md`, раздел «TLS: сертификат Минцифры».
+GigaChat OAuth требует TLS-доверия к Минцифре через `NODE_EXTRA_CA_CERTS`.
+`fetch failed` на OAuth = TLS, не ретрай и не трогай код. Инструкция и
+шаблон `.claude/settings.local.json.example` — в `providers/README.md`,
+раздел «TLS: сертификат Минцифры».
 
 
 ## Конвенции кода
@@ -157,7 +156,7 @@ npx promptfoo view
 # harvest (target/seed — datasets/sources.config.json, можно оверрайдить флагами)
 pnpm harvest:sputnik8 -- --target=5 --seed=7
 
-# parse → validate → summary (как раньше)
+# parse → validate → summary
 pnpm parse:sputnik8 && pnpm parse:validate && pnpm parse:summary
 
 # удаление спаршеных данных (cards.raw, images, html-cache; не трогает urls.txt и annotations)
@@ -175,6 +174,19 @@ pnpm annotations:commit         # перенести заполненные pend
 # материализовать card_case'ы из cards + annotations
 pnpm cases:generate
 ```
+
+
+## Навигация и поиск
+
+- Большие данные (`datasets/*/html-cache/`, `datasets/*/robots-cache/`,
+  `datasets/images/`, `.cache/`, `.promptfoo-cache/`, `pnpm-lock.yaml`)
+  закрыты Read-deny в `.claude/settings.local.json`. Если действительно
+  нужен файл оттуда — спросить пользователя, а не снимать deny молча.
+- Широкий поиск по коду (3+ запроса, неясно где смотреть) — через
+  `Agent` с `subagent_type=Explore`, чтобы датасеты и отчёты не оседали в
+  основном контексте.
+- Точечные `Glob`/`Grep` — с явным `path` (`providers/`, `configs/`,
+  `scripts/`, `docs/`, `prompts/`), не от корня.
 
 
 ## Hard rules — чего не делать никогда
