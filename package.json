@@ -28,6 +28,8 @@
     "images:download": "tsx scripts/parse/download-images.ts",
     "parse:validate": "tsx scripts/parse/validate.ts",
     "parse:summary": "tsx scripts/parse/summary.ts",
+    "cards:delete": "tsx scripts/data/cards-delete.ts",
+    "annotations:delete": "tsx scripts/data/annotations-delete.ts",
     "cases:generate": "tsx scripts/data/cases-generate.ts"
   },
   "dependencies": {
