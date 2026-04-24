@@ -7,3 +7,7 @@ reports/*.json
 *.DS_Store
 *.pem
 .claude/settings.local.json
+datasets/*/html-cache/
+datasets/*/robots-cache/
+datasets/images/*
+!datasets/images/.gitkeep

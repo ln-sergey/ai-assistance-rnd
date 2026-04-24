@@ -1,0 +1,48 @@
+# sputnik8 URL candidates
+# harvested_at: 2026-04-24T17:49:53.833Z
+# sitemap: https://www.sputnik8.com/sitemap.xml
+# seed: 42
+# total: 40
+# bucket_spb: 16, bucket_msk: 10, bucket_rest: 14
+# by_city: st-petersburg: 16, moscow: 10, rouen: 2, pyatigorsk: 2, manama: 2, turkistan: 2, kurgan: 2, khanty-mansiysk: 2, washington: 1, trincomalee: 1
+
+https://www.sputnik8.com/ru/st-petersburg/activities/74601-mistika-i-legendy-sankt-peterburga
+https://www.sputnik8.com/ru/st-petersburg/activities/26447-prohodnye-dvory-peterburga-vasilievskiy-ostrov-gorod-v-gorode
+https://www.sputnik8.com/ru/st-petersburg/activities/51891-kronshtadt-dlya-lyuboznatelnyh
+https://www.sputnik8.com/ru/st-petersburg/activities/75898-yazvy-dvortsovoy-slobody-neformalnaya-ekskursiya-po-peterburgu
+https://www.sputnik8.com/ru/st-petersburg/activities/60373-puteshestvie-schelkunchika-po-peterburgu-rozhdestvenskaya-progulka
+https://www.sputnik8.com/ru/st-petersburg/activities/34689-yusupovskiy-dvorets-audioekskursiya-s-biletom
+https://www.sputnik8.com/ru/st-petersburg/activities/57480-arenda-yahty-bayliner-205-capri
+https://www.sputnik8.com/ru/st-petersburg/activities/62807-progulka-s-dostoevskim-po-sennoy-i-okrestnostyam
+https://www.sputnik8.com/ru/st-petersburg/activities/91198-pushkin-ekskursiya-v-aleksandrovskiy-dvorets-i-feodorovskiy-sobor
+https://www.sputnik8.com/ru/st-petersburg/activities/90956-k-beregam-petrogradki-paradnyy-i-sovremennyy-sankt-peterburg
+https://www.sputnik8.com/ru/st-petersburg/activities/88725-kvest-po-peterburgskomu-obschepitu
+https://www.sputnik8.com/ru/st-petersburg/activities/35820-izyskannyy-ekaterininskiy-dvorets-v-tsarskom-sele-yantarnaya-komnata
+https://www.sputnik8.com/ru/st-petersburg/activities/69147-syrno-vyrnoe-rozhdestvo
+https://www.sputnik8.com/ru/st-petersburg/activities/79525-pskovskaya-krugosvetka-s-posescheniem-usadby-orehovno
+https://www.sputnik8.com/ru/st-petersburg/activities/43046-avtobusnaya-ekskursiya-novaya-geografiya-peterburga-muzey-sovremennogo-iskusstva-erarta
+https://www.sputnik8.com/ru/st-petersburg/activities/90877-moyka-i-paradnaya-neva-otkrytochnyy-peterburg-s-vody
+https://www.sputnik8.com/ru/moscow/activities/77641-stilnaya-moskva-ekskursiya-fotosessiya-po-epitsentru-shika
+https://www.sputnik8.com/ru/moscow/activities/54868-v-serpuhov-vysotskiy-muzhskoy-i-vladychniy-zhenskiy-monastyri
+https://www.sputnik8.com/ru/moscow/activities/69440-volshebnyy-ekspress-v-velikiy-ustyug-skazochnye-ugolki-russkogo-severa
+https://www.sputnik8.com/ru/moscow/activities/71759-tver-za-2-dnya-putevoy-dvorets-degustatsiya-mestnoy-kuhni-i-piva-18
+https://www.sputnik8.com/ru/moscow/activities/86341-moskva-novogodnyaya-glavnye-yolki-tsentra-stolitsy-peshehodnaya-ekskursiya
+https://www.sputnik8.com/ru/moscow/activities/89700-na-festival-zhivaya-starina-v-rostov-velikiy-avtobusnyy-tur
+https://www.sputnik8.com/ru/moscow/activities/74700-po-svyatym-mestam-spiridona-trimifuntskogo
+https://www.sputnik8.com/ru/moscow/activities/35776-goticheskaya-vselennaya-mastera-i-margarity
+https://www.sputnik8.com/ru/moscow/activities/68623-istorii-staroy-moskvy-v-gruppe-s-lichnym-gidom-ili-fotoprogulka-na-vybor
+https://www.sputnik8.com/ru/moscow/activities/51160-posledniy-zvonok-na-teplohode-legenda
+https://www.sputnik8.com/ru/washington/activities/22635-osnovnye-dostoprimechatelnosti-vashingtona
+https://www.sputnik8.com/ru/rouen/activities/79656-velichestvennye-tserkvi-ruana
+https://www.sputnik8.com/ru/rouen/activities/67880-obzornaya-peshaya-ekskursiya-po-ruanu
+https://www.sputnik8.com/ru/pyatigorsk/activities/48311-aktoprak-gizhgit-i-chegemskie-vodopady-iz-pyatigorska
+https://www.sputnik8.com/ru/pyatigorsk/activities/35273-chegemskie-vodopady-i-termalnyy-kompleks-geduko
+https://www.sputnik8.com/ru/manama/activities/86038-bahreyn-za-odin-den-ot-sovremennoy-stolitsy-k-taynam-pustyni
+https://www.sputnik8.com/ru/manama/activities/86160-panoramy-bahreyna-zhemchuzhnoe-nasledie-rynki-manamy-i-gorizonty-buduschego
+https://www.sputnik8.com/ru/turkistan/activities/86369-turkestan-otrar-i-arystan-bab-za-odin-den
+https://www.sputnik8.com/ru/turkistan/activities/70959-turkestan-klyuchevye-lokatsii-v-peshem-formate
+https://www.sputnik8.com/ru/kurgan/activities/59852-ot-dvoryanskoy-do-nevskogo-zhivaya-istoriya-kurgana
+https://www.sputnik8.com/ru/kurgan/activities/59857-progulka-po-kurganu-s-posescheniem-doma-muzeya-dekabristov
+https://www.sputnik8.com/ru/khanty-mansiysk/activities/38160-avtobusnyy-tur-v-kogalym
+https://www.sputnik8.com/ru/khanty-mansiysk/activities/38159-posvyaschenie-v-yugorskie-bogatyri
+https://www.sputnik8.com/ru/trincomalee/activities/86440-natsionalnyy-park-pidzhen-aylend-snorkling-i-dikaya-priroda-okeana

@@ -14,7 +14,12 @@
     "smoke": "tsx scripts/smoke-test.ts",
     "eval:text": "promptfoo eval -c configs/card-text-moderation.yaml",
     "eval:image": "promptfoo eval -c configs/card-image-moderation.yaml",
-    "view": "promptfoo view"
+    "view": "promptfoo view",
+    "harvest:sputnik8": "tsx scripts/parse/harvest-sputnik8.ts",
+    "parse:sputnik8": "tsx scripts/parse/parse-sputnik8.ts",
+    "images:download": "tsx scripts/parse/download-images.ts",
+    "parse:validate": "tsx scripts/parse/validate.ts",
+    "parse:summary": "tsx scripts/parse/summary.ts"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
@@ -23,6 +28,12 @@
   },
   "devDependencies": {
     "@types/node": "^20.14.11",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "cheerio": "^1.2.0",
+    "fast-xml-parser": "^5.7.1",
+    "p-queue": "^9.1.2",
+    "robots-parser": "^3.0.1",
     "tsx": "^4.19.0",
     "typescript": "^5.5.4"
   }
