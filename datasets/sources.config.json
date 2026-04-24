@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "sources": {
+    "sputnik8":    { "target_total": 40, "seed": 42 },
+    "pmpoperator": { "target_total": 14, "seed": 42 },
+    "scantour":    { "target_total": 14, "seed": 42 },
+    "afisha":      { "target_total":  9, "seed": 42 }
+  }
+}

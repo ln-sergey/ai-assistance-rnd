@@ -16,6 +16,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { getSourceConfig, parseHarvestArgs } from './lib/config.js';
 import { HttpClient } from './lib/http.js';
 import { fetchSitemapUrls } from './lib/sitemap.js';
 
@@ -27,11 +28,8 @@ const SITEMAP_URL = 'https://www.sputnik8.com/sitemap.xml';
 const CARD_PATTERN =
   /^https?:\/\/(?:www\.)?sputnik8\.com\/ru\/([a-z0-9-]+)\/activities\/(\d+)-[^/?#]+\/?$/i;
 
-const RANDOM_SEED = 42;
-const TARGET_TOTAL = 40;
 const SPB_SHARE = 0.40;
 const MSK_SHARE = 0.25;
-const REST_SHARE = 1 - SPB_SHARE - MSK_SHARE;
 const MIN_PER_CITY = 2;
 
 const SPB_CITIES = new Set([
@@ -84,8 +82,10 @@ interface CandidateUrl {
 }
 
 async function main(): Promise<void> {
+  const { target, seed } = await getSourceConfig('sputnik8', parseHarvestArgs());
   const http = new HttpClient({ source: 'sputnik8', datasetsDir: DATASETS_DIR });
 
+  console.log(`[harvest] target=${target}, seed=${seed}`);
   console.log(`[harvest] загружаем sitemap ${SITEMAP_URL}`);
   const sitemapEntries = await fetchSitemapUrls(http, SITEMAP_URL);
   console.log(`[harvest] из sitemap — ${sitemapEntries.length} URL всего`);
@@ -118,11 +118,11 @@ async function main(): Promise<void> {
     byCityInRest.set(c.city, arr);
   }
 
-  const rnd = mulberry32(RANDOM_SEED);
+  const rnd = mulberry32(seed);
 
-  const targetSpb = Math.round(TARGET_TOTAL * SPB_SHARE);
-  const targetMsk = Math.round(TARGET_TOTAL * MSK_SHARE);
-  const targetRest = TARGET_TOTAL - targetSpb - targetMsk;
+  const targetSpb = Math.round(target * SPB_SHARE);
+  const targetMsk = Math.round(target * MSK_SHARE);
+  const targetRest = target - targetSpb - targetMsk;
 
   const pickFromBucket = (
     bucket: Bucket,
@@ -202,7 +202,7 @@ async function main(): Promise<void> {
     '# sputnik8 URL candidates',
     `# harvested_at: ${new Date().toISOString()}`,
     `# sitemap: ${SITEMAP_URL}`,
-    `# seed: ${RANDOM_SEED}`,
+    `# seed: ${seed}`,
     `# total: ${all.length}`,
     `# bucket_spb: ${pickedSpb.length}, bucket_msk: ${pickedMsk.length}, bucket_rest: ${pickedRest.length}`,
     `# by_city: ${cityReport}`,

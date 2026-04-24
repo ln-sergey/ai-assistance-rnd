@@ -12,6 +12,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { getSourceConfig, parseHarvestArgs } from './lib/config.js';
 import { HttpClient } from './lib/http.js';
 import { fetchSitemapUrls } from './lib/sitemap.js';
 
@@ -22,9 +23,6 @@ const DATASETS_DIR = join(REPO_ROOT, 'datasets');
 const SITEMAP_URL = 'https://pmpoperator.ru/sitemap.xml';
 const CARD_PATTERN =
   /^https?:\/\/(?:www\.)?pmpoperator\.ru\/tours\/([a-z0-9-]+)\/?$/i;
-
-const RANDOM_SEED = 42;
-const TARGET_TOTAL = 14;
 
 function mulberry32(seed: number): () => number {
   let state = seed >>> 0;
@@ -52,8 +50,10 @@ function shuffle<T>(arr: T[], rnd: () => number): T[] {
 }
 
 async function main(): Promise<void> {
+  const { target, seed } = await getSourceConfig('pmpoperator', parseHarvestArgs());
   const http = new HttpClient({ source: 'pmpoperator', datasetsDir: DATASETS_DIR });
 
+  console.log(`[harvest] target=${target}, seed=${seed}`);
   console.log(`[harvest] загружаем sitemap ${SITEMAP_URL}`);
   const sitemapEntries = await fetchSitemapUrls(http, SITEMAP_URL);
   console.log(`[harvest] из sitemap — ${sitemapEntries.length} URL всего`);
@@ -64,15 +64,15 @@ async function main(): Promise<void> {
   }
   console.log(`[harvest] матчит паттерн /tours/<slug> — ${candidates.length}`);
 
-  const rnd = mulberry32(RANDOM_SEED);
+  const rnd = mulberry32(seed);
   const shuffled = shuffle(candidates, rnd);
-  const picked = shuffled.slice(0, Math.min(TARGET_TOTAL, shuffled.length));
+  const picked = shuffled.slice(0, Math.min(target, shuffled.length));
 
   const header = [
     '# pmpoperator URL candidates',
     `# harvested_at: ${new Date().toISOString()}`,
     `# sitemap: ${SITEMAP_URL}`,
-    `# seed: ${RANDOM_SEED}`,
+    `# seed: ${seed}`,
     `# total: ${picked.length} (из ${candidates.length})`,
     '',
   ];

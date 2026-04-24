@@ -16,6 +16,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { getSourceConfig, parseHarvestArgs } from './lib/config.js';
 import { HttpClient } from './lib/http.js';
 import { fetchSitemapUrls } from './lib/sitemap.js';
 
@@ -39,8 +40,6 @@ const EVENT_RE: Record<EventType, RegExp> = {
   festival: /^https?:\/\/(?:www\.)?afisha\.ru\/festival\/[a-z0-9-]+-\d+\/?$/i,
 };
 
-const RANDOM_SEED = 42;
-const TARGET_TOTAL = 9;
 const MIN_PER_TYPE = 2;
 
 // afisha.ru редиректит все запросы без SberID-cookie на SSO-bounce
@@ -85,12 +84,14 @@ function classify(url: string): EventType | null {
 }
 
 async function main(): Promise<void> {
+  const { target, seed } = await getSourceConfig('afisha', parseHarvestArgs());
   const http = new HttpClient({
     source: 'afisha',
     datasetsDir: DATASETS_DIR,
     cookiesByHost: AFISHA_COOKIES,
   });
 
+  console.log(`[harvest] target=${target}, seed=${seed}`);
   const allUrls: string[] = [];
   for (const sm of CREATION_SITEMAPS) {
     console.log(`[harvest] загружаем ${sm}`);
@@ -113,7 +114,7 @@ async function main(): Promise<void> {
     console.log(`[harvest] ${t}: ${arr.length} подходящих`);
   }
 
-  const rnd = mulberry32(RANDOM_SEED);
+  const rnd = mulberry32(seed);
   const picked: string[] = [];
   const pickedSet = new Set<string>();
 
@@ -129,13 +130,13 @@ async function main(): Promise<void> {
     console.log(`[harvest] ${t}: пикнуто минимум ${take.length}`);
   }
 
-  // 2) добираем по кругу до TARGET_TOTAL
+  // 2) добираем по кругу до target
   const allShuffled = shuffle(
     [...byType.values()].flat(),
     rnd,
   );
   for (const url of allShuffled) {
-    if (picked.length >= TARGET_TOTAL) break;
+    if (picked.length >= target) break;
     if (pickedSet.has(url)) continue;
     picked.push(url);
     pickedSet.add(url);
@@ -154,7 +155,7 @@ async function main(): Promise<void> {
     '# afisha URL candidates',
     `# harvested_at: ${new Date().toISOString()}`,
     `# sources: ${CREATION_SITEMAPS.length} creation-sitemap.xml`,
-    `# seed: ${RANDOM_SEED}`,
+    `# seed: ${seed}`,
     `# total: ${picked.length}`,
     `# by_type: ${report}`,
     '',
