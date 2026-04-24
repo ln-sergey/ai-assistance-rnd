@@ -11,3 +11,4 @@ datasets/*/html-cache/
 datasets/*/robots-cache/
 datasets/images/*
 !datasets/images/.gitkeep
+datasets/annotations/pending/

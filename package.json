@@ -30,6 +30,9 @@
     "parse:summary": "tsx scripts/parse/summary.ts",
     "cards:delete": "tsx scripts/data/cards-delete.ts",
     "annotations:delete": "tsx scripts/data/annotations-delete.ts",
+    "annotations:list": "tsx scripts/data/annotations-list-pending.ts",
+    "annotations:scaffold": "tsx scripts/data/annotations-scaffold.ts",
+    "annotations:commit": "tsx scripts/data/annotations-commit.ts",
     "cases:generate": "tsx scripts/data/cases-generate.ts"
   },
   "dependencies": {

@@ -151,6 +151,31 @@ npx promptfoo eval -c configs/card-text-moderation.yaml --repeat 3
 npx promptfoo view
 ```
 
+### Lifecycle тестовых данных
+
+```bash
+# harvest (target/seed — datasets/sources.config.json, можно оверрайдить флагами)
+pnpm harvest:sputnik8 -- --target=5 --seed=7
+
+# parse → validate → summary (как раньше)
+pnpm parse:sputnik8 && pnpm parse:validate && pnpm parse:summary
+
+# удаление спаршеных данных (cards.raw, images, html-cache; не трогает urls.txt и annotations)
+pnpm cards:delete --source=afisha --dry-run
+pnpm cards:delete --source=afisha --yes
+
+# удаление разметки (annotations + материализованные cases; --keep-cases — оставить cases)
+pnpm annotations:delete --source=afisha --yes
+
+# annotation flow (подробности — docs/annotation-guide.md)
+pnpm annotations:list           # что не размечено
+pnpm annotations:scaffold       # создать pending-файлы
+pnpm annotations:commit         # перенести заполненные pending'и в store
+
+# материализовать card_case'ы из cards + annotations
+pnpm cases:generate
+```
+
 
 ## Hard rules — чего не делать никогда
 

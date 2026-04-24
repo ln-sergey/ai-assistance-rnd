@@ -8,18 +8,46 @@
 
 ```
 datasets/
+├── sources.config.json            # target_total/seed для каждого harvester'а
 ├── schema/
 │   ├── product_card.schema.json   # JSON Schema карточки активности
-│   └── test_case.schema.json      # JSON Schema тест-кейса (card_case | image_case)
+│   ├── test_case.schema.json      # JSON Schema тест-кейса (card_case | image_case)
+│   └── annotation.schema.json     # JSON Schema разметки нарушений
+├── annotations/
+│   ├── <source>.json              # карта case_id → разметка (источник правды)
+│   └── pending/                   # рабочие скаффолды (gitignored)
+├── cases/
+│   ├── real-clean/                # материализованные card_case (expected_clean=true)
+│   └── real-dirty/                # материализованные card_case (expected_clean=false)
 ├── images/                        # бинарные файлы фото, имя = <image_id>.jpg|.png
-├── <dataset-name>/
-│   ├── cards.jsonl                # card_case по одному на строку
-│   └── images.jsonl               # image_case по одному на строку
-└── README.md
+└── <source>/                      # сырьё одного источника (sputnik8, pmpoperator, …)
+    ├── urls.txt                   # точка входа harvester'а
+    ├── cards.raw.jsonl            # спаршеные карточки
+    ├── images.raw.jsonl           # ссылки на картинки
+    └── html-cache/                # gitignored
 ```
 
-Тест-кейсы хранятся в JSONL — одна строка, один кейс. Это удобно для
-потокового чтения и для diff'ов в git.
+Тест-кейсы в `cases/real-*` — это материализованный артефакт: они
+регенерятся командой `pnpm cases:generate` из `cards.raw.jsonl` +
+`annotations/<source>.json`. Источник правды для разметки — JSON-store,
+не сами case-файлы.
+
+## Жизненный цикл данных
+
+```
+harvest → parse → annotate → cases
+```
+
+| Шаг      | Команда                                                | Что делает                                                                            |
+|----------|--------------------------------------------------------|---------------------------------------------------------------------------------------|
+| harvest  | `pnpm harvest:<source>`                                 | Выкачивает HTML, формирует `<source>/urls.txt`. Параметры — `sources.config.json` + CLI. |
+| parse    | `pnpm parse:<source>` → `parse:validate` → `parse:summary` | Парсит HTML в `cards.raw.jsonl` + `images.raw.jsonl`.                                  |
+| annotate | `pnpm annotations:list` → `:scaffold` → fill → `:commit` | Локальный агент размечает pending'и; commit мёрджит в `<source>.json`. См. `docs/annotation-guide.md`. |
+| cases    | `pnpm cases:generate`                                   | Материализует `card_case` в `real-clean/` и `real-dirty/`.                            |
+
+Для удаления — `pnpm cards:delete --source=X` (сырьё) и
+`pnpm annotations:delete --source=X` (разметка + cases). Они независимы:
+можно перепарсить карточки, не теряя разметки, и наоборот.
 
 ## Два вида кейсов
 
