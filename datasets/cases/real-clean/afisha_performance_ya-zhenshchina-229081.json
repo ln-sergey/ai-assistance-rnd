@@ -1,0 +1,55 @@
+{
+  "case_id": "afisha_performance_ya-zhenshchina-229081",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "afisha_performance_ya-zhenshchina-229081",
+    "product_type": "event",
+    "title": "Я — женщина",
+    "short_description": "Я — женщина, постановка Антреприза, режиссер Дмитрий Акриш. Информация о спектакле, описание, актеры, отзывы на Афише.",
+    "full_description": "",
+    "program_items": [
+      {
+        "order": 1,
+        "title": "Режиссёр: Дмитрий Акриш",
+        "description": "Дмитрий Акриш"
+      },
+      {
+        "order": 2,
+        "title": "Актёр: Ана Дауд",
+        "description": "Ана Дауд"
+      }
+    ],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": ""
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring"
+    },
+    "images": [
+      {
+        "image_id": "afisha_performance_ya-zhenshchina-229081_0",
+        "role": "cover",
+        "caption": null
+      }
+    ],
+    "age_restriction": "16+",
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [],
+  "expected_clean": true,
+  "notes": null
+}

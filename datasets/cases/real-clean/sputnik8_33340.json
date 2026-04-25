@@ -1,0 +1,62 @@
+{
+  "case_id": "sputnik8_33340",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "sputnik8_33340",
+    "product_type": "excursion",
+    "title": "История России от Петра до Путина гуляя по центру Петербурга",
+    "short_description": "Петербург — это сцена, на которой разворачивались самые значимые события Российской Империи от Петра I до последнего императора Николая II. Это колыбель трех революций, которые перевернули ход российской истории. Говоря о новейшей истории — здесь начиналась карьера В.",
+    "full_description": "Петербург — это сцена, на которой разворачивались самые значимые события Российской Империи от Петра I до последнего императора Николая II. Это колыбель трех революций, которые перевернули ход российской истории. Говоря о новейшей истории — здесь начиналась карьера В. Путина.\nПрогуляемся по историческому центру, поговорим об основании города, императорах, революциях. Вспомним исторические факты через истории о Романовых, декабристах, Достоевском, Распутине и, конечно, Путине.",
+    "program_items": [],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": "На карте"
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring",
+      "duration_minutes": 143
+    },
+    "images": [
+      {
+        "image_id": "sputnik8_33340_0",
+        "role": "cover",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_33340_1",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_33340_2",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_33340_3",
+        "role": "gallery",
+        "caption": null
+      }
+    ],
+    "group_size": {
+      "max": 20
+    },
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [],
+  "expected_clean": true,
+  "notes": null
+}

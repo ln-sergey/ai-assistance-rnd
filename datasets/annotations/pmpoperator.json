@@ -114,6 +114,93 @@
       "notes": null,
       "annotated_at": "2026-04-25",
       "annotator": "manual:sergio"
+    },
+    "pmpoperator_anomal-noe-ozherel-e-yuzhnogo-urala": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "pmpoperator_gornolyzhnyi-tour-na-kranuyu-polyanu": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-01",
+          "severity": "high",
+          "field_path": "title",
+          "quote": "Горнолыжный тур на Красную Поляну",
+          "rationale": "Название обещает горнолыжный тур, но в программе и составе услуг нет ни ски-пассов, ни проката, ни занятий — только проживание с завтраками и свободные дни. Это вводит пользователя в заблуждение относительно сути активности."
+        },
+        {
+          "rule_id": "TXT-04",
+          "severity": "medium",
+          "field_path": "full_description",
+          "quote": "Красная Поляна - самый популярный горнолыжный курорт России. В 2014 здесь была проведена зимняя Олимпиада, благодаря чему обновлена и построена с нуля инфраструктура для горнолыжного отдыха.",
+          "rationale": "Описание акцентирует горнолыжную инфраструктуру курорта, но скрывает ключевое ограничение — катание не входит в тур, оно полностью на стороне покупателя. Подмена сути активности: турист ожидает горнолыжный отдых, а получает только проживание."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "pmpoperator_karel-skaya-palitra-poezd-5-dney": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "pmpoperator_nizhegorodskii-koleidoskop": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "pmpoperator_peterburg-severnaya-stolitsa-6-dney": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "pmpoperator_tur-na-kavkaz-akvarel-severnogo-kavkaza": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-03",
+          "severity": "medium",
+          "field_path": "full_description",
+          "quote": "Гарантируем мощный заряд энергии, бодрость духа и подтянутое тело!!!",
+          "rationale": "Безусловная гарантия физиологического результата (подтянутое тело, заряд энергии) не закреплена ни условиями активности, ни правилами сервиса. Это типичное ложное обещание, которое организатор не сможет подтвердить."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "pmpoperator_venskiy-val-s-v-tule": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "pmpoperator_zimniy-tur-v-krasnoyarsk": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-33",
+          "severity": "medium",
+          "field_path": "program_items[3].description",
+          "quote": "горнолыжном курорте международного уровня в черте Красноярска",
+          "rationale": "Утверждение о «международном уровне» курорта приведено без какого-либо подтверждения (рейтинг, сертификация, источник). Это попадает под неподтверждённые заявления о статусе/качестве."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
     }
   }
 }

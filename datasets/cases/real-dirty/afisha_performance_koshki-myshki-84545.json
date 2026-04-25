@@ -1,0 +1,52 @@
+{
+  "case_id": "afisha_performance_koshki-myshki-84545",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "afisha_performance_koshki-myshki-84545",
+    "product_type": "event",
+    "title": "Кошки-мышки",
+    "short_description": "Кошки-мышки, постановка Тульский театр драмы им. Горького. Информация о спектакле, описание, актеры, отзывы на Афише.",
+    "full_description": "",
+    "program_items": [],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": ""
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring"
+    },
+    "images": [
+      {
+        "image_id": "afisha_performance_koshki-myshki-84545_0",
+        "role": "cover",
+        "caption": null
+      }
+    ],
+    "age_restriction": null,
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [
+    {
+      "rule_id": "TXT-24",
+      "severity": "low",
+      "field_path": "short_description",
+      "quote": "Кошки-мышки, постановка Тульский театр драмы им. Горького. Информация о спектакле, описание, актеры, отзывы на Афише.",
+      "rationale": "Карточка не содержит описания сути спектакля: full_description пустой, program_items отсутствуют, в short_description указаны только название и театр без сюжета, режиссёра и актёров. Пользователь не получает понимания, что предлагается."
+    }
+  ],
+  "expected_clean": false,
+  "notes": null
+}

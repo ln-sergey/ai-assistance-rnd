@@ -178,6 +178,168 @@
       "notes": null,
       "annotated_at": "2026-04-25",
       "annotator": "manual:sergio"
+    },
+    "scantour_aktivnyj-tur-v-kareliyu-3-ruskeala-splav-i-aktivnye-razvlecheniya-iz-petrozavods": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-07",
+          "severity": "critical",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+          "rationale": "В коротком описании опубликован телефон организатора, что нарушает правило о публикации персональных/контактных данных в карточке."
+        },
+        {
+          "rule_id": "TXT-20",
+          "severity": "high",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+          "rationale": "Текст напрямую призывает бронировать по телефону вне платформы Localtrip."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "scantour_drevnie-goroda-rusi-pskov-izborsk-pechory": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-07",
+          "severity": "critical",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+          "rationale": "В коротком описании опубликован телефон организатора, что нарушает правило о публикации персональных/контактных данных."
+        },
+        {
+          "rule_id": "TXT-20",
+          "severity": "high",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+          "rationale": "Текст призывает бронировать по телефону вне платформы Localtrip."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "scantour_karelia-ptz-sortavala-2day": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-33",
+          "severity": "medium",
+          "field_path": "services[15].description",
+          "quote": "Проживание в лучших отелях Петрозаводска в центре города и на берегу Онежского озера (зависит от выбранной категории отелей), 1 ночь",
+          "rationale": "Используется неподтверждённое утверждение «в лучших отелях» без объективных оснований или ссылки на критерий выбора."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "scantour_mesta-sily-karelii-gory-voda-i-zhivye-tradiczii": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-07",
+          "severity": "critical",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+          "rationale": "В коротком описании опубликован телефон организатора, что нарушает правило о публикации персональных/контактных данных."
+        },
+        {
+          "rule_id": "TXT-20",
+          "severity": "high",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+          "rationale": "Текст призывает бронировать по телефону вне платформы Localtrip."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "scantour_novyj-god-v-otele-kruzhevo": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-23",
+          "severity": "high",
+          "field_path": "short_description",
+          "quote": "Оставьте заявку — подберем варианты, согласуем детали и забронируем",
+          "rationale": "Карточка используется не как описание конкретной активности, а как форма сбора заявок и подбора туров — это нецелевое использование карточки активности."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "scantour_ohota-za-severnym-siyaniem-v-murmanske": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-07",
+          "severity": "critical",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+          "rationale": "В коротком описании опубликован телефон организатора, что нарушает правило о публикации персональных/контактных данных."
+        },
+        {
+          "rule_id": "TXT-20",
+          "severity": "high",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+          "rationale": "Текст призывает бронировать по телефону вне платформы Localtrip."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "scantour_priklyucheniya-v-karelskom-zooparke-iz-sortavala": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-07",
+          "severity": "critical",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+          "rationale": "В коротком описании опубликован телефон организатора, что нарушает правило о публикации персональных/контактных данных."
+        },
+        {
+          "rule_id": "TXT-20",
+          "severity": "high",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+          "rationale": "Текст призывает бронировать по телефону вне платформы Localtrip."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "scantour_pskovskie-maki-porhov-krepost-pole-pamyati-fotosessiya-na-makovyh-polyah": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-07",
+          "severity": "critical",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+          "rationale": "В коротком описании опубликован телефон организатора, что нарушает правило о публикации персональных/контактных данных."
+        },
+        {
+          "rule_id": "TXT-20",
+          "severity": "high",
+          "field_path": "short_description",
+          "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+          "rationale": "Текст призывает бронировать по телефону вне платформы Localtrip."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
     }
   }
 }

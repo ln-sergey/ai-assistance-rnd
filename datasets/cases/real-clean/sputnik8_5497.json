@@ -1,0 +1,63 @@
+{
+  "case_id": "sputnik8_5497",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "sputnik8_5497",
+    "product_type": "excursion",
+    "title": "Перпиньян",
+    "short_description": "«Французский городок с испанским акцентом» Главный город Руссильона, основанный приблизительно в VII в., лежит на реке Тет в 13 км от Средиземноморского побережья и в 31 км от франко-испанской границы. Перпиньян вследствие своих непростых исторических и территориальных споров превратился в некий симбиоз двух культур, взяв от каждой страны самые ярк",
+    "full_description": "«Французский городок с испанским акцентом»\nГлавный город Руссильона, основанный приблизительно в VII в., лежит на реке Тет в 13 км от Средиземноморского побережья и в 31 км от франко-испанской границы. Перпиньян вследствие своих непростых исторических и территориальных споров превратился в некий симбиоз двух культур, взяв от каждой страны самые яркие стороны.\nДетальная информация о вариантах проведения данной экскурсии при контакте.",
+    "program_items": [],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": "Место начала"
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring",
+      "duration_minutes": 503
+    },
+    "images": [
+      {
+        "image_id": "sputnik8_5497_0",
+        "role": "cover",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_5497_1",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_5497_2",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_5497_3",
+        "role": "gallery",
+        "caption": null
+      }
+    ],
+    "group_size": {
+      "max": 5
+    },
+    "languages": [
+      "ru",
+      "fr"
+    ]
+  },
+  "expected_violations": [],
+  "expected_clean": true,
+  "notes": null
+}

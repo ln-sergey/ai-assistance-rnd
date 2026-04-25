@@ -218,6 +218,232 @@
       "notes": null,
       "annotated_at": "2026-04-25",
       "annotator": "manual:sergio"
+    },
+    "sputnik8_29674": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_3226": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_33340": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_35273": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_37752": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_38159": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_38160": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_42371": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_42858": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_52885": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_5497": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_57945": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_59852": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_59857": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_67657": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_67658": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_69527": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-25",
+          "severity": "low",
+          "field_path": "full_description",
+          "quote": "Откройте двери в волшебный мир предновогодних праздников!\nВремя готовиться к самым чудесным событиям года: Новый год и Рождество уже на пороге! У нас есть уникальная возможность погрузиться в атмосферу волшебства, празднуя не только любимый Новый год, но и отмечая традиции наших соседей-лютеран и красивый День святой Люсии!\nПредставьте себе блеск горящих свечей, очарование белоснежного платья, украшенного красным поясом, и ту неповторимую атмосферу, когда красота и свет сливаются воедино! Такой праздник не оставит равнодушным никого!\nНе упустите шанс стать частью этого волшебства! У нас есть невероятные предложения, которые помогут Вам создать незабываемые праздники для себя и своих близких.",
+          "rationale": "Описание полностью построено на маркетинговых шаблонах ('волшебный мир', 'погрузиться в атмосферу волшебства', 'невероятные предложения', 'незабываемые праздники') без какой-либо конкретики о программе, длительности, формате и содержании мероприятия."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_70959": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_74209": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_77039": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_77627": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_78525": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_79579": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_86038": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-25",
+          "severity": "low",
+          "field_path": "full_description",
+          "quote": "Панорама Бахрейна за один день\nЭта экскурсия создана для тех, кто хочет увидеть Бахрейн целостно — его прошлое, настоящее и природные контрасты. В течение дня вы познакомитесь с культурным наследием страны, узнаете о древних цивилизациях и почувствуете ритм современной столицы.\nОт города к пустыне\nМаршрут объединяет урбанистические пейзажи и просторы пустыни, позволяя увидеть, как гармонично сочетаются традиции и современность. Вас ждут живописные остановки, фотостопы и лёгкий, ненапряжённый формат путешествия в небольшой группе.\nЗавершение тура проходит в индивидуальном ритме — со свободным временем, возможностью прогуляться, отдохнуть или продолжить знакомство с городом самостоятельно. Это идеальный вариант для первого знакомства с Бахрейном — насыщенно, комфортно и без спешки.",
+          "rationale": "Описание состоит из шаблонных маркетинговых формулировок ('увидеть Бахрейн целостно', 'урбанистические пейзажи и просторы пустыни', 'идеальный вариант для первого знакомства') без перечисления конкретных объектов, локаций или деталей программы экскурсии."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_86160": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_86369": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_86439": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_86440": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_9045": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "sputnik8_9055": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
     }
   }
 }

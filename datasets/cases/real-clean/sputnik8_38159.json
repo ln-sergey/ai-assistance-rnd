@@ -1,0 +1,62 @@
+{
+  "case_id": "sputnik8_38159",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "sputnik8_38159",
+    "product_type": "excursion",
+    "title": "Посвящение в Югорские богатыри",
+    "short_description": "Об экскурсии Вы умеете стрелять из лука и арбалета? Настоящий Югорский богатырь и охотник научит вас силе и ловкости! Вам предстоит череда испытаний, которая под силу только самым находчивым и смелым. Каждого участника ждет награда и почетное звание «Югорского богатыря» с выдачей соответствующего документа!",
+    "full_description": "Об экскурсии\nВы умеете стрелять из лука и арбалета? Настоящий Югорский богатырь и охотник научит вас силе и ловкости! Вам предстоит череда испытаний, которая под силу только самым находчивым и смелым. Каждого участника ждет награда и почетное звание «Югорского богатыря» с выдачей соответствующего документа!\nОрганизационные детали\nПри желании можно совместить программы «В гостях у Обских угров» и «Посвящение в Югорские богатыри» с дегустацией национальных блюд в завершении.",
+    "program_items": [],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": "Место начала"
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring",
+      "duration_minutes": 143
+    },
+    "images": [
+      {
+        "image_id": "sputnik8_38159_0",
+        "role": "cover",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_38159_1",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_38159_2",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_38159_3",
+        "role": "gallery",
+        "caption": null
+      }
+    ],
+    "group_size": {
+      "max": 50
+    },
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [],
+  "expected_clean": true,
+  "notes": null
+}

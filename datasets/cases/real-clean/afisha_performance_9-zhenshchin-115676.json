@@ -1,0 +1,100 @@
+{
+  "case_id": "afisha_performance_9-zhenshchin-115676",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "afisha_performance_9-zhenshchin-115676",
+    "product_type": "event",
+    "title": "9 Женщин",
+    "short_description": "9 Женщин, постановка Антреприза, режиссер Анастасия Воробьева, Юлия Коновалова, Ширли Легум. Информация о спектакле, описание, актеры, отзывы на Афише.",
+    "full_description": "",
+    "program_items": [
+      {
+        "order": 1,
+        "title": "Режиссёр: Анастасия Воробьева",
+        "description": "Анастасия Воробьева"
+      },
+      {
+        "order": 2,
+        "title": "Режиссёр: Юлия Коновалова",
+        "description": "Юлия Коновалова"
+      },
+      {
+        "order": 3,
+        "title": "Режиссёр: Ширли Легум",
+        "description": "Ширли Легум"
+      },
+      {
+        "order": 4,
+        "title": "Актёр: Зарина Сидакова",
+        "description": "Зарина Сидакова"
+      },
+      {
+        "order": 5,
+        "title": "Актёр: Яна Ханова",
+        "description": "Яна Ханова"
+      },
+      {
+        "order": 6,
+        "title": "Актёр: Мария Мейснер",
+        "description": "Мария Мейснер"
+      },
+      {
+        "order": 7,
+        "title": "Актёр: Зарина Алекрицкая",
+        "description": "Зарина Алекрицкая"
+      },
+      {
+        "order": 8,
+        "title": "Актёр: Снежанна Коц",
+        "description": "Снежанна Коц"
+      },
+      {
+        "order": 9,
+        "title": "Актёр: Марина Пашиева",
+        "description": "Марина Пашиева"
+      },
+      {
+        "order": 10,
+        "title": "Актёр: Ирина Хрусталева",
+        "description": "Ирина Хрусталева"
+      },
+      {
+        "order": 11,
+        "title": "Актёр: Майя Буйнова",
+        "description": "Майя Буйнова"
+      }
+    ],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": ""
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring"
+    },
+    "images": [
+      {
+        "image_id": "afisha_performance_9-zhenshchin-115676_0",
+        "role": "cover",
+        "caption": null
+      }
+    ],
+    "age_restriction": "16+",
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [],
+  "expected_clean": true,
+  "notes": null
+}

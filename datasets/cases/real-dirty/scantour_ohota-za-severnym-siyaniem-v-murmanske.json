@@ -1,0 +1,90 @@
+{
+  "case_id": "scantour_ohota-za-severnym-siyaniem-v-murmanske",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "scantour_ohota-za-severnym-siyaniem-v-murmanske",
+    "product_type": "excursion",
+    "title": "Охота за северным сиянием в Мурманске",
+    "short_description": "Охота за северным сиянием в Мурманске. Подробное описание программы тура. Фото тура. Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+    "full_description": "Вдали от городских огней, в абсолютной темноте и в окружении суровой северной природы Мурманской области, мы постараемся увидеть одно из самых великолепных природных явлений – северное сияние. Этот небесный спектакль из ярких красок станет самым запоминающимся моментом вашего путешествия на Кольский полуостров.",
+    "program_items": [],
+    "services": [
+      {
+        "name": "Включено в стоимость: Трансфер из Мурманска до обзорных площадок и обратно",
+        "description": "Трансфер из Мурманска до обзорных площадок и обратно"
+      },
+      {
+        "name": "Включено в стоимость: Работа гида-фотографа по программе",
+        "description": "Работа гида-фотографа по программе"
+      },
+      {
+        "name": "Включено в стоимость: Горячий чай и печенье",
+        "description": "Горячий чай и печенье"
+      },
+      {
+        "name": "Включено в стоимость: Экскурсионное сопровождение на маршруте «охота за сиянием»",
+        "description": "Экскурсионное сопровождение на маршруте «охота за сиянием»"
+      }
+    ],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": "Мурманск, конгресс-отель Меридиан\n Ориентир:\n улица Воровского, 5/23 (схема)"
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring"
+    },
+    "images": [
+      {
+        "image_id": "scantour_ohota-za-severnym-siyaniem-v-murmanske_0",
+        "role": "cover",
+        "caption": null
+      },
+      {
+        "image_id": "scantour_ohota-za-severnym-siyaniem-v-murmanske_1",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "scantour_ohota-za-severnym-siyaniem-v-murmanske_2",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "scantour_ohota-za-severnym-siyaniem-v-murmanske_3",
+        "role": "gallery",
+        "caption": null
+      }
+    ],
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [
+    {
+      "rule_id": "TXT-07",
+      "severity": "critical",
+      "field_path": "short_description",
+      "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+      "rationale": "В коротком описании опубликован телефон организатора, что нарушает правило о публикации персональных/контактных данных."
+    },
+    {
+      "rule_id": "TXT-20",
+      "severity": "high",
+      "field_path": "short_description",
+      "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+      "rationale": "Текст призывает бронировать по телефону вне платформы Localtrip."
+    }
+  ],
+  "expected_clean": false,
+  "notes": null
+}

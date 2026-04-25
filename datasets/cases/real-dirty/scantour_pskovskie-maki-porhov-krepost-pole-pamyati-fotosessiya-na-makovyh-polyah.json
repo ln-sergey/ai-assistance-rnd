@@ -1,0 +1,93 @@
+{
+  "case_id": "scantour_pskovskie-maki-porhov-krepost-pole-pamyati-fotosessiya-na-makovyh-polyah",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "scantour_pskovskie-maki-porhov-krepost-pole-pamyati-fotosessiya-na-makovyh-polyah",
+    "product_type": "excursion",
+    "title": "Псковские маки: Порхов, крепость, поле памяти. Фотосессия на маковых полях",
+    "short_description": "Псковские маки: Порхов, крепость, поле памяти. Фотосессия на маковых полях. Подробное описание программы тура. Фото тура. Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+    "full_description": "В начале лета под Порховом расцветает красное поле. Говорят, много лет назад мать, потерявшая сына на войне, привезла сюда горсть семян с юга и рассыпала вдоль дороги. С тех пор каждое лето маки возвращаются.\nВы приедете сюда с фотографом. Никаких любительских снимков на телефон — профессиональная фотосессия на цветущем поле уже включена в стоимость. Останется только встать в кадр.\nА рядом — древняя Порховская крепость. Стены XIV века, боевые ходы, земляные валы и вид на реку Шелонь. Тихий провинциальный город, где время течёт иначе.",
+    "program_items": [],
+    "services": [
+      {
+        "name": "Включено в стоимость: Транспортное обслуживание на большом туристическом автобусе 45-50 мест",
+        "description": "Транспортное обслуживание на большом туристическом автобусе 45-50 мест"
+      },
+      {
+        "name": "Включено в стоимость: Групповая фотосессия с профессиональным фотографом на маковом поле",
+        "description": "Групповая фотосессия с профессиональным фотографом на маковом поле"
+      },
+      {
+        "name": "Включено в стоимость: Экскурсионное обслуживание гида-сопровождающего и порховских гидов",
+        "description": "Экскурсионное обслуживание гида-сопровождающего и порховских гидов"
+      },
+      {
+        "name": "Включено в стоимость: Входные билеты в Порховскую крепость",
+        "description": "Входные билеты в Порховскую крепость"
+      }
+    ],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": "Санкт-Петербург, м. «Звенигородская», ул. Звенигородская, д. 5\n Ориентир:\n (схема)"
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring",
+      "dates": [
+        "2026-06-22"
+      ]
+    },
+    "images": [
+      {
+        "image_id": "scantour_pskovskie-maki-porhov-krepost-pole-pamyati-fotosessiya-na-makovyh-polyah_0",
+        "role": "cover",
+        "caption": null
+      },
+      {
+        "image_id": "scantour_pskovskie-maki-porhov-krepost-pole-pamyati-fotosessiya-na-makovyh-polyah_1",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "scantour_pskovskie-maki-porhov-krepost-pole-pamyati-fotosessiya-na-makovyh-polyah_2",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "scantour_pskovskie-maki-porhov-krepost-pole-pamyati-fotosessiya-na-makovyh-polyah_3",
+        "role": "gallery",
+        "caption": null
+      }
+    ],
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [
+    {
+      "rule_id": "TXT-07",
+      "severity": "critical",
+      "field_path": "short_description",
+      "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+      "rationale": "В коротком описании опубликован телефон организатора, что нарушает правило о публикации персональных/контактных данных."
+    },
+    {
+      "rule_id": "TXT-20",
+      "severity": "high",
+      "field_path": "short_description",
+      "quote": "Бронирование на сайте или по телефону: 8 (812) 607-64-63.",
+      "rationale": "Текст призывает бронировать по телефону вне платформы Localtrip."
+    }
+  ],
+  "expected_clean": false,
+  "notes": null
+}

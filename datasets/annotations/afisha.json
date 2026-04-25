@@ -94,6 +94,85 @@
       "notes": null,
       "annotated_at": "2026-04-25",
       "annotator": "manual:sergio"
+    },
+    "afisha_performance_9-zhenshchin-115676": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "afisha_performance_car-devica-261179": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "afisha_performance_huligany-esenin-mayakovskiy-299214": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "afisha_performance_koshki-myshki-84545": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-24",
+          "severity": "low",
+          "field_path": "short_description",
+          "quote": "Кошки-мышки, постановка Тульский театр драмы им. Горького. Информация о спектакле, описание, актеры, отзывы на Афише.",
+          "rationale": "Карточка не содержит описания сути спектакля: full_description пустой, program_items отсутствуют, в short_description указаны только название и театр без сюжета, режиссёра и актёров. Пользователь не получает понимания, что предлагается."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "afisha_performance_lyubov-dlinoyu-v-noch-81809": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-26",
+          "severity": "medium",
+          "field_path": "full_description",
+          "quote": "<p>История о двух грабителях, встретившихся в одной квартире в ненастную ночь. Проведя вместе несколько часов, незадачливые воры сближаются и открывают друг другу свои тайны. Спектакль по пьесе знаменитого российского киносценариста и драматурга Виктора Мережко («Полеты во сне и наяву», «Одинокая женщина желает познакомиться», «Под небом голубым» и др.). Режиссер Дмитрий Рачковский («Вий», «Декамерон») пригласил в спектакль известных по работам в кино и сериалах актеров — Владимира Стеклова и Марину Могилевскую.</p>",
+          "rationale": "В описании присутствуют необработанные HTML-теги <p>...</p> — технический мусор, который не должен отображаться пользователю в карточке."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "afisha_performance_molodaya-gvardiya-231551": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "afisha_performance_piraty-ledyanyh-moriy-263815": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "afisha_performance_strannaya-missis-sevidzh-74448": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
+    },
+    "afisha_performance_ya-zhenshchina-229081": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-25",
+      "annotator": "claude-opus-4-7"
     }
   }
 }

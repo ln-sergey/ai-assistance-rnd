@@ -1,0 +1,45 @@
+{
+  "case_id": "scantour_novyj-god-v-otele-kruzhevo",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "scantour_novyj-god-v-otele-kruzhevo",
+    "product_type": "excursion",
+    "title": "Туры на Новый год 2026",
+    "short_description": "Отдых в Новый год с различными программами: экскурсии, банкет и зимние развлечения по желанию. Туры рассчитаны на разные даты и бюджет, есть короткие каникулы и расширенные маршруты. Оставьте заявку — подберем варианты, согласуем детали и забронируем",
+    "full_description": "",
+    "program_items": [],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": ""
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring"
+    },
+    "images": [],
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [
+    {
+      "rule_id": "TXT-23",
+      "severity": "high",
+      "field_path": "short_description",
+      "quote": "Оставьте заявку — подберем варианты, согласуем детали и забронируем",
+      "rationale": "Карточка используется не как описание конкретной активности, а как форма сбора заявок и подбора туров — это нецелевое использование карточки активности."
+    }
+  ],
+  "expected_clean": false,
+  "notes": null
+}

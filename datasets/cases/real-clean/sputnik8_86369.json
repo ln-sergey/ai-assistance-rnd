@@ -1,0 +1,62 @@
+{
+  "case_id": "sputnik8_86369",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "sputnik8_86369",
+    "product_type": "excursion",
+    "title": "Туркестан, Отрар и Арыстан-Баб за один день",
+    "short_description": "Маршрут начинается с древнего городища Отрар, затем следует посещение мавзолеев Арыстан-Баб и Гаухар-ана, связанных с именем Ходжи Ахмеда Ясави. В программе также мавзолей Ходжи Ахмеда Ясави в музее-заповеднике Азрет-Султан, объекте Всемирного наследия ЮНЕСКО.",
+    "full_description": "Маршрут начинается с древнего городища Отрар, затем следует посещение мавзолеев Арыстан-Баб и Гаухар-ана, связанных с именем Ходжи Ахмеда Ясави. В программе также мавзолей Ходжи Ахмеда Ясави в музее-заповеднике Азрет-Султан, объекте Всемирного наследия ЮНЕСКО.\nДалее гости посетят этноаул с атмосферой древнего города и ознакомятся с современным Туркестаном, включая комплекс Керуен-Сарай, известный как «Туркестанская Венеция». По желанию возможен визит в летающий кинотеатр «Алтын Самрук» и вечернее шоу лодок при наличии в расписании.",
+    "program_items": [],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": ""
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring",
+      "duration_minutes": 9180
+    },
+    "images": [
+      {
+        "image_id": "sputnik8_86369_0",
+        "role": "cover",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_86369_1",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_86369_2",
+        "role": "gallery",
+        "caption": null
+      },
+      {
+        "image_id": "sputnik8_86369_3",
+        "role": "gallery",
+        "caption": null
+      }
+    ],
+    "group_size": {
+      "max": 4
+    },
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [],
+  "expected_clean": true,
+  "notes": null
+}

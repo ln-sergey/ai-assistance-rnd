@@ -1,0 +1,85 @@
+{
+  "case_id": "afisha_performance_strannaya-missis-sevidzh-74448",
+  "kind": "card_case",
+  "source": "production",
+  "generator": {
+    "model": null,
+    "prompt_version": null,
+    "date": "2026-04-25"
+  },
+  "card": {
+    "id": "afisha_performance_strannaya-missis-sevidzh-74448",
+    "product_type": "event",
+    "title": "Странная миссис Сэвидж",
+    "short_description": "Странная миссис Сэвидж, постановка Тульский театр драмы им. Горького, режиссер Валерий Маркин. Информация о спектакле, описание, актеры, отзывы на Афише.",
+    "full_description": "",
+    "program_items": [
+      {
+        "order": 1,
+        "title": "Режиссёр: Валерий Маркин",
+        "description": "Валерий Маркин"
+      },
+      {
+        "order": 2,
+        "title": "Актёр: Наталья Дружинина",
+        "description": "Наталья Дружинина"
+      },
+      {
+        "order": 3,
+        "title": "Актёр: Валерий Жуков",
+        "description": "Валерий Жуков"
+      },
+      {
+        "order": 4,
+        "title": "Актёр: Ольга Красикова",
+        "description": "Ольга Красикова"
+      },
+      {
+        "order": 5,
+        "title": "Актёр: Елена Попенко",
+        "description": "Елена Попенко"
+      },
+      {
+        "order": 6,
+        "title": "Актёр: Юлия Дагаева",
+        "description": "Юлия Дагаева"
+      },
+      {
+        "order": 7,
+        "title": "Актёр: Сергей Афоничев",
+        "description": "Сергей Афоничев"
+      },
+      {
+        "order": 8,
+        "title": "Актёр: Виктор Ананьин",
+        "description": "Виктор Ананьин"
+      }
+    ],
+    "services": [],
+    "location": {
+      "address": "",
+      "route_comment": "",
+      "meeting_point_comment": ""
+    },
+    "contacts_block": {
+      "public_comment": ""
+    },
+    "schedule": {
+      "format": "recurring"
+    },
+    "images": [
+      {
+        "image_id": "afisha_performance_strannaya-missis-sevidzh-74448_0",
+        "role": "cover",
+        "caption": null
+      }
+    ],
+    "age_restriction": null,
+    "languages": [
+      "ru"
+    ]
+  },
+  "expected_violations": [],
+  "expected_clean": true,
+  "notes": null
+}
