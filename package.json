@@ -33,7 +33,8 @@
     "annotations:list": "tsx scripts/data/annotations-list-pending.ts",
     "annotations:scaffold": "tsx scripts/data/annotations-scaffold.ts",
     "annotations:commit": "tsx scripts/data/annotations-commit.ts",
-    "cases:generate": "tsx scripts/data/cases-generate.ts"
+    "cases:generate": "tsx scripts/data/cases-generate.ts",
+    "rules:compact": "tsx scripts/data/build-rules-compact.ts"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
@@ -49,6 +50,7 @@
     "p-queue": "^9.1.2",
     "robots-parser": "^3.0.1",
     "tsx": "^4.19.0",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "yaml": "^2.8.3"
   }
 }

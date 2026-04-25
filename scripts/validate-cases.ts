@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 import type { ErrorObject } from 'ajv';
+import { parse as parseYaml } from 'yaml';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(here, '..');
@@ -39,22 +40,10 @@ interface CardCase {
 }
 
 function parseRulesSeverities(yaml: string): Map<string, Severity> {
-  // Минимальный парсер: ищем блоки `- id: TXT-NN ... severity: high`.
-  // Этого достаточно для проверки соответствия severity в кейсах правилу.
+  const doc = parseYaml(yaml) as { rules?: Array<{ id?: string; severity?: Severity }> };
   const out = new Map<string, Severity>();
-  const lines = yaml.split('\n');
-  let currentId: string | null = null;
-  for (const line of lines) {
-    const idMatch = line.match(/^\s*-?\s*id:\s*(TXT-\d{2}|IMG-\d{2})\s*$/);
-    if (idMatch?.[1]) {
-      currentId = idMatch[1];
-      continue;
-    }
-    const sevMatch = line.match(/^\s*severity:\s*(low|medium|high|critical)\s*$/);
-    if (sevMatch?.[1] && currentId) {
-      out.set(currentId, sevMatch[1] as Severity);
-      currentId = null;
-    }
+  for (const r of doc.rules ?? []) {
+    if (r.id && r.severity) out.set(r.id, r.severity);
   }
   return out;
 }
