@@ -77,6 +77,71 @@ text_rules.yaml / image_rules.yaml.
 }
 ```
 
+## Двухпроходная разметка
+
+Базовый workflow выше — это conservative-проход: один агент, установка
+«сомневаешься — clean». Высокая precision, но recall может проседать
+(на sputnik8 в первой сессии 28/30 кейсов оказались clean — часть могла
+быть упущена).
+
+Двухпроходная схема: тот же набор pending'ов размечается двумя
+независимыми проходами с инвертированными установками, результаты
+объединяются и фильтруются.
+
+Канонические промпты:
+
+- `prompts/annotate-conservative-v1.txt` — установка «сомневаешься — clean».
+- `prompts/annotate-aggressive-v1.txt` — установка «помечай всё, что
+  может подпадать; лучше FP, чем FN». Формат вывода идентичен.
+
+### Workflow
+
+1. `pnpm annotations:scaffold` — создать pending как обычно (или
+   `scaffold-two-pass` — см. «Будущая работа»).
+2. **Conservative-проход**: каждый pending передать LLM-агенту вместе
+   с `prompts/annotate-conservative-v1.txt`. Сохранить результат в
+   `pending/<case_id>.cons.json`.
+3. **Aggressive-проход**: тот же pending, но с
+   `prompts/annotate-aggressive-v1.txt`. Сохранить в
+   `pending/<case_id>.aggr.json`.
+4. **Merge**: `pnpm annotations:merge-passes` (см. «Будущая работа») —
+   union violations с тегированием прохода. Пока скрипта нет — слить
+   вручную в один pending: union по `{rule_id, field_path, quote}`.
+5. **Фильтрация**: human-review слитого pending'а или Opus-judge (тоже
+   отложено). Очевидные FP из aggressive-прохода удалить.
+6. `pnpm annotations:commit` — как обычно, в общий store.
+
+### Когда применять
+
+- **Только conservative** (один проход) — для recall-нечувствительных
+  задач или когда стоимость FN ниже стоимости FP. Это default-режим
+  workflow в начале гайда.
+- **Двухпроходный** — когда важен recall (бенчмарк качества модерации,
+  поиск редких нарушений). Цена — 2× вызовов LLM плюс ручная фильтрация.
+
+### Гарантия `aggressive ⊇ conservative`
+
+Conservative-промпт п. 6: «Сомневаешься — оставь clean». Aggressive-
+промпт п. 6: «Помечай ВСЕ фрагменты, которые могут подпадать под
+правило, даже если сомневаешься». Формат вывода (rule_id, severity,
+quote, field_path, rationale) и список доступных правил совпадают.
+Логически: всё, что conservative помечает как нарушение, aggressive
+тоже помечает (он не отказывается от уверенных кейсов, только добавляет
+сомнительные). Эмпирическая проверка на 5+ реальных кейсах — отдельная
+задача после первой двухпроходной сессии.
+
+### Будущая работа
+
+Автоматизация отложена — текущий датасет (122 кейса) разметим вручную,
+а до обкатки workflow нет смысла фиксировать API:
+
+- `pnpm annotations:scaffold-two-pass` — генерит `.cons.json` +
+  `.aggr.json` пары, чтобы агент видел сразу оба слота.
+- `pnpm annotations:merge-passes` — union violations с тегом
+  `_pass: "cons" | "aggr" | "both"` в каждой violation.
+- Opus-judge — скрипт-арбитр на Claude Opus, читает слитый pending и
+  решает, какие violations оставлять.
+
 ## Что делать с конфликтами
 
 Если две модели разметили одну и ту же карточку по-разному — у нас один
