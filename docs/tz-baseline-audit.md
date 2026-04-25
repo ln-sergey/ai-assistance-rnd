@@ -1,7 +1,7 @@
 # ТЗ — ручная валидация baseline + разметка реальных карточек (Sprint P3)
 
-Следующая сессия Claude Code. Документ самодостаточен: читается «с холода»,
-предполагает только знание `CLAUDE.md`, `ARCHITECTURE.md`,
+Следующая сессия AI-агента. Документ самодостаточен: читается «с холода»,
+предполагает только знание `AGENTS.md`, `ARCHITECTURE.md`,
 `text_rules.yaml` + `image_rules.yaml`, двух JSON Schema в
 `datasets/schema/` и результатов спринтов P1–P2 (см. `docs/tz-parsing.md`).
 

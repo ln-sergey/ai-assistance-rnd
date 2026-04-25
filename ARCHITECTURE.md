@@ -104,7 +104,7 @@ ai-bench/
 ├── .env                       # gitignored
 ├── .gitignore
 ├── ARCHITECTURE.md
-├── CLAUDE.md
+├── AGENTS.md                  # инструкции для AI-агентов (CLAUDE.md — симлинк)
 ├── README.md
 └── package.json
 ```

@@ -98,7 +98,7 @@ export interface GigaChatEnvConfig {
 export type GigaChatPricing = PerTokenPricing;
 
 export interface GigaChatProviderConfig {
-  /** ОБЯЗАТЕЛЬНОЕ поле. Дефолта нет намеренно — см. README/CLAUDE.md. */
+  /** ОБЯЗАТЕЛЬНОЕ поле. Дефолта нет намеренно — см. README/AGENTS.md. */
   model: string;
   temperature?: number;
   top_p?: number;

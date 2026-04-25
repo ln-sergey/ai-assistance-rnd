@@ -1,7 +1,7 @@
 # ТЗ — управление жизненным циклом тестовых данных (Sprint P4)
 
-Следующая сессия(и) Claude Code. Документ самодостаточен: читается «с
-холода», предполагает только знание `CLAUDE.md`, `ARCHITECTURE.md`,
+Следующая сессия(и) AI-агента. Документ самодостаточен: читается «с
+холода», предполагает только знание `AGENTS.md`, `ARCHITECTURE.md`,
 `text_rules.yaml` + `image_rules.yaml`, двух JSON Schema в
 `datasets/schema/` и трёх предыдущих ТЗ-файлов (`tz-parsing.md`,
 `tz-baseline-audit.md`, `docs/real-cards-audit.md` — отчёт P3).
@@ -36,13 +36,13 @@
   `cases:generate`.
 - Новая JSON Schema `datasets/schema/annotation.schema.json`.
 - Краткий гайд `docs/annotation-guide.md` для разметчика-агента.
-- Обновление `CLAUDE.md` + `datasets/README.md`.
+- Обновление `AGENTS.md` + `datasets/README.md`.
 
 **Out of scope:**
 
 - Не редактировать `text_rules.yaml` / `image_rules.yaml`,
   `product_card.schema.json`, `test_case.schema.json` (это hard rule,
-  см. `CLAUDE.md`).
+  см. `AGENTS.md`).
 - Не менять логику парсеров (`scripts/parse/parse-*.ts`,
   `scripts/parse/download-images.ts`, `scripts/parse/validate.ts`,
   `scripts/parse/summary.ts`) — только источник конфигов в harvest-.
@@ -506,7 +506,7 @@ CLI-оверрайды.
      отслеживается отдельно (явно говорим, что версионирование
      out of scope этого спринта).
 
-7. Update `CLAUDE.md` (раздел `## Команды`) — добавить новые
+7. Update `AGENTS.md` (раздел `## Команды`) — добавить новые
    `pnpm`-скрипты блоком, без изменения существующего.
 
 8. Update `datasets/README.md` — раздел «Жизненный цикл данных»:
@@ -561,7 +561,7 @@ CLI-оверрайды.
 
 - Не редактировать `text_rules.yaml` / `image_rules.yaml`,
   `product_card.schema.json`, `test_case.schema.json` (это hard rule
-  из `CLAUDE.md`).
+  из `AGENTS.md`).
 - Не менять логику парсеров и `validate-cases.ts` (только источник
   конфига в harvest-).
 - Не выкидывать `scripts/generate-real-cases.ts` до того, как
@@ -579,7 +579,7 @@ CLI-оверрайды.
   source = свой harvest-/parse-файл, как сейчас.
 - Не генерить документацию/README/планы кроме перечисленных в
   Deliverables (`tz-data-lifecycle.md` сам, `annotation-guide.md`,
-  обновления `CLAUDE.md` + `datasets/README.md`).
+  обновления `AGENTS.md` + `datasets/README.md`).
 
 ## Acceptance checklist (итоговый)
 
@@ -605,7 +605,7 @@ CLI-оверрайды.
 - [x] `datasets/annotations/pending/` в `.gitignore`.
 - [x] `docs/annotation-guide.md` создан (~80 строк, шаблон промпта +
       6-шаговый workflow).
-- [x] `CLAUDE.md` и `datasets/README.md` обновлены: новые команды
+- [x] `AGENTS.md` и `datasets/README.md` обновлены: новые команды
       перечислены, lifecycle описан.
 - [x] `pnpm typecheck` чистый.
 - [x] Sprint P4 разбит на 5 коммитов (этапы 1–4 + verification).

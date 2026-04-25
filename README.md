@@ -8,7 +8,8 @@ R&D-бенчмарк LLM-провайдеров для модерации кар
 итерации.
 
 Задача, scope, методика и критерии выбора — в [`ARCHITECTURE.md`](ARCHITECTURE.md).
-Правила работы в репозитории для Claude Code — в [`CLAUDE.md`](CLAUDE.md).
+Правила работы в репозитории для AI-агентов — в [`AGENTS.md`](AGENTS.md)
+(`CLAUDE.md` — симлинк на него для Claude Code).
 Таксономия правил модерации — в [`text_rules.yaml`](text_rules.yaml) +
 [`image_rules.yaml`](image_rules.yaml).
 
@@ -68,7 +69,7 @@ pnpm typecheck
 Активны: **Yandex** (`YANDEX_API_KEY` + `YANDEX_FOLDER_ID`), **GigaChat**
 (`GIGACHAT_AUTH_KEY` + `GIGACHAT_SCOPE`).
 
-**Qwen** отложен — не подключать без явного разрешения (см. `CLAUDE.md`).
+**Qwen** отложен — не подключать без явного разрешения (см. `AGENTS.md`).
 
 
 ## Эксперименты
@@ -78,4 +79,4 @@ pnpm typecheck
 - Перед финальными выводами — 3 повторных прогона для проверки стабильности.
 - Новая версия промпта — всегда новый файл `*-vN.txt`, не перезаписывать.
 
-Подробнее — в `ARCHITECTURE.md`, раздел 9 и `CLAUDE.md`.
+Подробнее — в `ARCHITECTURE.md`, раздел 9 и `AGENTS.md`.

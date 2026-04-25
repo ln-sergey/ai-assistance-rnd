@@ -100,7 +100,7 @@
 3. Удалить корневой `rules.yaml`.
 
 4. Обновить ссылки во всех 14 файлах, где встречается `rules.yaml`:
-   - `CLAUDE.md`, `README.md`, `ARCHITECTURE.md`
+   - `AGENTS.md`, `README.md`, `ARCHITECTURE.md`
    - `datasets/README.md`, `docs/annotation-guide.md`, `docs/data-sources.md`,
      `docs/real-cards-audit.md`, `docs/tz-baseline-audit.md`,
      `docs/tz-data-lifecycle.md`, `docs/tz-parsing.md`
@@ -342,7 +342,7 @@ aggressive (помечай всё подозрительное), затем cons
 
 1. Вынести промпт из `docs/annotation-guide.md` (текущий блок «Шаблон
    промпта для LLM-агента») в `prompts/annotate-conservative-v1.txt`.
-   В заголовке файла — короткая diff-нотка по конвенции CLAUDE.md
+   В заголовке файла — короткая diff-нотка по конвенции AGENTS.md
    (правило 1 «Правила работы с промптами»).
 
 2. В `annotation-guide.md` оставить ссылку на канонический файл +
