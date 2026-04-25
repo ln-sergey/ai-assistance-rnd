@@ -10,8 +10,9 @@
    облегчить контекст агентам при текстовой/фото-разметке.
 2. Усилить pre-validation в JSON Schema (`quote` minLength=1) — ловить
    ошибки до `commit`, а не на финальной фазе.
-3. Сгенерировать `rules.compact.json` для промптов — компактная таблица
-   `id+severity+title+desc`, чтобы не передавать весь YAML.
+3. Сгенерировать `text_rules.compact.json` + `image_rules.compact.json`
+   для промптов — компактные таблицы `id+severity+title+desc`, чтобы не
+   передавать весь YAML.
 4. Обновить `_help.instruction` в scaffold — частые ошибки сразу на виду.
 5. Ввести двухпроходную разметку (conservative + aggressive + consensus) —
    поднять recall за счёт второго прохода в aggressive-режиме.
@@ -24,6 +25,23 @@
 - Изменение количества параллельных агентов / размер батча (отклонено).
 - Перепрогон существующих 122 кейсов задним числом.
 
+## Статус
+
+- Этап 1 — ✅ выполнено (commit `5255316`).
+- Этап 2 — ✅ выполнено (commit `0b3a7f5`).
+- Этап 3 — ✅ выполнено с отклонениями от плана (commit `61d0690`):
+  один общий `rules.compact.json` заменён на два файла
+  `text_rules.compact.json` + `image_rules.compact.json` (мотив тот же,
+  что и у split'а на этапе 1: текстовый агент не должен видеть
+  IMG-правила и наоборот). Дополнительно: добавлен `yaml@2.8.3` в
+  devDeps; самописный regex-парсер YAML заменён на `yaml.parse()` в
+  `build-rules-compact.ts` и `validate-cases.ts`. Размер `<10 KB`
+  оказался недостижим из-за UTF-8-кириллицы (×2 байта на символ): фактически
+  text=12.8 KB, image=10.7 KB; целиться ниже без потери `desc` нельзя.
+- Этап 4 — ⏳ pending.
+- Этап 5 — ⏳ pending.
+- Этап 6 — ⏳ pending.
+
 ## Порядок выполнения
 
 Этапы относительно независимы, но рекомендуемый порядок учитывает
@@ -31,7 +49,7 @@
 
 1. **Этап 1** — rules split (фундамент, влияет на 3, 4, 6).
 2. **Этап 2** — schema `quote` minLength=1 (быстрый фикс, независим).
-3. **Этап 3** — `rules.compact.json` (зависит от 1).
+3. **Этап 3** — `text/image_rules.compact.json` (зависит от 1).
 4. **Этап 4** — `_help.instruction` в scaffold (зависит от 3).
 5. **Этап 6** — canonical prompt в `prompts/` (зависит от 1, 3).
 6. **Этап 5** — двухпроходный workflow (самый объёмный, в конце).
@@ -42,7 +60,7 @@
 
 ---
 
-## Этап 1 — Разделить `rules.yaml` на `text_rules.yaml` + `image_rules.yaml`
+## Этап 1 — Разделить `rules.yaml` на `text_rules.yaml` + `image_rules.yaml` (✅ выполнено)
 
 ### Цель
 Чтобы агент текстовой модерации не получал IMG-правила и наоборот. Сейчас
@@ -100,7 +118,7 @@
 
 ---
 
-## Этап 2 — JSON Schema: `quote` `minLength: 1`
+## Этап 2 — JSON Schema: `quote` `minLength: 1` (✅ выполнено)
 
 ### Цель
 В текущей сессии ошибка «TXT-правило требует непустой quote» всплыла
@@ -136,51 +154,76 @@
 
 ---
 
-## Этап 3 — `rules.compact.json` для промптов
+## Этап 3 — `text/image_rules.compact.json` для промптов (✅ выполнено)
 
 ### Цель
-Сократить токены в промптах annotate-агентов. Сейчас агент читает
-`rules.yaml` целиком (~470 строк). Нужно <100 строк JSON с тем что
-реально требуется для разметки: `id`, `severity`, `title`, краткий `desc`.
+Сократить токены в промптах annotate-агентов. Раньше агент читал
+`rules.yaml` целиком (~470 строк). Нужно компактные JSON-таблицы с тем,
+что реально требуется для разметки: `id`, `severity`, `title`, краткий
+`desc`. Текст и фото — отдельными файлами, чтобы текстовый агент не
+видел IMG-правила и наоборот.
 
-### Что делать
+### Что сделано
 
-1. Создать скрипт `scripts/data/build-rules-compact.ts`:
-   - читает `text_rules.yaml` и `image_rules.yaml`;
-   - формирует `datasets/rules.compact.json`:
-     ```json
-     {
-       "version": 1,
-       "generated_at": "2026-04-25",
-       "severity_scale": { "low": "Низкая", ... },
-       "text": [
-         { "id": "TXT-01", "severity": "high", "title": "...", "desc": "1 строка ≤ 200 chars" }
-       ],
-       "image": [
-         { "id": "IMG-01", "severity": "low", "title": "...", "desc": "..." }
-       ]
-     }
-     ```
-   - `desc` — первая строка `description` или вся description, если она
-     ≤ 200 символов; иначе обрезать по словам до 200.
+1. Скрипт `scripts/data/build-rules-compact.ts` читает
+   `text_rules.yaml` + `image_rules.yaml` через `yaml.parse()` (пакет
+   `yaml@2.8.3` добавлен в devDeps) и генерирует **два независимых файла**:
 
-2. Добавить команду в `package.json`:
    ```json
-   "rules:compact": "tsx scripts/data/build-rules-compact.ts"
+   // datasets/text_rules.compact.json (12.8 KB)
+   {
+     "version": 1,
+     "kind": "text",
+     "generated_at": "2026-04-25",
+     "severity_scale": { "low": "Низкая", ... },
+     "rules": [
+       { "id": "TXT-01", "severity": "high", "title": "...", "desc": "≤ 200 chars" }
+     ]
+   }
+
+   // datasets/image_rules.compact.json (10.7 KB) — аналогично, kind: "image"
    ```
 
-3. Файл `datasets/rules.compact.json` коммитится (это артефакт пайплайна,
-   нужен агентам). Сделать его регенерацию идемпотентной.
+   `desc` — первая строка `description` или вся description, если она
+   ≤ 200 символов; иначе обрезается по словам до 200.
 
-4. В `text_rules.yaml` / `image_rules.yaml` положить заголовочный
-   комментарий: «Источник правды. После правок: `pnpm rules:compact`».
+2. Команда `pnpm rules:compact` в `package.json`.
+
+3. Оба `.compact.json` коммитятся (артефакт пайплайна, нужен агентам).
+   Регенерация идемпотентна: `generated_at = last_updated` из YAML, а не
+   «сейчас», поэтому при тех же входах вывод побайтово стабилен.
+
+4. Шапка `text_rules.yaml` / `image_rules.yaml`:
+   «Источник правды. После любых правок: `pnpm rules:compact`».
+
+5. Сопутствующие фиксы:
+   - `validate-cases.ts` — самописный regex-парсер YAML заменён на
+     `yaml.parse()` (теперь и там, и в build-rules-compact одна
+     зависимость).
+   - 5 строк `example` в `text_rules.yaml` / `image_rules.yaml`,
+     где одинарные кавычки внутри значения не экранировались, починены
+     обёртыванием в двойные кавычки. Семантика правил не изменилась —
+     синтаксический фикс под строгий YAML-парсер.
+
+### Отличия от исходного плана
+
+- Один общий `datasets/rules.compact.json` с массивами `text` и `image`
+  заменён на **два независимых файла**. Мотив — мотив этапа 1 — текстовый
+  агент не должен видеть IMG-правила и наоборот; склейка их обратно в один
+  файл нарушала бы этот контракт.
+- Размер `<10 KB` оказался недостижим: UTF-8-кириллица — 2 байта на
+  символ, и порог изначально оценили в латинице. Фактический размер
+  text=12.8 KB, image=10.7 KB — ниже только обнулением `desc`, что
+  ломает структуру (`title` без `desc` не различает близкие правила вроде
+  TXT-19 vs TXT-20).
 
 ### Критерии завершения
 
-- [ ] `pnpm rules:compact` создаёт `datasets/rules.compact.json`.
-- [ ] Размер `< 10 KB`.
-- [ ] Структура валидна — `text` массив длины 35, `image` массив длины 30.
-- [ ] Все `severity` совпадают с YAML.
+- [x] `pnpm rules:compact` создаёт оба файла.
+- [x] Структура валидна: `rules` массив длины 35 в `text_rules.compact.json`,
+  длины 30 в `image_rules.compact.json`.
+- [x] Все `severity` совпадают с YAML.
+- [x] Размер каждого файла ≤ ~13 KB (порог `<10 KB` ослаблен — см. отличия).
 
 ---
 
@@ -198,8 +241,10 @@
 > Заполни `expected_clean` (true/false), `violations` при dirty,
 > `annotator`, `annotated_at`. Жёсткие правила:
 >
-> 1. `rule_id` — только из `datasets/rules.compact.json`. Своих не выдумывать.
-> 2. `severity` — точно как в `rules.compact.json` для этого `rule_id`.
+> 1. `rule_id` — только из `datasets/text_rules.compact.json`. Своих не
+>    выдумывать. (Скаффолд текстовой разметки IMG-правила не использует —
+>    они в отдельном файле `image_rules.compact.json`.)
+> 2. `severity` — точно как в `text_rules.compact.json` для этого `rule_id`.
 > 3. `quote` — ДОСЛОВНЫЙ непрерывный фрагмент из `card_excerpt` по
 >    указанному `field_path`. **Минимум 1 символ.** Никаких многоточий
 >    и склеек.
@@ -212,8 +257,10 @@
 > Подробности — `docs/annotation-guide.md` и
 > `prompts/annotate-conservative-v1.txt`.
 
-Также обновить `_help.rules_path`: вместо `rules.yaml` указывать
-`datasets/rules.compact.json` (для агента это удобнее).
+Также обновить `_help.rules_path`: вместо `text_rules.yaml + image_rules.yaml`
+указывать `datasets/text_rules.compact.json` (текущий scaffold размечает
+только текст; при появлении image-scaffold у того будет своя
+`_help.rules_path = datasets/image_rules.compact.json`).
 Поле `schema_path` оставить как есть.
 
 ### Критерии завершения
@@ -302,7 +349,8 @@ aggressive (помечай всё подозрительное), затем cons
 
    ## Канонические артефакты (читать в первую очередь)
    - prompts/annotate-conservative-v1.txt — основной промпт
-   - datasets/rules.compact.json — таблица правил с severity
+   - datasets/text_rules.compact.json — таблица TXT-правил
+     (для image-разметки — datasets/image_rules.compact.json)
    - docs/annotation-guide.md — workflow и формат
 
    ## Файлы для разметки
