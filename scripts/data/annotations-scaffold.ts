@@ -120,6 +120,23 @@ function buildExcerpt(card: Record<string, unknown>): Record<string, unknown> {
   return out;
 }
 
+// Многострочная инструкция для LLM-агента, заполняющего pending. Аккумулирует
+// частые ошибки из реальных сессий разметки, чтобы агент видел их прямо в
+// файле, не ходя в гайд. Текст синхронизирован с docs/tz-annotate-pipeline-v2.md
+// (этап 4) и docs/annotation-guide.md.
+const HELP_INSTRUCTION = [
+  'Заполни expected_clean (true/false), violations при dirty, annotator, annotated_at.',
+  'Жёсткие правила:',
+  '1. rule_id — только из datasets/text_rules.compact.json. Своих не выдумывать.',
+  '   (Скаффолд текстовой разметки IMG-правила не использует — они в отдельном файле image_rules.compact.json.)',
+  '2. severity — точно как в text_rules.compact.json для этого rule_id.',
+  '3. quote — ДОСЛОВНЫЙ непрерывный фрагмент из card_excerpt по указанному field_path. Минимум 1 символ. Никаких многоточий и склеек.',
+  '4. Для TXT-24 / TXT-26 при полностью пустом поле — это поле НЕ может быть field_path. Найти другое поле с проблемой или другое правило (например, TXT-23 — карточка как форма заявок).',
+  '5. expected_clean=true ⟺ violations=[].',
+  '6. Сомневаешься — clean.',
+  'Подробности — docs/annotation-guide.md и prompts/annotate-conservative-v1.txt.',
+].join('\n');
+
 function buildPending(source: string, card: Record<string, unknown> & { id: string }): PendingFile {
   return {
     case_id: card.id,
@@ -131,10 +148,9 @@ function buildPending(source: string, card: Record<string, unknown> & { id: stri
     annotator: null,
     annotated_at: null,
     _help: {
-      rules_path: 'text_rules.yaml + image_rules.yaml',
+      rules_path: 'datasets/text_rules.compact.json',
       schema_path: 'datasets/schema/annotation.schema.json',
-      instruction:
-        'Заполни expected_clean (true/false), violations при dirty, annotator, annotated_at. Для TXT-* нарушений quote должна дословно встречаться в card_excerpt по field_path. Подробности — docs/annotation-guide.md.',
+      instruction: HELP_INSTRUCTION,
     },
   };
 }
