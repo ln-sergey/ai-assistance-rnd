@@ -1,10 +1,10 @@
 # sputnik8 URL candidates
-# harvested_at: 2026-04-24T17:49:53.833Z
+# harvested_at: 2026-04-25T00:19:24.125Z
 # sitemap: https://www.sputnik8.com/sitemap.xml
 # seed: 42
-# total: 40
-# bucket_spb: 16, bucket_msk: 10, bucket_rest: 14
-# by_city: st-petersburg: 16, moscow: 10, rouen: 2, pyatigorsk: 2, manama: 2, turkistan: 2, kurgan: 2, khanty-mansiysk: 2, washington: 1, trincomalee: 1
+# total: 60
+# bucket_spb: 24, bucket_msk: 15, bucket_rest: 21
+# by_city: st-petersburg: 24, moscow: 15, rouen: 2, pyatigorsk: 2, manama: 2, turkistan: 2, kurgan: 2, khanty-mansiysk: 2, trincomalee: 2, dagomys: 2, portimao: 2, washington: 1, corvara: 1, lloret-de-mar: 1
 
 https://www.sputnik8.com/ru/st-petersburg/activities/74601-mistika-i-legendy-sankt-peterburga
 https://www.sputnik8.com/ru/st-petersburg/activities/26447-prohodnye-dvory-peterburga-vasilievskiy-ostrov-gorod-v-gorode
@@ -22,6 +22,14 @@ https://www.sputnik8.com/ru/st-petersburg/activities/69147-syrno-vyrnoe-rozhdest
 https://www.sputnik8.com/ru/st-petersburg/activities/79525-pskovskaya-krugosvetka-s-posescheniem-usadby-orehovno
 https://www.sputnik8.com/ru/st-petersburg/activities/43046-avtobusnaya-ekskursiya-novaya-geografiya-peterburga-muzey-sovremennogo-iskusstva-erarta
 https://www.sputnik8.com/ru/st-petersburg/activities/90877-moyka-i-paradnaya-neva-otkrytochnyy-peterburg-s-vody
+https://www.sputnik8.com/ru/st-petersburg/activities/79579-ekskursiya-v-porhov-s-posescheniem-dvoryanskih-usadeb
+https://www.sputnik8.com/ru/st-petersburg/activities/42371-aleksandrovskaya-vot-moya-derevnya
+https://www.sputnik8.com/ru/st-petersburg/activities/33340-istoriya-rossii-ot-petra-do-putina-gulyaya-po-tsentru-peterburga
+https://www.sputnik8.com/ru/st-petersburg/activities/69527-svechi-svyatoy-lyusii-na-hutore-milka-vechernee-puteshestvie-pered-rozhdestvom
+https://www.sputnik8.com/ru/st-petersburg/activities/77627-puteshestvie-v-srednevekovie-na-1-den-vyborg-pervoe-znakomstvo
+https://www.sputnik8.com/ru/st-petersburg/activities/42858-bilet-i-audioekskursiya-kvest-po-ermitazhu-dlya-detey-i-roditeley
+https://www.sputnik8.com/ru/st-petersburg/activities/52885-ermitazh-ekskursiya-po-rytsarskomu-zalu-audiotur-bez-vhodnyh-biletov
+https://www.sputnik8.com/ru/st-petersburg/activities/29674-dvortsy-doma-romanovyh
 https://www.sputnik8.com/ru/moscow/activities/77641-stilnaya-moskva-ekskursiya-fotosessiya-po-epitsentru-shika
 https://www.sputnik8.com/ru/moscow/activities/54868-v-serpuhov-vysotskiy-muzhskoy-i-vladychniy-zhenskiy-monastyri
 https://www.sputnik8.com/ru/moscow/activities/69440-volshebnyy-ekspress-v-velikiy-ustyug-skazochnye-ugolki-russkogo-severa
@@ -32,6 +40,11 @@ https://www.sputnik8.com/ru/moscow/activities/74700-po-svyatym-mestam-spiridona-
 https://www.sputnik8.com/ru/moscow/activities/35776-goticheskaya-vselennaya-mastera-i-margarity
 https://www.sputnik8.com/ru/moscow/activities/68623-istorii-staroy-moskvy-v-gruppe-s-lichnym-gidom-ili-fotoprogulka-na-vybor
 https://www.sputnik8.com/ru/moscow/activities/51160-posledniy-zvonok-na-teplohode-legenda
+https://www.sputnik8.com/ru/moscow/activities/78525-konfety-iz-martsipana-svoimi-rukami-master-klass
+https://www.sputnik8.com/ru/moscow/activities/37752-severnyy-rechnoy-vokzal-simvol-30-h-godov-hh-veka
+https://www.sputnik8.com/ru/moscow/activities/57945-hleb-ikra-pavliniy-hvost-v-serpuhov-i-aleksin-s-degustatsiey-ikry
+https://www.sputnik8.com/ru/moscow/activities/74209-kombo-vystavka-master-klass-runy-i-talismany
+https://www.sputnik8.com/ru/moscow/activities/77039-akvaferma-klarievogo-soma-ekskursiya-s-degustatsiey
 https://www.sputnik8.com/ru/washington/activities/22635-osnovnye-dostoprimechatelnosti-vashingtona
 https://www.sputnik8.com/ru/rouen/activities/79656-velichestvennye-tserkvi-ruana
 https://www.sputnik8.com/ru/rouen/activities/67880-obzornaya-peshaya-ekskursiya-po-ruanu
@@ -46,3 +59,10 @@ https://www.sputnik8.com/ru/kurgan/activities/59857-progulka-po-kurganu-s-posesc
 https://www.sputnik8.com/ru/khanty-mansiysk/activities/38160-avtobusnyy-tur-v-kogalym
 https://www.sputnik8.com/ru/khanty-mansiysk/activities/38159-posvyaschenie-v-yugorskie-bogatyri
 https://www.sputnik8.com/ru/trincomalee/activities/86440-natsionalnyy-park-pidzhen-aylend-snorkling-i-dikaya-priroda-okeana
+https://www.sputnik8.com/ru/trincomalee/activities/86439-trinkomali-kity-delfiny-i-snorkling-na-ostrove-neyvi
+https://www.sputnik8.com/ru/dagomys/activities/67657-dagomys-chaynye-domiki-i-ozera-lyubvi-na-land-cruiser
+https://www.sputnik8.com/ru/dagomys/activities/67658-chaynye-terema
+https://www.sputnik8.com/ru/portimao/activities/9045-ekskursiya-v-sagresh-nablyudenie-zakata-na-krayu-sveta
+https://www.sputnik8.com/ru/portimao/activities/9055-individualnaya-ekskursiya-po-sevili-s-vyezdom-iz-algarve
+https://www.sputnik8.com/ru/corvara/activities/3226-aviatur-nad-ozerom-garda
+https://www.sputnik8.com/ru/lloret-de-mar/activities/5497-perpinyan

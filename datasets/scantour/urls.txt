@@ -1,8 +1,8 @@
 # scantour URL candidates
-# harvested_at: 2026-04-24T18:10:21.393Z
+# harvested_at: 2026-04-25T00:19:30.426Z
 # sitemap: https://scantour.ru/tour-sitemap.xml
 # seed: 42
-# total: 14 (из 291)
+# total: 22 (из 291)
 # robots.txt: /tours и /tour_type запрещены → берём только корневые slug
 
 https://scantour.ru/top-mesta-karelii-3-ruskeala-kizhi-vodopady-iz-petrozavodska
@@ -19,3 +19,11 @@ https://scantour.ru/valdaj-ivany-pereleski-lesnoj-kvest-i-chaj-iz-samovara
 https://scantour.ru/4-svobodnyh-dnya-v-karelii-glempingi-na-beregu-ladozhskogo-ozera-lajt
 https://scantour.ru/gatchina-imperatorskaya-ferma-i-syrnyj-master-klass
 https://scantour.ru/top-mesta-karelii-2-valaam-shhery-master-klassy-iz-petrozavodska
+https://scantour.ru/aktivnyj-tur-v-kareliyu-3-ruskeala-splav-i-aktivnye-razvlecheniya-iz-petrozavodska
+https://scantour.ru/novyj-god-v-otele-kruzhevo
+https://scantour.ru/mesta-sily-karelii-gory-voda-i-zhivye-tradiczii
+https://scantour.ru/pskovskie-maki-porhov-krepost-pole-pamyati-fotosessiya-na-makovyh-polyah
+https://scantour.ru/karelia-ptz-sortavala-2day
+https://scantour.ru/drevnie-goroda-rusi-pskov-izborsk-pechory
+https://scantour.ru/priklyucheniya-v-karelskom-zooparke-iz-sortavala
+https://scantour.ru/ohota-za-severnym-siyaniem-v-murmanske

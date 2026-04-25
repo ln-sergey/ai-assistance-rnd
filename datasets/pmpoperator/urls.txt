@@ -1,8 +1,8 @@
 # pmpoperator URL candidates
-# harvested_at: 2026-04-24T18:04:59.693Z
+# harvested_at: 2026-04-25T00:19:29.646Z
 # sitemap: https://pmpoperator.ru/sitemap.xml
 # seed: 42
-# total: 14 (из 1317)
+# total: 22 (из 1317)
 
 https://pmpoperator.ru/tours/v-kaliningrad-na-pyat-dney-leto-zaezdi-ezhednevno
 https://pmpoperator.ru/tours/karel-skiy-week-end-osen-zima-avtobus
@@ -18,3 +18,11 @@ https://pmpoperator.ru/tours/legendarnaya-rus-2-dnya-2020-2021
 https://pmpoperator.ru/tours/ocharovanie-ol-hona-zima
 https://pmpoperator.ru/tours/kray-lipetskiy-monastirskiy-sirniy-yablochniy
 https://pmpoperator.ru/tours/novogodnyaya-armeniya-zaezd-30-12
+https://pmpoperator.ru/tours/gornolyzhnyi-tour-na-kranuyu-polyanu
+https://pmpoperator.ru/tours/peterburg-severnaya-stolitsa-6-dney
+https://pmpoperator.ru/tours/anomal-noe-ozherel-e-yuzhnogo-urala
+https://pmpoperator.ru/tours/karel-skaya-palitra-poezd-5-dney
+https://pmpoperator.ru/tours/venskiy-val-s-v-tule
+https://pmpoperator.ru/tours/zimniy-tur-v-krasnoyarsk
+https://pmpoperator.ru/tours/nizhegorodskii-koleidoskop
+https://pmpoperator.ru/tours/tur-na-kavkaz-akvarel-severnogo-kavkaza
