@@ -10,12 +10,12 @@
   "$defs": {
     "severity": {
       "enum": ["low", "medium", "high", "critical"],
-      "description": "Должна строго совпадать с severity правила в rules.yaml. Проверяется дополнительной JS-валидацией — JSON Schema это поле не связывает с rule_id."
+      "description": "Должна строго совпадать с severity правила в text_rules.yaml / image_rules.yaml. Проверяется дополнительной JS-валидацией — JSON Schema это поле не связывает с rule_id."
     },
     "rule_id_text_or_img": {
       "type": "string",
       "pattern": "^(TXT-(0[1-9]|1[0-9]|2[0-9]|3[0-5])|IMG-(0[1-9]|1[0-9]|2[0-9]|30))$",
-      "description": "Идентификатор правила из rules.yaml: TXT-01..TXT-35 или IMG-01..IMG-30."
+      "description": "Идентификатор правила из text_rules.yaml (TXT-01..TXT-35) или image_rules.yaml (IMG-01..IMG-30)."
     },
     "rule_id_img_only": {
       "type": "string",

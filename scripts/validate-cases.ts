@@ -1,7 +1,7 @@
 // Валидатор tест-кейсов в datasets/cases/real-{clean,dirty}/.
 // Каждый файл должен соответствовать card_case в datasets/schema/test_case.schema.json
 // (через oneOf), а severity внутри expected_violations[] — совпадать с severity
-// одноимённого правила в rules.yaml.
+// одноимённого правила в text_rules.yaml / image_rules.yaml.
 
 import { readFile, readdir } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
@@ -15,7 +15,8 @@ const here = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(here, '..');
 const SCHEMA_DIR = join(REPO_ROOT, 'datasets/schema');
 const CASES_ROOT = join(REPO_ROOT, 'datasets/cases');
-const RULES_PATH = join(REPO_ROOT, 'rules.yaml');
+const TEXT_RULES_PATH = join(REPO_ROOT, 'text_rules.yaml');
+const IMAGE_RULES_PATH = join(REPO_ROOT, 'image_rules.yaml');
 
 type Severity = 'low' | 'medium' | 'high' | 'critical';
 
@@ -132,7 +133,10 @@ function quoteFoundIn(card: Record<string, unknown>, field_path: string, quote: 
 
 async function main(): Promise<void> {
   const validate = await loadValidator();
-  const ruleSeverities = parseRulesSeverities(await readFile(RULES_PATH, 'utf8'));
+  const ruleSeverities = new Map<string, Severity>([
+    ...parseRulesSeverities(await readFile(TEXT_RULES_PATH, 'utf8')),
+    ...parseRulesSeverities(await readFile(IMAGE_RULES_PATH, 'utf8')),
+  ]);
 
   const cleanFiles = await listJsonFiles(join(CASES_ROOT, 'real-clean'));
   const dirtyFiles = await listJsonFiles(join(CASES_ROOT, 'real-dirty'));
@@ -169,14 +173,15 @@ async function main(): Promise<void> {
       const expectedSev = ruleSeverities.get(v.rule_id);
       if (!expectedSev) {
         errors.push(
-          `${path}: violations[${i}] rule_id=${v.rule_id} нет в rules.yaml`,
+          `${path}: violations[${i}] rule_id=${v.rule_id} нет в text_rules.yaml/image_rules.yaml`,
         );
         localOk = false;
         continue;
       }
       if (v.severity !== expectedSev) {
+        const src = v.rule_id.startsWith('TXT-') ? 'text_rules.yaml' : 'image_rules.yaml';
         errors.push(
-          `${path}: violations[${i}] severity=${v.severity} ≠ rules.yaml(${v.rule_id})=${expectedSev}`,
+          `${path}: violations[${i}] severity=${v.severity} ≠ ${src}(${v.rule_id})=${expectedSev}`,
         );
         localOk = false;
       }

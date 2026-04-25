@@ -2,8 +2,8 @@
 
 Следующая сессия(и) Claude Code. Этот документ самодостаточен: читается
 «с холода», предполагает только знание `CLAUDE.md`, `ARCHITECTURE.md`,
-`rules.yaml`, `docs/data-sources.md` и двух JSON Schema в
-`datasets/schema/`.
+`text_rules.yaml` + `image_rules.yaml`, `docs/data-sources.md` и двух
+JSON Schema в `datasets/schema/`.
 
 ## Цель
 

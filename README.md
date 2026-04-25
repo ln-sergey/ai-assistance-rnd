@@ -9,7 +9,8 @@ R&D-бенчмарк LLM-провайдеров для модерации кар
 
 Задача, scope, методика и критерии выбора — в [`ARCHITECTURE.md`](ARCHITECTURE.md).
 Правила работы в репозитории для Claude Code — в [`CLAUDE.md`](CLAUDE.md).
-Таксономия правил модерации — в [`rules.yaml`](rules.yaml).
+Таксономия правил модерации — в [`text_rules.yaml`](text_rules.yaml) +
+[`image_rules.yaml`](image_rules.yaml).
 
 
 ## Требования
@@ -37,7 +38,8 @@ configs/     Promptfoo-конфиги (по одному на задачу)
 scripts/     синтез датасетов, агрегация метрик, конвертеры
 reports/     сгенерированные отчёты прогонов
 judge/       rubric'и для llm-judge
-rules.yaml   единственный источник таксономии
+text_rules.yaml    35 текстовых правил TXT-01..TXT-35
+image_rules.yaml   30 фото-правил IMG-01..IMG-30
 ```
 
 

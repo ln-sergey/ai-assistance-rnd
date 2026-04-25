@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "product_card.schema.json",
   "title": "ProductCard",
-  "description": "Карточка туристической активности (тур / экскурсия / событие) на маркетплейсе Localtrip. Набор полей, на которых работает модерация текстовых правил rules.yaml (TXT-NN). Изображения в поле images — метаданные; бинарные файлы лежат в datasets/images/ и связываются по image_id.",
+  "description": "Карточка туристической активности (тур / экскурсия / событие) на маркетплейсе Localtrip. Набор полей, на которых работает модерация текстовых правил text_rules.yaml (TXT-NN). Изображения в поле images — метаданные; бинарные файлы лежат в datasets/images/ и связываются по image_id.",
   "type": "object",
   "required": [
     "id",

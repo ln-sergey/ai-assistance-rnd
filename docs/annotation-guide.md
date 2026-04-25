@@ -26,25 +26,27 @@
 5. **`pnpm cases:generate`** — материализовать `card_case` в
    `datasets/cases/real-{clean,dirty}/`. Идемпотентно.
 6. **`tsx scripts/validate-cases.ts`** — финальная проверка кейсов
-   (схема + severity из `rules.yaml` + dual-check quote'ов).
+   (схема + severity из `text_rules.yaml` / `image_rules.yaml` +
+   dual-check quote'ов).
 
 ## Шаблон промпта для LLM-агента
 
 Передавать вместе с содержимым `pending/<case_id>.json` и (по требованию)
-выдержкой из `rules.yaml`. Ожидаемый ответ — JSON с полями
-`expected_clean`, `violations`, `notes` (и опционально `annotator`,
-`annotated_at`).
+выдержкой из `text_rules.yaml` / `image_rules.yaml`. Ожидаемый ответ —
+JSON с полями `expected_clean`, `violations`, `notes` (и опционально
+`annotator`, `annotated_at`).
 
 ```
 Ты — модератор карточек туристических активностей. Прочитай карточку в
-поле card_excerpt и определи, нарушает ли она правила из rules.yaml.
+поле card_excerpt и определи, нарушает ли она правила из
+text_rules.yaml / image_rules.yaml.
 
 Жёсткие требования:
 
-1. rule_id — ТОЛЬКО из rules.yaml (TXT-01..TXT-35, IMG-01..IMG-30).
-   Своих идентификаторов не выдумывать.
-2. severity — точно как в rules.yaml для этого rule_id (low | medium |
-   high | critical).
+1. rule_id — ТОЛЬКО из text_rules.yaml (TXT-01..TXT-35) или
+   image_rules.yaml (IMG-01..IMG-30). Своих идентификаторов не выдумывать.
+2. severity — точно как в text_rules.yaml / image_rules.yaml для этого
+   rule_id (low | medium | high | critical).
 3. Для TXT-* нарушений quote — ДОСЛОВНЫЙ фрагмент из card_excerpt по
    указанному field_path. Без перефразирования, без многоточий.
 4. expected_clean=true ⟺ violations=[]. Если хоть одно нарушение —

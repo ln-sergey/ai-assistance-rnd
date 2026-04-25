@@ -1,8 +1,9 @@
 # Datasets — тест-кейсы модерации карточек
 
 Здесь живут датасеты для бенчмарка `ai-bench`. Таксономия правил, по которым
-оценивается модерация — в корневом [`rules.yaml`](../rules.yaml). Общая картина
-и методика — в [`ARCHITECTURE.md`](../ARCHITECTURE.md).
+оценивается модерация — в корневых [`text_rules.yaml`](../text_rules.yaml) +
+[`image_rules.yaml`](../image_rules.yaml). Общая картина и методика — в
+[`ARCHITECTURE.md`](../ARCHITECTURE.md).
 
 ## Структура
 
@@ -115,11 +116,12 @@ harvest → parse → annotate → cases
 
 ## Правила для `expected_violations`
 
-- `rule_id` — только идентификаторы из `rules.yaml`: `TXT-01..TXT-35`,
-  `IMG-01..IMG-30`. Схема проверяет формат; существование и осмысленность —
-  на разметчике.
-- `severity` должна **совпадать** с значением в `rules.yaml`. Это отдельной
-  JS-валидацией в ассершенах Promptfoo, не в JSON Schema.
+- `rule_id` — только идентификаторы из `text_rules.yaml`
+  (`TXT-01..TXT-35`) или `image_rules.yaml` (`IMG-01..IMG-30`). Схема
+  проверяет формат; существование и осмысленность — на разметчике.
+- `severity` должна **совпадать** со значением в `text_rules.yaml` /
+  `image_rules.yaml`. Это отдельной JS-валидацией в ассершенах Promptfoo,
+  не в JSON Schema.
 - `field_path` — дот-нотация до конкретного места: `full_description`,
   `program_items[2].description`, `contacts_block.public_comment`,
   `images[0]`.

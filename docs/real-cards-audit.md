@@ -1,7 +1,7 @@
 # Ручной аудит реальных карточек — 2026-04-25
 
 Базовая разметка 67 карточек из `datasets/{sputnik8,pmpoperator,scantour,afisha}/cards.raw.jsonl`
-по 35 текстовым правилам `rules.yaml` (TXT-01…TXT-35). Результат — `card_case`-файлы
+по 35 текстовым правилам `text_rules.yaml` (TXT-01…TXT-35). Результат — `card_case`-файлы
 в `datasets/cases/real-{clean,dirty}/`. Регенерируется через
 `tsx scripts/generate-real-cases.ts`, проверяется `tsx scripts/validate-cases.ts`.
 
@@ -22,7 +22,7 @@ afisha            9      6      3      0
 (пользовательские отзывы, биографию гида, меню вместо описания, пустую секцию
 «Описание тура»). После фикса парсеров `parse-sputnik8.ts` и
 `parse-pmpoperator.ts` все 5 карточек пере-парсены и попали в clean —
-содержимое стало корректным, нарушений по `rules.yaml` нет.
+содержимое стало корректным, нарушений по `text_rules.yaml` нет.
 
 ## Распределение нарушений по rule_id
 

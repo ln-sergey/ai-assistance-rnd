@@ -2,9 +2,9 @@
 
 Следующая сессия(и) Claude Code. Документ самодостаточен: читается «с
 холода», предполагает только знание `CLAUDE.md`, `ARCHITECTURE.md`,
-`rules.yaml`, двух JSON Schema в `datasets/schema/` и трёх предыдущих
-ТЗ-файлов (`tz-parsing.md`, `tz-baseline-audit.md`,
-`docs/real-cards-audit.md` — отчёт P3).
+`text_rules.yaml` + `image_rules.yaml`, двух JSON Schema в
+`datasets/schema/` и трёх предыдущих ТЗ-файлов (`tz-parsing.md`,
+`tz-baseline-audit.md`, `docs/real-cards-audit.md` — отчёт P3).
 
 ## Цель
 
@@ -40,8 +40,9 @@
 
 **Out of scope:**
 
-- Не редактировать `rules.yaml`, `product_card.schema.json`,
-  `test_case.schema.json` (это hard rule, см. `CLAUDE.md`).
+- Не редактировать `text_rules.yaml` / `image_rules.yaml`,
+  `product_card.schema.json`, `test_case.schema.json` (это hard rule,
+  см. `CLAUDE.md`).
 - Не менять логику парсеров (`scripts/parse/parse-*.ts`,
   `scripts/parse/download-images.ts`, `scripts/parse/validate.ts`,
   `scripts/parse/summary.ts`) — только источник конфигов в harvest-.
@@ -437,7 +438,7 @@ CLI-оверрайды.
        "annotator": null,
        "annotated_at": null,
        "_help": {
-         "rules_path": "rules.yaml",
+         "rules_path": "text_rules.yaml + image_rules.yaml",
          "schema_path": "datasets/schema/annotation.schema.json",
          "instruction": "Заполни expected_clean (true/false), violations при dirty, annotator, annotated_at. Для TXT-* нарушений quote должна дословно встречаться в card_excerpt по field_path. Подробности — docs/annotation-guide.md."
        }
@@ -491,9 +492,10 @@ CLI-оверрайды.
    - **Workflow**: 6 шагов (`list → scaffold → fill → commit →
      cases:generate → validate-cases`).
    - **Шаблон промпта** для LLM-агента (вставка card_excerpt +
-     rules.yaml + инструкция, что вернуть). С пунктами:
-     1. rule_id только из rules.yaml.
-     2. severity точно как в rules.yaml.
+     text_rules.yaml / image_rules.yaml + инструкция, что вернуть).
+     С пунктами:
+     1. rule_id только из text_rules.yaml / image_rules.yaml.
+     2. severity точно как в text_rules.yaml / image_rules.yaml.
      3. Для TXT-* — quote дословно из card_excerpt по field_path.
      4. expected_clean=true ⟺ violations=[].
      5. Не выдумывать, помечать только явные нарушения.
@@ -557,8 +559,9 @@ CLI-оверрайды.
 
 ## Hard rules — что не делать
 
-- Не редактировать `rules.yaml`, `product_card.schema.json`,
-  `test_case.schema.json` (это hard rule из `CLAUDE.md`).
+- Не редактировать `text_rules.yaml` / `image_rules.yaml`,
+  `product_card.schema.json`, `test_case.schema.json` (это hard rule
+  из `CLAUDE.md`).
 - Не менять логику парсеров и `validate-cases.ts` (только источник
   конфига в harvest-).
 - Не выкидывать `scripts/generate-real-cases.ts` до того, как

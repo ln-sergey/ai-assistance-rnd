@@ -131,7 +131,7 @@ function buildPending(source: string, card: Record<string, unknown> & { id: stri
     annotator: null,
     annotated_at: null,
     _help: {
-      rules_path: 'rules.yaml',
+      rules_path: 'text_rules.yaml + image_rules.yaml',
       schema_path: 'datasets/schema/annotation.schema.json',
       instruction:
         'Заполни expected_clean (true/false), violations при dirty, annotator, annotated_at. Для TXT-* нарушений quote должна дословно встречаться в card_excerpt по field_path. Подробности — docs/annotation-guide.md.',
