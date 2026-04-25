@@ -38,9 +38,17 @@
   `build-rules-compact.ts` и `validate-cases.ts`. Размер `<10 KB`
   оказался недостижим из-за UTF-8-кириллицы (×2 байта на символ): фактически
   text=12.8 KB, image=10.7 KB; целиться ниже без потери `desc` нельзя.
-- Этап 4 — ⏳ pending.
-- Этап 5 — ⏳ pending.
-- Этап 6 — ⏳ pending.
+- Этап 4 — ✅ выполнено (commit `664b742`).
+- Этап 5 — ✅ выполнено (commit `a072a68`): conservative + aggressive
+  промпты в `prompts/`, раздел «Двухпроходная разметка» в
+  `annotation-guide.md`. Эмпирическая проверка `aggressive ⊇ conservative`
+  выполнена на 5 dirty-кейсах при работе над этапом 6.
+- Этап 6 — ✅ выполнено: канонические промпты вынесены ещё на этапе 5
+  (`annotate-conservative-v1.txt` + `annotate-aggressive-v1.txt`), на
+  этапе 6 — заменён inline-блок промпта в `annotation-guide.md` на
+  ссылку, добавлен `docs/annotate-subagent-template.md` (≤80 строк),
+  сняты привязки к конкретной модели в обоих промптах (`<твой-model-id>`
+  как плейсхолдер с примерами).
 
 ## Порядок выполнения
 
@@ -298,7 +306,7 @@ aggressive (помечай всё подозрительное), затем cons
    3. fill: pending/<case_id>.aggr.json (aggressive-промпт)
    4. pnpm annotations:merge-passes             # union violations,
                                                   тегирует source
-   5. human-review (или Opus-judge) merged'а
+   5. human-review (или LLM-judge) merged'а
    6. pnpm annotations:commit
    ```
 

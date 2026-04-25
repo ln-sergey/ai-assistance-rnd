@@ -29,53 +29,32 @@
    (схема + severity из `text_rules.yaml` / `image_rules.yaml` +
    dual-check quote'ов).
 
-## Шаблон промпта для LLM-агента
+## Промпты для LLM-агента
 
-Передавать вместе с содержимым `pending/<case_id>.json` и (по требованию)
-выдержкой из `text_rules.yaml` / `image_rules.yaml`. Ожидаемый ответ —
-JSON с полями `expected_clean`, `violations`, `notes` (и опционально
-`annotator`, `annotated_at`).
+Канонические промпты лежат в `prompts/`:
 
-```
-Ты — модератор карточек туристических активностей. Прочитай карточку в
-поле card_excerpt и определи, нарушает ли она правила из
-text_rules.yaml / image_rules.yaml.
+- [`prompts/annotate-conservative-v1.txt`](../prompts/annotate-conservative-v1.txt) —
+  **default**. Один проход, установка «сомневаешься — clean». Использовать
+  для штатной разметки, когда recall-чувствительность не критична.
+- [`prompts/annotate-aggressive-v1.txt`](../prompts/annotate-aggressive-v1.txt) —
+  парный. Один проход, установка «лучше FP, чем FN». Использовать **только
+  как второй проход** в двухпроходной схеме (см. ниже), не как замену
+  conservative — без последующей фильтрации aggressive захламляет store
+  ложными нарушениями.
 
-Жёсткие требования:
+Промпт передавать LLM вместе с содержимым `pending/<case_id>.json`
+и компактной таблицей правил (`datasets/text_rules.compact.json` для
+текста или `datasets/image_rules.compact.json` для фото). Полные YAML
+с категориями и примерами — только если требуется углубление.
 
-1. rule_id — ТОЛЬКО из text_rules.yaml (TXT-01..TXT-35) или
-   image_rules.yaml (IMG-01..IMG-30). Своих идентификаторов не выдумывать.
-2. severity — точно как в text_rules.yaml / image_rules.yaml для этого
-   rule_id (low | medium | high | critical).
-3. Для TXT-* нарушений quote — ДОСЛОВНЫЙ фрагмент из card_excerpt по
-   указанному field_path. Без перефразирования, без многоточий.
-4. expected_clean=true ⟺ violations=[]. Если хоть одно нарушение —
-   expected_clean=false.
-5. Не выдумывать нарушения. Помечать только то, что явно подпадает под
-   формулировку правила. Сомневаешься — оставь clean.
-6. Контактные данные (телефон, telegram, e-mail, ссылки) попадают в
-   quote, не в rationale. Не маскировать.
-7. field_path — дот-нотация: full_description, program_items[2].title,
-   contacts_block.public_comment.
+Ожидаемый ответ — JSON с полями `expected_clean`, `violations`,
+`notes`, `annotator`, `annotated_at` (формат описан в самих промптах).
+Поле `annotator` агент заполняет своим model-id, конкретная модель в
+промптах не зашита.
 
-Верни JSON ровно такого вида (без обёрток ```json):
-
-{
-  "expected_clean": <bool>,
-  "violations": [
-    {
-      "rule_id": "TXT-NN",
-      "severity": "low|medium|high|critical",
-      "field_path": "...",
-      "quote": "...",
-      "rationale": "1–2 предложения по-русски"
-    }
-  ],
-  "notes": null,
-  "annotator": "claude-opus-4.7",
-  "annotated_at": "YYYY-MM-DD"
-}
-```
+При делегации к субагенту (Task / Agent) использовать
+[`docs/annotate-subagent-template.md`](annotate-subagent-template.md) —
+короткий шаблон вместо повторения промпта целиком.
 
 ## Двухпроходная разметка
 
@@ -107,7 +86,7 @@ text_rules.yaml / image_rules.yaml.
 4. **Merge**: `pnpm annotations:merge-passes` (см. «Будущая работа») —
    union violations с тегированием прохода. Пока скрипта нет — слить
    вручную в один pending: union по `{rule_id, field_path, quote}`.
-5. **Фильтрация**: human-review слитого pending'а или Opus-judge (тоже
+5. **Фильтрация**: human-review слитого pending'а или LLM-judge (тоже
    отложено). Очевидные FP из aggressive-прохода удалить.
 6. `pnpm annotations:commit` — как обычно, в общий store.
 
@@ -127,8 +106,17 @@ Conservative-промпт п. 6: «Сомневаешься — оставь cle
 quote, field_path, rationale) и список доступных правил совпадают.
 Логически: всё, что conservative помечает как нарушение, aggressive
 тоже помечает (он не отказывается от уверенных кейсов, только добавляет
-сомнительные). Эмпирическая проверка на 5+ реальных кейсах — отдельная
-задача после первой двухпроходной сессии.
+сомнительные).
+
+Контрольная проверка на 5 dirty-кейсах из текущего store
+(afisha/pmpoperator/scantour×2/sputnik8) — TXT-19 (внешняя ссылка),
+TXT-20 ×2 (бронирование вне платформы), TXT-22 (день 7 в 5-дневном
+туре), TXT-23 (карточка-аренда), TXT-26 (HTML-тег в описании). Все
+violations conservative прошли по жёстким критериям формата (rule_id
+из таблицы, severity по таблице, непустой дословный quote) и были
+«явно подпадающими». Aggressive с более низким порогом («может
+подпадать») по построению тоже их помечает. Полная эмпирическая
+re-разметка теми же моделями отложена до первой двухпроходной сессии.
 
 ### Будущая работа
 
@@ -139,8 +127,9 @@ quote, field_path, rationale) и список доступных правил с
   `.aggr.json` пары, чтобы агент видел сразу оба слота.
 - `pnpm annotations:merge-passes` — union violations с тегом
   `_pass: "cons" | "aggr" | "both"` в каждой violation.
-- Opus-judge — скрипт-арбитр на Claude Opus, читает слитый pending и
-  решает, какие violations оставлять.
+- LLM-judge — скрипт-арбитр (модель на выбор: Claude / GPT / GigaChat
+  /YandexGPT), читает слитый pending и решает, какие violations
+  оставлять. Конкретная модель — параметр конфигурации, не вшивается.
 
 ## Что делать с конфликтами
 
