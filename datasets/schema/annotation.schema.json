@@ -32,7 +32,7 @@
         "annotator": {
           "type": "string",
           "minLength": 1,
-          "description": "Свободная метка происхождения разметки: 'manual:sergio', 'claude-opus-4.7', 'gpt-5', 'gigachat-max-2.5'. Используется для трассировки."
+          "description": "Свободная метка происхождения разметки: 'manual:sergio', 'claude-opus-4.7', 'gpt-5'. Используется для трассировки."
         }
       },
       "allOf": [
