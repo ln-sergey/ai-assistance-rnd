@@ -1,7 +1,8 @@
 # Synthetic Guide — генерация синтетических карточек
 
-Гайд для локального агента (Claude Code в сессии), который генерирует
-синтетические `product_card`-карточки под целевые правила
+Гайд для локального AI-агента в интерактивной сессии (Claude Code,
+Codex, Cursor, Aider или любой совместимый передовой агент), который
+генерирует синтетические `product_card`-карточки под целевые правила
 `text_rules.yaml`. Цель — закрыть дыры покрытия по правилам, которые
 реальная выборка не пробила (см. [`real-cards-audit.md`](real-cards-audit.md)).
 Контекст и решения — [`tz-synthetic-cards.md`](tz-synthetic-cards.md).
@@ -9,9 +10,11 @@
 Синтетика живёт отдельно: карточки — `datasets/synthetic/cards.raw.jsonl`
 (append-only), разметка — `datasets/annotations/synthetic.json`, cases —
 `datasets/cases/synthetic-{clean,dirty}/`. Целевые провайдеры (Yandex /
-GigaChat) и любые эталонные AI через API запрещены для подготовки и
-валидации тестовых данных — hard rule проекта (см. [`AGENTS.md`](../AGENTS.md)).
-Весь pipeline — Claude Code в локальной сессии.
+GigaChat) и любые эталонные AI через прямые API-вызовы запрещены для
+подготовки и валидации тестовых данных — hard rule проекта (см.
+[`AGENTS.md`](../AGENTS.md)). Pipeline идёт через локальный AI-агент
+в интерактивной сессии: агент сам читает промпты и заполняет файлы,
+никаких batch-вызовов из скриптов проекта.
 
 ## Workflow (6 шагов)
 
@@ -28,7 +31,7 @@ GigaChat) и любые эталонные AI через API запрещены 
    - `--topic <slug>` — фиксирует тематику (default — round-robin).
    - Идемпотентно: существующие pending'и не перезаписываются.
 3. **Заполнить pending'и.** Открыть самую свежую
-   [`prompts/synthesize-card-v2.txt`](../prompts/synthesize-card-v2.txt),
+   `prompts/synthesize-card-vN.txt` (на 2026-04-27 — `v3`),
    читать целиком, заполнять `card` (валидный `product_card`,
    `id == case_id`, `images: []`) и `violations[]` для dirty
    (clean-control — `violations: []`). При делегации одному субагенту —
@@ -80,7 +83,8 @@ GigaChat) и любые эталонные AI через API запрещены 
 1. Открыть [`prompts/annotate-conservative-v1.txt`](../prompts/annotate-conservative-v1.txt)
    и каждый заполненный synth-pending (только dirty; для clean-control
    re-annotation не нужен).
-2. Применить как обычную разметку (см. [`annotation-guide.md`](annotation-guide.md)).
+2. Применить как обычную разметку (см. [`annotation-guide.md`](annotation-guide.md)) —
+   тот же локальный AI-агент в интерактивной сессии, тем же способом.
 3. Сравнить с `target_rule_id`:
    - Поймал ровно target — карточка проходит.
    - НЕ поймал target — пере-генерить с более явным нарушением
@@ -89,7 +93,7 @@ GigaChat) и любые эталонные AI через API запрещены 
      в `violations[]` (см. «Конфликты»).
 4. Когда все dirty прошли blind re-annotation — `pnpm synth:commit`.
 
-API-вызовы к целевым провайдерам и эталонным AI запрещены: ground
+Прямые API-вызовы к целевым провайдерам и эталонным AI запрещены: ground
 truth не должен опираться на ответ subject-под-тестом.
 
 ## Версионирование промптов

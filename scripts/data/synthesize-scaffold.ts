@@ -1,12 +1,13 @@
 // Создаёт pending-файлы для синтетических карточек в
 // datasets/annotations/pending/synth-<rule_lc>-<NNN>.json. Дальше
-// AI-агент в локальной сессии Claude Code заполняет поля card +
-// violations по канонической версии промпта (PROMPT_PATH ниже).
-// После заполнения — pnpm synth:commit.
+// локальный AI-агент в интерактивной сессии (Claude Code, Codex,
+// Cursor, Aider или любой совместимый передовой агент) заполняет
+// поля card + violations по канонической версии промпта
+// (PROMPT_PATH ниже). После заполнения — pnpm synth:commit.
 //
 // Не вызывает никаких LLM/API — только подготовка слотов.
-// API-вызовы к целевым провайдерам или эталонным AI запрещены для
-// подготовки тестовых данных (см. AGENTS.md / docs/tz-synthetic-cards.md).
+// Прямые API-вызовы к целевым провайдерам или эталонным AI запрещены
+// для подготовки тестовых данных (см. AGENTS.md / docs/tz-synthetic-cards.md).
 //
 // Использование:
 //   pnpm synth:scaffold -- --rule=TXT-05 --count=3
@@ -30,7 +31,7 @@ const ANNOTATIONS_DIR = join(DATASETS_DIR, 'annotations');
 const PENDING_DIR = join(ANNOTATIONS_DIR, 'pending');
 const SYNTH_STORE = join(ANNOTATIONS_DIR, 'synthetic.json');
 const SYNTH_CARDS_JSONL = join(DATASETS_DIR, 'synthetic', 'cards.raw.jsonl');
-const PROMPT_PATH = 'prompts/synthesize-card-v2.txt';
+const PROMPT_PATH = 'prompts/synthesize-card-v3.txt';
 
 // Разрешённые тематики из prompts/synthesize-card-v1.txt. Round-robin
 // для разнообразия в партии. При --topic — fixed.

@@ -7,7 +7,7 @@
 
 ## Канонические артефакты (читать в первую очередь)
 
-- `prompts/synthesize-card-v2.txt` — основной промпт-генератор
+- `prompts/synthesize-card-v3.txt` — основной промпт-генератор
   (читать целиком). Если в репо появилась `vN+1` — брать самую
   свежую (см. `ls prompts/synthesize-card-v*.txt`).
 - `datasets/text_rules.compact.json` — единственный источник правды
@@ -72,7 +72,7 @@ datasets/annotations/pending/synth-*.json` или явный inline-список
    `prompts/annotate-conservative-v1.txt` применяется к каждой
    synth-dirty карточке (см. workflow в `docs/synthetic-guide.md`).
    Если conservative не ловит target — карточка переписывается
-   (Р11 ТЗ). Никаких API-вызовов: целевые провайдеры и эталонные AI
-   через API запрещены для подготовки тестовых данных.
+   (Р11 ТЗ). Никаких прямых API-вызовов: целевые провайдеры и
+   эталонные AI через API запрещены для подготовки тестовых данных.
 3. `pnpm synth:commit` → `pnpm cases:generate` →
    `pnpm cases:audit` (delta уменьшилась).

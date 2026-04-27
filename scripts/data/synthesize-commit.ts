@@ -40,9 +40,13 @@ const SYNTH_DIR = join(DATASETS_DIR, 'synthetic');
 const SYNTH_CARDS_JSONL = join(SYNTH_DIR, 'cards.raw.jsonl');
 const SYNTH_ANNOTATIONS = join(ANNOTATIONS_DIR, 'synthetic.json');
 
-const GENERATOR_MODEL = 'claude-opus-4.7-session';
-const PROMPT_VERSION = 'synthesize-card-v2';
-const ANNOTATOR_LABEL = 'claude-opus-4.7-session';
+// Метки агента — vendor-нейтральные. Конкретный агент (Claude Code,
+// Codex, Cursor, Aider или совместимый) и/или версию модели можно
+// зафиксировать через ENV: SYNTH_GENERATOR_MODEL для card._meta,
+// SYNTH_ANNOTATOR_LABEL для annotator в synthetic.json.
+const GENERATOR_MODEL = process.env.SYNTH_GENERATOR_MODEL ?? 'local-ai-agent-session';
+const ANNOTATOR_LABEL = process.env.SYNTH_ANNOTATOR_LABEL ?? 'local-ai-agent-session';
+const PROMPT_VERSION = 'synthesize-card-v3';
 const TODAY = new Date().toISOString().slice(0, 10);
 
 type Severity = 'low' | 'medium' | 'high' | 'critical';
