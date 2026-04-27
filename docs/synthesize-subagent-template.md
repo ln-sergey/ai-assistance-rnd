@@ -1,27 +1,44 @@
-# Шаблон делегации subagent'у на генерацию синтетики
+# Шаблон делегации субагенту на генерацию синтетики
 
-Один субагент — одна партия pending-файлов.
+Короткий промпт для запуска субагента (Task / Agent) на партию
+synth-pending'ов. Канон не дублируется — субагент читает его по
+ссылкам. Аналог [`annotate-subagent-template.md`](annotate-subagent-template.md).
 
-## Что передать субагенту
+## Когда использовать
 
-1. **Список pending-файлов** (явно, не через glob):
-   ```
-   datasets/annotations/pending/synth-TXT-XX-NNN.json
-   ...
-   ```
-2. **Rule_id'ы в партии** — перечисли кратко, чтобы субагент сразу
-   нашёл real-dirty примеры без лишнего поиска:
-   ```
-   TXT-XX (severity) — title правила
-   ```
+- Партия 5+ pending'ов — массовая генерация одним субагентом.
+- Несколько параллельных субагентов на независимые подмножества:
+  5–15 карточек на агента. Больше — у субагента деградирует
+  тематическое разнообразие, начинаются повторы.
 
-Субагент читает `prompts/synthesize-card-vN.txt` (самую свежую версию —
-`ls prompts/synthesize-card-v*.txt`). Дальнейшие файловые чтения —
-по инструкциям внутри промпта.
+На 1–2 карточки шаблон избыточен — заполни pending в текущей сессии
+напрямую по `prompts/synthesize-card-vN.txt`.
 
-## Контрольные параметры (уникальные для этого шаблона)
+## Шаблон
 
-Длины полей (5-95 перцентиль real-карточек, 2026-04-27):
+````markdown
+Задача: сгенерировать карточки в перечисленных synth-pending'ах.
+
+## Канонические артефакты — читать в первую очередь
+
+- `prompts/synthesize-card-v6.txt` — основной промпт (актуальная
+  версия на 2026-04-27; при обновлении — `prompts/CHANGELOG.md`).
+- `datasets/text_rules.compact.json` — таблица TXT-правил.
+- `datasets/schema/product_card.schema.json` — целевая схема карточки.
+- `datasets/synthetic-blocklist.txt` — запрещённые маркеры синтетики.
+- `datasets/cases/real-dirty/` — 2-3 примера на target_rule_id для
+  стиля (не копировать формулировки).
+
+## Файлы для заполнения
+
+<список pending-файлов: datasets/annotations/pending/synth-txt05-001.json, ...>
+
+## Целевые правила в партии
+
+- TXT-XX (severity) — title правила
+- ...
+
+## Длины полей (5–95 перцентиль real-карточек, обновляются `synth:validate`)
 
 | поле | min | max |
 |------|-----|-----|
@@ -29,15 +46,31 @@
 | short_description | 60 | 350 |
 | full_description | 198 | 1867 |
 
-Пересчитываются динамически в `pnpm synth:validate`.
-Не более 1/3 партии на одну тематику.
+## Тематический бюджет
 
-## Что после
+- 12 разрешённых тематик — в §2 промпта.
+- ≤ 1/3 партии на одну тематику (иначе `synth:validate` warn'ит
+  по diversity).
 
-1. `pnpm synth:validate --scope=pending` — длины, blocklist, diversity,
-   near-дубликаты. 0 errors — продолжать; есть errors — переписать
-   проблемные карточки.
-2. Blind re-annotation в локальной сессии: `prompts/annotate-conservative-v1.txt`
-   на каждую synth-dirty карточку. Если conservative не ловит target —
-   карточка переписывается. Никаких прямых API-вызовов к целевым провайдерам.
-3. `pnpm synth:commit` → `pnpm cases:generate` → `pnpm cases:audit`
+## Что вернуть
+
+- Перезаписать каждый pending (Write): заполнить `card` (полный
+  product_card по схеме, `id == case_id`, `images: []`) и
+  `violations[]` (для dirty — одно нарушение по target_rule_id с
+  дословной `quote`; clean-control → `[]`).
+- В финальном сообщении: total / by rule_id / by topic + любые
+  pending'и, где не получилось соблюсти критерии (с причиной).
+- НЕ вызывать `pnpm synth:commit` / `pnpm cases:generate` — это шаги
+  основного агента после blind re-annotation.
+````
+
+## Что НЕ должен делать субагент
+
+- Не редактировать `text_rules.yaml`, схему карточки, blocklist —
+  только под явный запрос пользователя (см. `AGENTS.md`).
+- Не запускать `pnpm synth:commit` / `pnpm cases:generate` —
+  материализация после ревью основного агента.
+- Не звать целевых провайдеров (Yandex / GigaChat) и любые эталонные
+  AI через прямые API — hard rule (см. `AGENTS.md`).
+- Не выходить за `rule_id` из compact-таблицы — своих идентификаторов
+  не выдумывать.

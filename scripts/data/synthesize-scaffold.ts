@@ -31,7 +31,7 @@ const ANNOTATIONS_DIR = join(DATASETS_DIR, 'annotations');
 const PENDING_DIR = join(ANNOTATIONS_DIR, 'pending');
 const SYNTH_STORE = join(ANNOTATIONS_DIR, 'synthetic.json');
 const SYNTH_CARDS_JSONL = join(DATASETS_DIR, 'synthetic', 'cards.raw.jsonl');
-const PROMPT_PATH = 'prompts/synthesize-card-v4.txt';
+const PROMPT_PATH = 'prompts/synthesize-card-v6.txt';
 
 // Разрешённые тематики из prompts/synthesize-card-v1.txt. Round-robin
 // для разнообразия в партии. При --topic — fixed.
@@ -204,17 +204,7 @@ async function nextNnn(
   return max + 1;
 }
 
-const HELP_INSTRUCTION = [
-  `Прочитай ${PROMPT_PATH} полностью.`,
-  'Заполни:',
-  '  - card: валидный product_card по datasets/schema/product_card.schema.json,',
-  '    включая поле id = case_id из этого файла. images: [].',
-  '  - violations: для target_clean=false — массив с одним нарушением по',
-  '    target_rule_id (severity берётся из datasets/text_rules.compact.json,',
-  '    quote — ДОСЛОВНО из card по field_path). Для target_clean=true — [].',
-  'Не нарушать другие правила (особенно TXT-25/26/27/30/33 — самые',
-  'частые «загрязнения» синтетики). По завершении: pnpm synth:commit.',
-].join('\n');
+const HELP_INSTRUCTION = `Читай ${PROMPT_PATH}.`;
 
 function buildPending(
   caseId: string,
