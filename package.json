@@ -34,6 +34,7 @@
     "annotations:scaffold": "tsx scripts/data/annotations-scaffold.ts",
     "annotations:commit": "tsx scripts/data/annotations-commit.ts",
     "cases:generate": "tsx scripts/data/cases-generate.ts",
+    "cases:audit": "tsx scripts/data/cases-audit.ts",
     "rules:compact": "tsx scripts/data/build-rules-compact.ts"
   },
   "dependencies": {
