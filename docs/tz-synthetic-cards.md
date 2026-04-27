@@ -837,10 +837,13 @@ Anti-clickbait критерии в теле».
 Постфактум: после закрытия этапа 6 пользователь снял привязку pipeline к
 конкретно Claude Code. Документация и шаблоны обновлены на vendor-нейтральные
 формулировки («локальный AI-агент в интерактивной сессии — Claude Code,
-Codex, Cursor, Aider или любой совместимый передовой агент»),
-[`prompts/synthesize-card-v3.txt`](../prompts/synthesize-card-v3.txt)
-заменил v2 в роли канонического (тело идентично v2, отличается только
-шапка), `synth:scaffold`/`synth:commit` переключены на v3, метки
+Codex, Cursor, Aider или любой совместимый передовой агент»). Промпт
+прошёл две итерации: `synthesize-card-v3.txt` (vendor-нейтральная шапка,
+тело идентично v2) и `synthesize-card-v4.txt` (минимальная шапка, история
+версий и блок «Связанные артефакты» вынесены в
+[`prompts/CHANGELOG.md`](../prompts/CHANGELOG.md), чтобы метаданные не
+уходили в контекст модели и не размывали ролевую установку из раздела 1).
+`synth:scaffold`/`synth:commit` переключены на v4. Метки
 `generator_model` / `annotator` стали ENV-конфигурируемы
 (`SYNTH_GENERATOR_MODEL` / `SYNTH_ANNOTATOR_LABEL`, default —
 `local-ai-agent-session`). Hard rule сохранился: прямые API-вызовы к

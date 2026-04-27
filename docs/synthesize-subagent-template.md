@@ -7,9 +7,10 @@
 
 ## Канонические артефакты (читать в первую очередь)
 
-- `prompts/synthesize-card-v3.txt` — основной промпт-генератор
+- `prompts/synthesize-card-v4.txt` — основной промпт-генератор
   (читать целиком). Если в репо появилась `vN+1` — брать самую
   свежую (см. `ls prompts/synthesize-card-v*.txt`).
+  История версий и связанные артефакты — `prompts/CHANGELOG.md`.
 - `datasets/text_rules.compact.json` — единственный источник правды
   по rule_id, severity и desc (id, severity, title, desc; 35 TXT-).
 - `datasets/schema/product_card.schema.json` — целевая схема

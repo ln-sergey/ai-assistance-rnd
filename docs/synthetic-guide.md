@@ -31,11 +31,13 @@ GigaChat) и любые эталонные AI через прямые API-выз
    - `--topic <slug>` — фиксирует тематику (default — round-robin).
    - Идемпотентно: существующие pending'и не перезаписываются.
 3. **Заполнить pending'и.** Открыть самую свежую
-   `prompts/synthesize-card-vN.txt` (на 2026-04-27 — `v3`),
+   `prompts/synthesize-card-vN.txt` (на 2026-04-27 — `v4`),
    читать целиком, заполнять `card` (валидный `product_card`,
    `id == case_id`, `images: []`) и `violations[]` для dirty
-   (clean-control — `violations: []`). При делегации одному субагенту —
-   шаблон [`synthesize-subagent-template.md`](synthesize-subagent-template.md).
+   (clean-control — `violations: []`). История версий и связанные
+   артефакты — [`prompts/CHANGELOG.md`](../prompts/CHANGELOG.md).
+   При делегации одному субагенту — шаблон
+   [`synthesize-subagent-template.md`](synthesize-subagent-template.md).
 4. **`pnpm synth:validate`** — длины полей в реальном диапазоне,
    разнообразие тематик, blocklist
    ([`synthetic-blocklist.txt`](../datasets/synthetic-blocklist.txt)),
@@ -58,7 +60,7 @@ GigaChat) и любые эталонные AI через прямые API-выз
 Главный риск — «учебный пример нарушения», который conservative-аннотатор
 ловит ровно потому, что нарушение бросается в глаза. Такая синтетика
 завышает recall модели и непригодна как ground truth. Полный список
-требований — раздел 4 [`synthesize-card-v2.txt`](../prompts/synthesize-card-v2.txt);
+требований — раздел 4 актуального `prompts/synthesize-card-vN.txt`;
 кратко:
 
 - Длины полей в 5-95 перцентиле real-карточек (на 2026-04-27: title

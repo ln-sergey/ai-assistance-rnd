@@ -31,7 +31,7 @@ const ANNOTATIONS_DIR = join(DATASETS_DIR, 'annotations');
 const PENDING_DIR = join(ANNOTATIONS_DIR, 'pending');
 const SYNTH_STORE = join(ANNOTATIONS_DIR, 'synthetic.json');
 const SYNTH_CARDS_JSONL = join(DATASETS_DIR, 'synthetic', 'cards.raw.jsonl');
-const PROMPT_PATH = 'prompts/synthesize-card-v3.txt';
+const PROMPT_PATH = 'prompts/synthesize-card-v4.txt';
 
 // Разрешённые тематики из prompts/synthesize-card-v1.txt. Round-robin
 // для разнообразия в партии. При --topic — fixed.
