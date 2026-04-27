@@ -1,8 +1,8 @@
 // Создаёт pending-файлы для синтетических карточек в
 // datasets/annotations/pending/synth-<rule_lc>-<NNN>.json. Дальше
 // AI-агент в локальной сессии Claude Code заполняет поля card +
-// violations по prompts/synthesize-card-v1.txt. После заполнения —
-// pnpm synth:commit.
+// violations по канонической версии промпта (PROMPT_PATH ниже).
+// После заполнения — pnpm synth:commit.
 //
 // Не вызывает никаких LLM/API — только подготовка слотов.
 // API-вызовы к целевым провайдерам или эталонным AI запрещены для
@@ -30,6 +30,7 @@ const ANNOTATIONS_DIR = join(DATASETS_DIR, 'annotations');
 const PENDING_DIR = join(ANNOTATIONS_DIR, 'pending');
 const SYNTH_STORE = join(ANNOTATIONS_DIR, 'synthetic.json');
 const SYNTH_CARDS_JSONL = join(DATASETS_DIR, 'synthetic', 'cards.raw.jsonl');
+const PROMPT_PATH = 'prompts/synthesize-card-v2.txt';
 
 // Разрешённые тематики из prompts/synthesize-card-v1.txt. Round-robin
 // для разнообразия в партии. При --topic — fixed.
@@ -203,14 +204,14 @@ async function nextNnn(
 }
 
 const HELP_INSTRUCTION = [
-  'Прочитай prompts/synthesize-card-v1.txt полностью.',
+  `Прочитай ${PROMPT_PATH} полностью.`,
   'Заполни:',
   '  - card: валидный product_card по datasets/schema/product_card.schema.json,',
   '    включая поле id = case_id из этого файла. images: [].',
   '  - violations: для target_clean=false — массив с одним нарушением по',
   '    target_rule_id (severity берётся из datasets/text_rules.compact.json,',
   '    quote — ДОСЛОВНО из card по field_path). Для target_clean=true — [].',
-  'Не нарушать другие правила (особенно TXT-19/25/26/27/30 — самые',
+  'Не нарушать другие правила (особенно TXT-25/26/27/30/33 — самые',
   'частые «загрязнения» синтетики). По завершении: pnpm synth:commit.',
 ].join('\n');
 
@@ -233,7 +234,7 @@ function buildPending(
     annotator: null,
     annotated_at: null,
     _help: {
-      prompt_path: 'prompts/synthesize-card-v1.txt',
+      prompt_path: PROMPT_PATH,
       rules_path: 'datasets/text_rules.compact.json',
       schema_path: 'datasets/schema/product_card.schema.json',
       instruction: HELP_INSTRUCTION,
@@ -353,7 +354,7 @@ async function main(): Promise<void> {
     `[scaffold] итого: created=${createdTotal}, skipped_existing=${skippedExisting}`,
   );
   if (createdTotal > 0) {
-    console.log('[scaffold] заполни pending-файлы по prompts/synthesize-card-v1.txt и запусти `pnpm synth:commit`');
+    console.log(`[scaffold] заполни pending-файлы по ${PROMPT_PATH} и запусти \`pnpm synth:commit\``);
   }
 }
 

@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "annotations": {
+    "synth_clean_001": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-27",
+      "annotator": "claude-opus-4.7-session"
+    },
+    "synth_clean_002": {
+      "expected_clean": true,
+      "violations": [],
+      "notes": null,
+      "annotated_at": "2026-04-27",
+      "annotator": "claude-opus-4.7-session"
+    },
+    "synth_txt05_001": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-05",
+          "severity": "critical",
+          "field_path": "full_description",
+          "quote": "мы знаем боковой ход, минующий новую решётку администрации заповедника, и спокойно проходим внутрь без разрешения",
+          "rationale": "Карточка прямо предлагает вход в закрытую часть пещерной системы заповедника в обход решётки и без разрешения администрации — это нарушение режима ООПТ (ст. 8.39 КоАП РФ). Услуга по своей сути противозаконна."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-27",
+      "annotator": "claude-opus-4.7-session"
+    },
+    "synth_txt05_002": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-05",
+          "severity": "critical",
+          "field_path": "full_description",
+          "quote": "мы заходим через слабые секции забора со стороны железнодорожной насыпи и проходим к интересным цехам в обход поста",
+          "rationale": "Карточка продаёт услугу, в основу которой положено умышленное проникновение через забор охраняемой частной территории в обход поста охраны — состав правонарушения по ст. 20.17 КоАП РФ либо хищение/повреждение имущества по гл. 21 УК РФ при причинении ущерба. Услуга по своей форме незаконна."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-27",
+      "annotator": "claude-opus-4.7-session"
+    },
+    "synth_txt05_003": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-05",
+          "severity": "critical",
+          "field_path": "full_description",
+          "quote": "Лицензии на любительский лов мы не оформляем, выход проводим в период нерестового запрета",
+          "rationale": "Услуга предлагает рыбалку без необходимых разрешений и в период нерестового запрета — нарушение Правил рыболовства Северо-Западного бассейна и ст. 8.37 КоАП РФ. Сама услуга по форме противозаконна."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-27",
+      "annotator": "claude-opus-4.7-session"
+    },
+    "synth_txt07_001": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-07",
+          "severity": "critical",
+          "field_path": "full_description",
+          "quote": "звоните напрямую координатору Александру Куликову на личный мобильный +7 (916) 487-22-13",
+          "rationale": "В описании указаны имя, фамилия и личный мобильный номер сотрудника-координатора — публикация персональных данных в карточке активности. Контакты должны быть скрыты или заменены на корпоративную форму обратной связи."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-27",
+      "annotator": "claude-opus-4.7-session"
+    },
+    "synth_txt07_002": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-07",
+          "severity": "critical",
+          "field_path": "full_description",
+          "quote": "Полное имя гида: Чернова Анна Леонидовна, дата рождения 12.07.1991",
+          "rationale": "В тексте раскрыты ФИО и дата рождения сотрудника-гида — это персональные данные третьего лица, размещённые в публичной карточке. Описанию это не требуется по сути услуги."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-27",
+      "annotator": "claude-opus-4.7-session"
+    },
+    "synth_txt07_003": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-07",
+          "severity": "critical",
+          "field_path": "full_description",
+          "quote": "Зайцева Мария Анатольевна, проживает по адресу Коломенская обл., ул. Зайцева, 19, кв. 6",
+          "rationale": "В описании указаны ФИО и адрес проживания сотрудника-смотрителя — раскрытие персональных данных третьего лица в публичной карточке без оправданной необходимости. Адрес квартиры особенно чувствителен."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-27",
+      "annotator": "claude-opus-4.7-session"
+    },
+    "synth_txt19_001": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-19",
+          "severity": "medium",
+          "field_path": "full_description",
+          "quote": "доступны в нашем Telegram-канале @uglich_mishkin_tours, там же оперативные ответы менеджера и предзаказ места",
+          "rationale": "Карточка перенаправляет пользователя на внешний Telegram-канал для получения деталей программы и общения с менеджером — это попытка перевести коммуникацию и предзаказ за пределы платформы (TXT-19, сторонние ссылки и контакты)."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-27",
+      "annotator": "claude-opus-4.7-session"
+    },
+    "synth_txt19_002": {
+      "expected_clean": false,
+      "violations": [
+        {
+          "rule_id": "TXT-19",
+          "severity": "medium",
+          "field_path": "full_description",
+          "quote": "продаются через сайт-агрегатор по адресу tickets-online.ru/sinitsa-pravda, бронирование без комиссии",
+          "rationale": "В описании события указан внешний сайт-агрегатор для покупки билетов в обход маркетплейса — нарушение TXT-19 (сторонние ссылки и контакты для переноса транзакции вне платформы)."
+        }
+      ],
+      "notes": null,
+      "annotated_at": "2026-04-27",
+      "annotator": "claude-opus-4.7-session"
+    }
+  }
+}

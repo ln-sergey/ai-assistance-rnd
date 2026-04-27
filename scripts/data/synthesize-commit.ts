@@ -41,7 +41,7 @@ const SYNTH_CARDS_JSONL = join(SYNTH_DIR, 'cards.raw.jsonl');
 const SYNTH_ANNOTATIONS = join(ANNOTATIONS_DIR, 'synthetic.json');
 
 const GENERATOR_MODEL = 'claude-opus-4.7-session';
-const PROMPT_VERSION = 'synthesize-card-v1';
+const PROMPT_VERSION = 'synthesize-card-v2';
 const ANNOTATOR_LABEL = 'claude-opus-4.7-session';
 const TODAY = new Date().toISOString().slice(0, 10);
 
