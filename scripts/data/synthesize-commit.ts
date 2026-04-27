@@ -46,8 +46,16 @@ const SYNTH_ANNOTATIONS = join(ANNOTATIONS_DIR, 'synthetic.json');
 // SYNTH_ANNOTATOR_LABEL для annotator в synthetic.json.
 const GENERATOR_MODEL = process.env.SYNTH_GENERATOR_MODEL ?? 'local-ai-agent-session';
 const ANNOTATOR_LABEL = process.env.SYNTH_ANNOTATOR_LABEL ?? 'local-ai-agent-session';
-const PROMPT_VERSION = 'synthesize-card-v4';
+const PROMPT_VERSION_FALLBACK = 'synthesize-card-v4';
 const TODAY = new Date().toISOString().slice(0, 10);
+
+function promptVersionFromPending(raw: SynthPendingRaw): string {
+  const help = raw._help as { prompt_path?: unknown } | undefined;
+  const path = typeof help?.prompt_path === 'string' ? help.prompt_path : null;
+  if (!path) return PROMPT_VERSION_FALLBACK;
+  const base = path.replace(/^.*\//, '').replace(/\.txt$/, '');
+  return base || PROMPT_VERSION_FALLBACK;
+}
 
 type Severity = 'low' | 'medium' | 'high' | 'critical';
 
@@ -383,7 +391,7 @@ async function main(): Promise<void> {
       target_rule_id: targetRuleId,
       topic_hint: topicHint,
       generator_model: GENERATOR_MODEL,
-      prompt_version: PROMPT_VERSION,
+      prompt_version: promptVersionFromPending(raw),
     };
 
     processed.push({ pendingPath: path, caseId, card, meta, annotation });
