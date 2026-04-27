@@ -1,4 +1,4 @@
-// Валидатор tест-кейсов в datasets/cases/real-{clean,dirty}/.
+// Валидатор tест-кейсов в datasets/cases/{real,synthetic}-{clean,dirty}/.
 // Каждый файл должен соответствовать card_case в datasets/schema/test_case.schema.json
 // (через oneOf), а severity внутри expected_violations[] — совпадать с severity
 // одноимённого правила в text_rules.yaml / image_rules.yaml.
@@ -127,8 +127,22 @@ async function main(): Promise<void> {
     ...parseRulesSeverities(await readFile(IMAGE_RULES_PATH, 'utf8')),
   ]);
 
-  const cleanFiles = await listJsonFiles(join(CASES_ROOT, 'real-clean'));
-  const dirtyFiles = await listJsonFiles(join(CASES_ROOT, 'real-dirty'));
+  const dirsClean = ['real-clean', 'synthetic-clean'];
+  const dirsDirty = ['real-dirty', 'synthetic-dirty'];
+  const cleanFiles: string[] = [];
+  const dirtyFiles: string[] = [];
+  for (const d of dirsClean) {
+    const dir = join(CASES_ROOT, d);
+    if ((await readdir(CASES_ROOT)).includes(d)) {
+      cleanFiles.push(...(await listJsonFiles(dir)));
+    }
+  }
+  for (const d of dirsDirty) {
+    const dir = join(CASES_ROOT, d);
+    if ((await readdir(CASES_ROOT)).includes(d)) {
+      dirtyFiles.push(...(await listJsonFiles(dir)));
+    }
+  }
   const allFiles = [
     ...cleanFiles.map((f) => ({ path: f, expectedDirty: false })),
     ...dirtyFiles.map((f) => ({ path: f, expectedDirty: true })),
@@ -147,7 +161,7 @@ async function main(): Promise<void> {
 
     if (expectedDirty !== !data.expected_clean) {
       errors.push(
-        `${path}: расположение vs expected_clean — файл лежит в ${expectedDirty ? 'real-dirty' : 'real-clean'}, а expected_clean=${data.expected_clean}`,
+        `${path}: расположение vs expected_clean — файл в ${expectedDirty ? '*-dirty' : '*-clean'}, а expected_clean=${data.expected_clean}`,
       );
       continue;
     }

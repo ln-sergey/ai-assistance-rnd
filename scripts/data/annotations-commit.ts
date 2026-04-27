@@ -22,7 +22,7 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 import type { ErrorObject, ValidateFunction } from 'ajv';
 
-import { loadSourcesConfig } from '../parse/lib/config.js';
+import { loadSourcesConfig, realSources } from '../parse/lib/config.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(here, '../..');
@@ -218,15 +218,17 @@ function inferSource(raw: PendingRaw, knownSources: readonly string[]): string |
 async function main(): Promise<void> {
   const args = parseArgs();
   const cfg = await loadSourcesConfig();
-  const knownSources = Object.keys(cfg.sources).sort();
+  const knownSources = realSources(cfg);
 
   if (!existsSync(PENDING_DIR)) {
     console.log('[commit] datasets/annotations/pending/ нет — нечего коммитить');
     return;
   }
 
+  // synth-*.json — pending для синтетики, обрабатываются pnpm synth:commit;
+  // real-pending имеют префикс <source>_<id>.json.
   const entries = (await readdir(PENDING_DIR))
-    .filter((n) => n.endsWith('.json'))
+    .filter((n) => n.endsWith('.json') && !n.startsWith('synth-'))
     .sort();
   if (entries.length === 0) {
     console.log('[commit] pending пуст');

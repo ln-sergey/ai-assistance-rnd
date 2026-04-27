@@ -1,11 +1,11 @@
 // Материализатор card_case-файлов из cards.raw.jsonl + datasets/annotations/<source>.json.
-// Заменяет scripts/generate-real-cases.ts: разметка теперь живёт отдельно от кода.
 //
 // Логика:
 //   1) собираем все source из datasets/sources.config.json
 //   2) для каждого source читаем cards.raw.jsonl + annotations/<source>.json
 //   3) для каждой карточки с записью в annotations — материализуем card_case
-//      в datasets/cases/real-{clean,dirty}/<case_id>.json
+//        - real:      datasets/cases/real-{clean,dirty}/<case_id>.json
+//        - synthetic: datasets/cases/synthetic-{clean,dirty}/<case_id>.json
 //   4) карточки без annotations — pending (репортим в конце)
 //   5) защита от рассинхрона: если карточка переехала clean↔dirty, удаляем
 //      её файл из противоположной директории
@@ -14,17 +14,16 @@ import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { loadSourcesConfig } from '../parse/lib/config.js';
+import { loadSourcesConfig, sourceKind } from '../parse/lib/config.js';
+import type { SourceKind } from '../parse/lib/config.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(here, '../..');
 const DATASETS_DIR = join(REPO_ROOT, 'datasets');
 const ANNOTATIONS_DIR = join(DATASETS_DIR, 'annotations');
 const CASES_DIR = join(DATASETS_DIR, 'cases');
-const CLEAN_DIR = join(CASES_DIR, 'real-clean');
-const DIRTY_DIR = join(CASES_DIR, 'real-dirty');
 
-const TODAY = '2026-04-25';
+const TODAY = new Date().toISOString().slice(0, 10);
 
 type Severity = 'low' | 'medium' | 'high' | 'critical';
 
@@ -49,20 +48,55 @@ interface AnnotationStore {
   annotations: Record<string, Annotation>;
 }
 
+interface SynthMeta {
+  generator_model?: string | null;
+  prompt_version?: string | null;
+}
+
 interface CardRecord {
   card: Record<string, unknown> & { id: string };
-  _meta?: unknown;
+  _meta?: SynthMeta;
+}
+
+type CaseSource = 'production' | 'synthetic';
+
+interface Generator {
+  model: string | null;
+  prompt_version: string | null;
+  date: string;
 }
 
 interface CardCase {
   case_id: string;
   kind: 'card_case';
-  source: 'production';
-  generator: { model: null; prompt_version: null; date: string };
+  source: CaseSource;
+  generator: Generator;
   card: Record<string, unknown>;
   expected_violations: Violation[];
   expected_clean: boolean;
   notes: string | null;
+}
+
+interface DirSet {
+  clean: string;
+  dirty: string;
+}
+
+const REAL_DIRS: DirSet = {
+  clean: join(CASES_DIR, 'real-clean'),
+  dirty: join(CASES_DIR, 'real-dirty'),
+};
+const SYNTH_DIRS: DirSet = {
+  clean: join(CASES_DIR, 'synthetic-clean'),
+  dirty: join(CASES_DIR, 'synthetic-dirty'),
+};
+
+function dirsForKind(kind: SourceKind): DirSet {
+  return kind === 'synthetic' ? SYNTH_DIRS : REAL_DIRS;
+}
+
+function caseSourceForKind(kind: SourceKind): CaseSource {
+  return kind === 'synthetic' ? 'synthetic' : 'production';
 }
 
 async function readJsonl(path: string): Promise<CardRecord[]> {
@@ -73,8 +107,7 @@ async function readJsonl(path: string): Promise<CardRecord[]> {
     .map((l) => JSON.parse(l) as CardRecord);
 }
 
-async function readAnnotations(source: string): Promise<AnnotationStore | null> {
-  const path = join(ANNOTATIONS_DIR, `${source}.json`);
+async function readAnnotations(path: string): Promise<AnnotationStore | null> {
   try {
     const raw = await readFile(path, 'utf8');
     return JSON.parse(raw) as AnnotationStore;
@@ -93,13 +126,25 @@ async function rmIfExists(path: string): Promise<void> {
   }
 }
 
-function buildCase(card: Record<string, unknown> & { id: string }, ann: Annotation): CardCase {
+function buildCase(
+  rec: CardRecord,
+  ann: Annotation,
+  kind: SourceKind,
+): CardCase {
+  const generator: Generator =
+    kind === 'synthetic'
+      ? {
+          model: rec._meta?.generator_model ?? null,
+          prompt_version: rec._meta?.prompt_version ?? null,
+          date: TODAY,
+        }
+      : { model: null, prompt_version: null, date: TODAY };
   return {
-    case_id: card.id,
+    case_id: rec.card.id,
     kind: 'card_case',
-    source: 'production',
-    generator: { model: null, prompt_version: null, date: TODAY },
-    card,
+    source: caseSourceForKind(kind),
+    generator,
+    card: rec.card,
     expected_violations: ann.violations,
     expected_clean: ann.expected_clean,
     notes: ann.notes,
@@ -107,8 +152,10 @@ function buildCase(card: Record<string, unknown> & { id: string }, ann: Annotati
 }
 
 async function main(): Promise<void> {
-  await mkdir(CLEAN_DIR, { recursive: true });
-  await mkdir(DIRTY_DIR, { recursive: true });
+  await mkdir(REAL_DIRS.clean, { recursive: true });
+  await mkdir(REAL_DIRS.dirty, { recursive: true });
+  await mkdir(SYNTH_DIRS.clean, { recursive: true });
+  await mkdir(SYNTH_DIRS.dirty, { recursive: true });
 
   const cfg = await loadSourcesConfig();
   const sources = Object.keys(cfg.sources).sort();
@@ -119,10 +166,27 @@ async function main(): Promise<void> {
   const pending: string[] = [];
 
   for (const source of sources) {
-    const cards = await readJsonl(join(DATASETS_DIR, source, 'cards.raw.jsonl'));
+    const entry = cfg.sources[source];
+    if (!entry) continue;
+    const kind = sourceKind(entry);
+    const dirs = dirsForKind(kind);
+
+    const cardsPath = join(DATASETS_DIR, source, 'cards.raw.jsonl');
+    const annotationsPath = join(ANNOTATIONS_DIR, `${source}.json`);
+    let cards: CardRecord[];
+    try {
+      cards = await readJsonl(cardsPath);
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+        // Synthetic-источник до первого synth:commit может не иметь файла —
+        // это не ошибка.
+        continue;
+      }
+      throw err;
+    }
     const cardIds = new Set(cards.map((r) => r.card.id));
 
-    const store = await readAnnotations(source);
+    const store = await readAnnotations(annotationsPath);
     const annotations = store?.annotations ?? {};
 
     const orphans = Object.keys(annotations).filter((id) => !cardIds.has(id));
@@ -139,9 +203,9 @@ async function main(): Promise<void> {
         pending.push(id);
         continue;
       }
-      const c = buildCase(rec.card, ann);
-      const targetDir = c.expected_clean ? CLEAN_DIR : DIRTY_DIR;
-      const oppositeDir = c.expected_clean ? DIRTY_DIR : CLEAN_DIR;
+      const c = buildCase(rec, ann, kind);
+      const targetDir = c.expected_clean ? dirs.clean : dirs.dirty;
+      const oppositeDir = c.expected_clean ? dirs.dirty : dirs.clean;
       const targetPath = join(targetDir, `${id}.json`);
       const oppositePath = join(oppositeDir, `${id}.json`);
       await rmIfExists(oppositePath);

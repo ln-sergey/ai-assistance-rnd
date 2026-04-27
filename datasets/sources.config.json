@@ -4,6 +4,7 @@
     "sputnik8":    { "target_total": 60, "seed": 42 },
     "pmpoperator": { "target_total": 22, "seed": 42 },
     "scantour":    { "target_total": 22, "seed": 42 },
-    "afisha":      { "target_total": 18, "seed": 42 }
+    "afisha":      { "target_total": 18, "seed": 42 },
+    "synthetic":   { "kind": "synthetic", "target_total": 0, "seed": 0 }
   }
 }

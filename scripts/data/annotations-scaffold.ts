@@ -17,7 +17,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { loadSourcesConfig } from '../parse/lib/config.js';
+import { loadSourcesConfig, realSources } from '../parse/lib/config.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(here, '../..');
@@ -159,12 +159,18 @@ async function main(): Promise<void> {
   const args = parseArgs();
   const cfg = await loadSourcesConfig();
 
-  const allSources = Object.keys(cfg.sources).sort();
+  const allReal = realSources(cfg);
   if (args.source && !cfg.sources[args.source]) {
-    const known = allSources.join(', ');
+    const known = allReal.join(', ');
     bail(`[scaffold] источник "${args.source}" не найден (известные: ${known})`);
   }
-  const sources = args.source ? [args.source] : allSources;
+  if (args.source && !allReal.includes(args.source)) {
+    bail(
+      `[scaffold] источник "${args.source}" не real (kind=${cfg.sources[args.source]?.kind}). ` +
+        'Для синтетики используй pnpm synth:scaffold.',
+    );
+  }
+  const sources = args.source ? [args.source] : allReal;
 
   await mkdir(PENDING_DIR, { recursive: true });
 

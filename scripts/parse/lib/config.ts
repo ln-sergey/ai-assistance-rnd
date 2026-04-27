@@ -4,6 +4,12 @@
 // Приоритет: CLI > config. Source-specific параметры (SPB_SHARE,
 // MIN_PER_TYPE, …) остаются в коде harvester'а — здесь только то, что
 // унифицировано между всеми четырьмя источниками.
+//
+// Kind: 'real' | 'synthetic'. По умолчанию real (поле kind отсутствует
+// у sputnik8/pmpoperator/scantour/afisha). Synthetic-источник —
+// техническая запись для массовых операций (--all в *-delete,
+// перебор источников в cases-generate); harvest-цикла у него нет, и
+// target_total / seed = 0.
 
 import { readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
@@ -15,7 +21,10 @@ import type { ValidateFunction } from 'ajv';
 const here = dirname(fileURLToPath(import.meta.url));
 const CONFIG_PATH = resolve(here, '../../../datasets/sources.config.json');
 
+export type SourceKind = 'real' | 'synthetic';
+
 export interface SourceConfig {
+  kind?: SourceKind;
   target_total: number;
   seed: number;
 }
@@ -50,7 +59,10 @@ const SOURCES_CONFIG_SCHEMA = {
           required: ['target_total', 'seed'],
           additionalProperties: false,
           properties: {
-            target_total: { type: 'integer', minimum: 1 },
+            kind: { enum: ['real', 'synthetic'] },
+            // 0 допустим для kind=synthetic; для kind=real проверяется
+            // отдельно в getSourceConfig (минимум 1).
+            target_total: { type: 'integer', minimum: 0 },
             seed: { type: 'integer', minimum: 0 },
           },
         },
@@ -104,10 +116,39 @@ export async function getSourceConfig(
       `[config] источник "${source}" не найден в datasets/sources.config.json (известные: ${known})`,
     );
   }
+  if (sourceKind(entry) !== 'real') {
+    throw new Error(
+      `[config] getSourceConfig вызвана на не-real источнике "${source}" (kind=${entry.kind}). ` +
+        'Harvest-цикла у synthetic нет.',
+    );
+  }
+  if (entry.target_total < 1) {
+    throw new Error(
+      `[config] real-источник "${source}" имеет target_total=${entry.target_total}; ожидалось ≥ 1`,
+    );
+  }
   return {
     target: cli.target ?? entry.target_total,
     seed: cli.seed ?? entry.seed,
   };
+}
+
+export function sourceKind(entry: SourceConfig): SourceKind {
+  return entry.kind ?? 'real';
+}
+
+export function listSourcesByKind(cfg: SourcesConfig, kind: SourceKind): string[] {
+  return Object.keys(cfg.sources)
+    .filter((s) => sourceKind(cfg.sources[s] as SourceConfig) === kind)
+    .sort();
+}
+
+export function realSources(cfg: SourcesConfig): string[] {
+  return listSourcesByKind(cfg, 'real');
+}
+
+export function syntheticSources(cfg: SourcesConfig): string[] {
+  return listSourcesByKind(cfg, 'synthetic');
 }
 
 // Парсит --target=N и --seed=N из process.argv. Прочие аргументы игнорирует.

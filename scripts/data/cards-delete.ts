@@ -1,10 +1,14 @@
 // Удаляет спаршеные данные одного источника (или всех):
-//   datasets/<source>/cards.raw.jsonl
-//   datasets/<source>/cards.rejected.jsonl
-//   datasets/<source>/images.raw.jsonl
-//   datasets/<source>/images.oversize.txt
-//   datasets/<source>/html-cache/   (рекурсивно)
-//   datasets/images/<source>_*.{jpg,png,webp,gif}
+//   real:
+//     datasets/<source>/cards.raw.jsonl
+//     datasets/<source>/cards.rejected.jsonl
+//     datasets/<source>/images.raw.jsonl
+//     datasets/<source>/images.oversize.txt
+//     datasets/<source>/html-cache/   (рекурсивно)
+//     datasets/images/<source>_*.{jpg,png,webp,gif}
+//   synthetic:
+//     datasets/synthetic/cards.raw.jsonl
+//     datasets/synthetic/cards.rejected.jsonl  (если есть)
 //
 // НЕ трогает urls.txt (точка входа harvester'а), datasets/annotations/,
 // datasets/cases/. Аннотации и материализованные case'ы — отдельной
@@ -13,6 +17,7 @@
 // Использование:
 //   pnpm cards:delete --source=afisha --dry-run
 //   pnpm cards:delete --source=afisha --yes
+//   pnpm cards:delete --source=synthetic --yes
 //   pnpm cards:delete --all --yes
 
 import { existsSync } from 'node:fs';
@@ -20,7 +25,7 @@ import { readdir, rm } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { loadSourcesConfig } from '../parse/lib/config.js';
+import { loadSourcesConfig, sourceKind } from '../parse/lib/config.js';
 import { confirmInteractive, parseDeleteCli, resolveSources } from './lib/delete-cli.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -56,7 +61,7 @@ async function countDirEntries(dir: string): Promise<number> {
   return (await readdir(dir)).length;
 }
 
-async function buildPlan(source: string): Promise<PlanItem[]> {
+async function buildPlanReal(source: string): Promise<PlanItem[]> {
   const srcDir = join(DATASETS_DIR, source);
   const items: PlanItem[] = [];
 
@@ -89,6 +94,20 @@ async function buildPlan(source: string): Promise<PlanItem[]> {
     isDir: false,
   });
 
+  return items;
+}
+
+async function buildPlanSynthetic(): Promise<PlanItem[]> {
+  const srcDir = join(DATASETS_DIR, 'synthetic');
+  const items: PlanItem[] = [];
+  for (const file of ['cards.raw.jsonl', 'cards.rejected.jsonl']) {
+    const path = join(srcDir, file);
+    items.push({
+      label: file,
+      paths: existsSync(path) ? [path] : [],
+      isDir: false,
+    });
+  }
   return items;
 }
 
@@ -130,7 +149,15 @@ async function main(): Promise<void> {
   const sources = resolveSources(args, cfg);
 
   const plans = await Promise.all(
-    sources.map(async (source) => ({ source, items: await buildPlan(source) })),
+    sources.map(async (source) => {
+      const entry = cfg.sources[source];
+      if (!entry) throw new Error(`[delete] internal: ${source} нет в config`);
+      const items =
+        sourceKind(entry) === 'synthetic'
+          ? await buildPlanSynthetic()
+          : await buildPlanReal(source);
+      return { source, items };
+    }),
   );
 
   for (const { source, items } of plans) printPlan(source, items);
