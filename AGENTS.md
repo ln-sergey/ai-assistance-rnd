@@ -176,7 +176,24 @@ pnpm annotations:commit         # перенести заполненные pend
 
 # материализовать card_case'ы из cards + annotations
 pnpm cases:generate
+
+# аудит покрытия rule_id (real + synthetic + дельта от квоты)
+pnpm cases:audit                # таблица, --json для машинного вывода
+
+# synthetic flow (подробности — docs/synthetic-guide.md)
+pnpm synth:scaffold             # pending'и под целевые правила (--rule / --from-audit / --clean-control)
+pnpm synth:validate             # длины, blocklist, diversity (network-free, без LLM)
+pnpm synth:commit               # pending → cards.raw.jsonl + synthetic.json
 ```
+
+Синтетический pipeline идентичен real-аннотации (scaffold → fill →
+commit), разделение источников — `--source=synthetic` для
+`cards:delete`/`annotations:delete`. Целевая квота — в
+`datasets/synthetic-quota.yaml` (defaults по severity + override per
+rule_id). Промпт-генератор — `prompts/synthesize-card-vN.txt`
+(append-only). Blind re-annotation между `synth:validate` и
+`synth:commit` — отдельный шаг workflow в локальной сессии (НЕ скрипт),
+см. `docs/synthetic-guide.md`.
 
 
 ## Навигация и поиск
@@ -202,6 +219,10 @@ pnpm cases:generate
 - Не «чинить» `text_rules.yaml` / `image_rules.yaml` автоматически, даже
   если что-то кажется опечаткой.
 - Не заменять Promptfoo на свою самописную обвязку «потому что проще».
+- Не вызывать целевых провайдеров (Yandex / GigaChat) или любых эталонных AI
+  через API для подготовки/разметки/валидации тестовых данных. Pipeline
+  подготовки данных — только через Claude Code в локальной сессии. Целевые
+  провайдеры — subject-под-тестом, их ответы нельзя примешивать к ground truth.
 
 
 ## При сомнении

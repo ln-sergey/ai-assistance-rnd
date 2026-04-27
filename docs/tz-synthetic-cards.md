@@ -800,31 +800,53 @@ Anti-clickbait критерии в теле».
 
 ## Acceptance checklist (итоговый)
 
-- [ ] `datasets/synthetic-quota.yaml` создан (defaults + overrides).
-- [ ] `scripts/data/cases-audit.ts` + `pnpm cases:audit` работает,
+- [x] `datasets/synthetic-quota.yaml` создан (defaults + overrides).
+- [x] `scripts/data/cases-audit.ts` + `pnpm cases:audit` работает,
       на пустой synthetic совпадает с фактическим распределением в
       `datasets/cases/real-{clean,dirty}/` (см. «Текущее состояние»).
-- [ ] `prompts/synthesize-card-v1.txt` создан, содержит шапку с
-      diff-нотой и разделы 1-7.
-- [ ] `datasets/synthetic/cards.raw.jsonl` инициализирован.
-- [ ] `datasets/annotations/synthetic.json` инициализирован.
-- [ ] `scripts/data/synthesize-scaffold.ts` + `pnpm synth:scaffold`.
-- [ ] `scripts/data/synthesize-commit.ts` + `pnpm synth:commit`.
-- [ ] `scripts/data/synthesize-validate.ts` + `pnpm synth:validate`.
-- [ ] `scripts/data/cases-generate.ts` подхватывает synthetic.
-- [ ] `scripts/data/cards-delete.ts` поддерживает `--source=synthetic`.
-- [ ] `scripts/data/annotations-delete.ts` поддерживает
+- [x] `prompts/synthesize-card-v1.txt` создан, содержит шапку с
+      diff-нотой и разделы 1-7. (плюс `synthesize-card-v2.txt` —
+      fix идентификации правил, см. шапку v2).
+- [x] `datasets/synthetic/cards.raw.jsonl` инициализирован.
+- [x] `datasets/annotations/synthetic.json` инициализирован.
+- [x] `scripts/data/synthesize-scaffold.ts` + `pnpm synth:scaffold`.
+- [x] `scripts/data/synthesize-commit.ts` + `pnpm synth:commit`.
+- [x] `scripts/data/synthesize-validate.ts` + `pnpm synth:validate`.
+- [x] `scripts/data/cases-generate.ts` подхватывает synthetic.
+- [x] `scripts/data/cards-delete.ts` поддерживает `--source=synthetic`.
+- [x] `scripts/data/annotations-delete.ts` поддерживает
       `--source=synthetic`.
-- [ ] `scripts/data/annotations-list-pending.ts` различает real vs
+- [x] `scripts/data/annotations-list-pending.ts` различает real vs
       synth-pending.
-- [ ] `datasets/synthetic-blocklist.txt` создан.
-- [ ] `docs/synthesize-subagent-template.md` ≤ 80 строк.
-- [ ] `docs/synthetic-guide.md` создан.
-- [ ] `AGENTS.md` обновлён (команды + lifecycle).
-- [ ] `docs/real-cards-audit.md` дополнен ссылкой на synthetic.
-- [ ] Smoke 10 synth-карточек прошёл, видны в `cases:audit`.
-- [ ] `pnpm typecheck` чистый.
-- [ ] Sprint P5 разбит на 6 коммитов (этапы 1–6).
+- [x] `datasets/synthetic-blocklist.txt` создан.
+- [x] `docs/synthesize-subagent-template.md` ≤ 80 строк.
+- [x] `docs/synthetic-guide.md` создан.
+- [x] `AGENTS.md` обновлён (команды + lifecycle).
+- [x] `docs/real-cards-audit.md` дополнен ссылкой на synthetic.
+- [x] Smoke 10 synth-карточек прошёл, видны в `cases:audit`.
+- [x] `pnpm typecheck` чистый.
+- [x] Sprint P5 разбит на 6 коммитов (этапы 1–6).
+
+## Sprint P5 ready — итоги (2026-04-27)
+
+Финальный smoke на момент закрытия этапа 6:
+
+- `pnpm cases:audit` → 47 hits (39 real + 8 synthetic) на 14 правилах,
+  21 правило без покрытия. Дельта от квоты — 194 (полная квота
+  ~225 закрывается итеративно следующими спринтами).
+- `pnpm synth:validate` → 10 items, 0 errors, 0 warnings (5-95
+  перцентили: title 11..74, short_description 60..350,
+  full_description 198..1867; diversity 100 %).
+- `tsx scripts/validate-cases.ts` → total=132, passed=132, errors=0
+  (67 real + 10 synthetic + 55 image-кейсов мимо этого спринта).
+- `pnpm typecheck` чистый.
+- `pnpm annotations:list` → 0 pending'ов real и synth.
+
+Полный объём первой партии (Р10: 30 кейсов на критические правила) —
+закрыт smoke'ом 10 в этапе 5. Расширение до полной квоты ~175 кейсов —
+итеративно, следующая сессия. Митигации трёх рисков (натуральность,
+дрейф рулбука, утечка subject-под-тестом в ground truth) задокументированы
+в этом ТЗ и `docs/synthetic-guide.md`.
 
 ## Закрытые вопросы (резолюции 2026-04-27)
 
