@@ -37,6 +37,7 @@
     "cases:audit": "tsx scripts/data/cases-audit.ts",
     "synth:scaffold": "tsx scripts/data/synthesize-scaffold.ts",
     "synth:commit": "tsx scripts/data/synthesize-commit.ts",
+    "synth:validate": "tsx scripts/data/synthesize-validate.ts",
     "rules:compact": "tsx scripts/data/build-rules-compact.ts"
   },
   "dependencies": {
