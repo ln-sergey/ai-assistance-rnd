@@ -46,7 +46,7 @@ const SYNTH_ANNOTATIONS = join(ANNOTATIONS_DIR, 'synthetic.json');
 // SYNTH_ANNOTATOR_LABEL для annotator в synthetic.json.
 const GENERATOR_MODEL = process.env.SYNTH_GENERATOR_MODEL ?? 'local-ai-agent-session';
 const ANNOTATOR_LABEL = process.env.SYNTH_ANNOTATOR_LABEL ?? 'local-ai-agent-session';
-const PROMPT_VERSION_FALLBACK = 'synthesize-card-v6';
+const PROMPT_VERSION_FALLBACK = 'synthesize-card-v7';
 const TODAY = new Date().toISOString().slice(0, 10);
 
 function promptVersionFromPending(raw: SynthPendingRaw): string {

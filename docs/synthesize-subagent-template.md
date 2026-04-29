@@ -21,8 +21,8 @@ synth-pending'ов. Канон не дублируется — субагент 
 
 ## Канонические артефакты — читать в первую очередь
 
-- `prompts/synthesize-card-v6.txt` — основной промпт (актуальная
-  версия на 2026-04-27; при обновлении — `prompts/CHANGELOG.md`).
+- `prompts/synthesize-card-v7.txt` — основной промпт (актуальная
+  версия на 2026-04-29; при обновлении — `prompts/CHANGELOG.md`).
 - `datasets/text_rules.compact.json` — таблица TXT-правил.
 - `datasets/schema/product_card.schema.json` — целевая схема карточки.
 - `datasets/synthetic-blocklist.txt` — запрещённые маркеры синтетики.
