@@ -5,7 +5,7 @@
   "generator": {
     "model": "claude-opus-4.7-session",
     "prompt_version": "synthesize-card-v2",
-    "date": "2026-04-27"
+    "date": "2026-04-29"
   },
   "card": {
     "id": "synth_txt19_002",
