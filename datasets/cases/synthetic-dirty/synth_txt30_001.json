@@ -1,0 +1,108 @@
+{
+  "case_id": "synth_txt30_001",
+  "kind": "card_case",
+  "source": "synthetic",
+  "generator": {
+    "model": "local-ai-agent-session",
+    "prompt_version": "synthesize-card-v6",
+    "date": "2026-04-29"
+  },
+  "card": {
+    "id": "synth_txt30_001",
+    "product_type": "excursion",
+    "title": "Borough Market food walk: cheese, oysters and craft pies",
+    "short_description": "A three-hour walking tasting tour around Borough Market with stops at six independent stalls. Small group, easy pace, lots of stops to taste and chat with the makers.",
+    "full_description": "Borough Market is the oldest produce market in London, with traders working on the same site since the 13th century. On this tour we walk between six carefully chosen stalls and try a signature item at each one. We start with a sourdough flight at Bread Ahead, then move to Neal's Yard Dairy for three British farmhouse cheeses paired with chutney. After that we cross to the Wright Brothers counter for a glass of dry cider and a Maldon rock oyster. Halfway through the route we take a short break at a quiet courtyard near Southwark Cathedral and talk about how the market changed after the redevelopment of the 1990s. The second half of the walk covers a Spanish charcuterie counter, a single-origin coffee roaster and a hand-raised pork pie maker who works only with British rare-breed pork. At every stop the trader explains where the produce comes from, how it is made and what to look for when you buy it yourself. The pace is relaxed: we do not rush between stalls and we do not try to fit too much food into the route. By the end you will have tasted nine to ten items, walked around two kilometres and gained a working knowledge of the market that goes well beyond the tourist headlines. The tour runs in any weather - the market is mostly under cover - and finishes near London Bridge station, so you can continue exploring on your own afterwards.",
+    "program_items": [
+      {
+        "order": 1,
+        "title": "Meeting point and introduction",
+        "description": "Meet by the green market sign on Stoney Street at 10:45. Short introduction to the history of the market and the plan for the next three hours."
+      },
+      {
+        "order": 2,
+        "title": "Bread Ahead bakery",
+        "description": "Tasting flight of three sourdoughs and a seasonal focaccia. The head baker explains the long-fermentation process they use."
+      },
+      {
+        "order": 3,
+        "title": "Neal's Yard Dairy",
+        "description": "Three British farmhouse cheeses - typically a Montgomery cheddar, a Kirkham's Lancashire and a Stichelton blue - served with quince paste and oat biscuits."
+      },
+      {
+        "order": 4,
+        "title": "Wright Brothers oyster bar",
+        "description": "One Maldon rock oyster per guest with a small glass of dry English cider. Vegetarian alternative available on request."
+      },
+      {
+        "order": 5,
+        "title": "Break at Southwark Cathedral courtyard",
+        "description": "Twenty-minute pause with still and sparkling water. Time to ask questions and look at archive photos of the market."
+      },
+      {
+        "order": 6,
+        "title": "Brindisa charcuterie and Monmouth Coffee",
+        "description": "A small plate of jamon iberico and chorizo at Brindisa, followed by a single-origin filter coffee from Monmouth."
+      },
+      {
+        "order": 7,
+        "title": "Pieminister pork pie finale",
+        "description": "Hand-raised pork pie made with British rare-breed pork, served with English mustard. Tour ends here at around 14:00."
+      }
+    ],
+    "services": [
+      {
+        "name": "Tastings at six stalls",
+        "description": "All food and drink tastings listed in the programme are included in the price."
+      },
+      {
+        "name": "English-speaking food guide",
+        "description": "A trained guide with five years of experience leading walking food tours in central London accompanies the group throughout."
+      },
+      {
+        "name": "Printed market map",
+        "description": "Each guest receives a printed map with the stalls visited on the tour and a short list of recommended traders for return visits."
+      },
+      {
+        "name": "Bottled water",
+        "description": "Still and sparkling water during the mid-tour break."
+      },
+      {
+        "name": "Vegetarian and pescatarian options",
+        "description": "Plant-based and pescatarian alternatives are arranged at each stall when notified at booking."
+      }
+    ],
+    "location": {
+      "address": "Borough Market, 8 Southwark Street, London SE1 1TL, United Kingdom",
+      "route_comment": "Stoney Street and Cathedral Street, finishing at Bedale Street near London Bridge station.",
+      "meeting_point_comment": "By the green Borough Market sign on Stoney Street, opposite the Market Porter pub."
+    },
+    "contacts_block": {
+      "public_comment": "All bookings and questions are handled through the platform messaging."
+    },
+    "schedule": {
+      "format": "recurring",
+      "duration_minutes": 195
+    },
+    "age_restriction": "12+",
+    "group_size": {
+      "min": 4,
+      "max": 12
+    },
+    "languages": [
+      "en"
+    ],
+    "images": []
+  },
+  "expected_violations": [
+    {
+      "rule_id": "TXT-30",
+      "severity": "low",
+      "field_path": "full_description",
+      "quote": "Borough Market is the oldest produce market in London, with traders working on the same site since the 13th century. On this tour we walk between six carefully chosen stalls and try a signature item at each one.",
+      "rationale": "Полный текст карточки написан на английском языке без перевода на русский, тогда как основная аудитория маркетплейса и модерация — русскоязычные. Это делает текст непонятным для целевой аудитории и попадает под TXT-30."
+    }
+  ],
+  "expected_clean": false,
+  "notes": null
+}

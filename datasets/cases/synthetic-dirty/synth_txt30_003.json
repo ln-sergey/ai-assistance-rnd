@@ -1,0 +1,98 @@
+{
+  "case_id": "synth_txt30_003",
+  "kind": "card_case",
+  "source": "synthetic",
+  "generator": {
+    "model": "local-ai-agent-session",
+    "prompt_version": "synthesize-card-v6",
+    "date": "2026-04-29"
+  },
+  "card": {
+    "id": "synth_txt30_003",
+    "product_type": "excursion",
+    "title": "Paseo en velero por la costa de Barcelona al atardecer",
+    "short_description": "Salida en velero de cuatro horas desde el Port Vell de Barcelona hasta la playa de Castelldefels, con bano en alta mar y cena ligera mediterranea a bordo durante la puesta de sol.",
+    "full_description": "Salimos del Port Vell, en pleno centro de Barcelona, y navegamos hacia el suroeste a lo largo de la costa del Garraf. Despues de poco mas de una hora de navegacion soltamos las velas frente a la playa de Castelldefels, lejos del trafico maritimo del puerto, y echamos el ancla en una pequena cala protegida del viento. Aqui hacemos una pausa de unos cuarenta minutos para banarse, hacer snorkel con material que llevamos a bordo o simplemente disfrutar del sol en la cubierta. A medida que el sol baja sobre el horizonte, el patron prepara la cena ligera: pan con tomate, una tabla de quesos manchegos, jamon serrano, ensalada de tomate y atun, y una copa de cava o vino blanco frio. La cena se sirve en la banera del velero mientras la luz dorada del atardecer da paso a los primeros tonos rosados sobre Montjuic. En el camino de vuelta navegamos a motor para llegar al puerto antes de que se haga totalmente de noche y bordeamos la fachada maritima de la Barceloneta, lo que ofrece una vista poco habitual de la ciudad desde el mar. El velero es un Beneteau Oceanis de doce metros, con bandera espanola, todas las certificaciones nauticas en regla y dos miembros de tripulacion - un patron titulado y un marinero. Capacidad maxima ocho pasajeros para garantizar comodidad. La actividad se realiza con cualquier tiempo razonable; en caso de mar gruesa la salida se traslada a otro dia sin coste adicional. Recomendamos llevar banador, toalla, una sudadera ligera para la vuelta y zapatos de suela blanda. Apto para familias con ninos a partir de seis anos siempre que vayan acompanados.",
+    "program_items": [
+      {
+        "order": 1,
+        "title": "Encuentro y briefing en Port Vell",
+        "description": "Encuentro a las 17:30 en el muelle del Real Club Nautico de Barcelona. Breve briefing de seguridad y bienvenida con una bebida fria a bordo."
+      },
+      {
+        "order": 2,
+        "title": "Salida del puerto y navegacion a vela",
+        "description": "Salimos del puerto a motor, izamos las velas al pasar el espigon y navegamos rumbo suroeste hacia la costa del Garraf durante aproximadamente una hora."
+      },
+      {
+        "order": 3,
+        "title": "Fondeo y bano en cala protegida",
+        "description": "Echamos el ancla en una cala protegida frente a Castelldefels. Pausa de cuarenta minutos para nadar, hacer snorkel o relajarse en cubierta."
+      },
+      {
+        "order": 4,
+        "title": "Cena ligera durante el atardecer",
+        "description": "Cena fria mediterranea servida en cubierta mientras se pone el sol: pan con tomate, embutidos, queso, ensalada y una copa de cava o vino blanco."
+      },
+      {
+        "order": 5,
+        "title": "Regreso al Port Vell de noche",
+        "description": "Regreso a motor bordeando la fachada maritima de la Barceloneta. Llegada al muelle alrededor de las 21:30."
+      }
+    ],
+    "services": [
+      {
+        "name": "Patron titulado y marinero",
+        "description": "El velero opera con un patron de yate titulado y un marinero a bordo durante toda la salida."
+      },
+      {
+        "name": "Material de snorkel",
+        "description": "Mascaras, tubos y aletas en varias tallas disponibles a bordo sin coste adicional."
+      },
+      {
+        "name": "Cena fria mediterranea",
+        "description": "Tabla de embutidos y quesos espanoles, pan con tomate, ensalada, fruta y postre. Opciones vegetarianas y sin gluten bajo aviso previo."
+      },
+      {
+        "name": "Bebidas",
+        "description": "Agua, refrescos, cerveza, cava o vino blanco incluidos en cantidades razonables. Bebidas espirituosas no incluidas."
+      },
+      {
+        "name": "Seguro de pasajeros",
+        "description": "Todos los pasajeros estan cubiertos por el seguro obligatorio de embarcaciones de recreo durante la salida."
+      }
+    ],
+    "location": {
+      "address": "Moll d'Espanya, Port Vell, 08039 Barcelona, Espana",
+      "route_comment": "Port Vell - costa del Garraf - cala frente a Castelldefels - regreso por la Barceloneta.",
+      "meeting_point_comment": "Pantalan H del Real Club Nautico de Barcelona, junto al velero con bandera azul y blanca."
+    },
+    "contacts_block": {
+      "public_comment": "Reservas y consultas a traves de la mensajeria de la plataforma."
+    },
+    "schedule": {
+      "format": "recurring",
+      "duration_minutes": 240
+    },
+    "age_restriction": "6+",
+    "group_size": {
+      "min": 2,
+      "max": 8
+    },
+    "languages": [
+      "es"
+    ],
+    "images": []
+  },
+  "expected_violations": [
+    {
+      "rule_id": "TXT-30",
+      "severity": "low",
+      "field_path": "full_description",
+      "quote": "Salimos del Port Vell, en pleno centro de Barcelona, y navegamos hacia el suroeste a lo largo de la costa del Garraf.",
+      "rationale": "Карточка целиком написана на испанском языке без перевода на русский, при этом основная аудитория и модерация — русскоязычные. Текст непонятен пользователю без необходимости, что соответствует TXT-30."
+    }
+  ],
+  "expected_clean": false,
+  "notes": null
+}

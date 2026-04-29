@@ -1,0 +1,98 @@
+{
+  "case_id": "synth_txt30_005",
+  "kind": "card_case",
+  "source": "synthetic",
+  "generator": {
+    "model": "local-ai-agent-session",
+    "prompt_version": "synthesize-card-v6",
+    "date": "2026-04-29"
+  },
+  "card": {
+    "id": "synth_txt30_005",
+    "product_type": "tour",
+    "title": "Five-day Cyclades sailing route from Athens to Mykonos",
+    "short_description": "A five-day skippered sailing trip across the western Cyclades on a 14-metre catamaran. Athens departure, three island stops, daily swim breaks and a finish in Mykonos.",
+    "full_description": "This is a five-day skippered sailing route on a fourteen-metre Lagoon catamaran across the western and central Cyclades. We start at the Alimos marina south of Athens and finish at the new marina of Mykonos, with three overnight stops in Kythnos, Serifos and Paros. Daily sailing distance is moderate - between thirty and forty nautical miles - so most days we are at anchor by mid-afternoon and have time for a swim, lunch on board and a short walk in the harbour town before dinner. The catamaran sleeps eight guests in four double cabins with private heads, plus a separate skipper cabin. The skipper holds a full Hellenic certificate of competence and has more than ten seasons of experience in the Cyclades. A second crew member helps with provisioning and on-board cooking. The route is built around the actual wind patterns of the Aegean in summer: we start downwind on the meltemi, work eastwards along the protected southern shore of Kythnos, then ride a comfortable beam reach to Serifos and Paros. The transition leg to Mykonos is the longest of the trip, around forty-five miles, and we usually start it before sunrise to be safely moored well before the afternoon gusts. Each evening we eat ashore in a traditional taverna chosen by the skipper - octopus and ouzo in Loutra, slow-cooked goat in Livadi, fresh seafood in Naoussa - and you keep the freedom to skip the group dinner and explore on your own. The trip is suitable for guests with no previous sailing experience; the skipper is happy to teach the basics of helm, lines and trim if you are interested. We do not run the trip in winds above force 6 - any leg with stronger forecast is rerouted to a sheltered alternative. Bring soft luggage only, light clothing for warm days, a fleece for evenings on deck, swimwear and reef-safe sunscreen.",
+    "program_items": [
+      {
+        "order": 1,
+        "title": "Day 1 - Alimos to Kythnos",
+        "description": "Boarding from 16:00 at Alimos marina. Safety briefing and provisioning, then a short overnight passage of about thirty miles to Kythnos. Anchorage in the bay of Kolona for sunset and dinner on board."
+      },
+      {
+        "order": 2,
+        "title": "Day 2 - Kythnos to Serifos",
+        "description": "Morning swim at Kolona, then a relaxed sail of around twenty-five miles to Livadi on Serifos. Walk up to the Chora in the late afternoon and group dinner at a family-run taverna."
+      },
+      {
+        "order": 3,
+        "title": "Day 3 - Serifos to Paros",
+        "description": "Sail of around thirty-five miles via the south of Sifnos with a long lunch stop at Vathi bay. Arrival in Naoussa harbour on Paros in the early evening."
+      },
+      {
+        "order": 4,
+        "title": "Day 4 - Paros and a long passage to Mykonos",
+        "description": "Morning at anchor near Kolimbithres for a swim. Afternoon passage of around forty-five miles to Mykonos, mooring at the new marina before sunset."
+      },
+      {
+        "order": 5,
+        "title": "Day 5 - Disembarkation in Mykonos",
+        "description": "Breakfast on board and disembarkation by 09:00 at the new marina of Mykonos. The skipper will help arrange a transfer to the airport or to the old port if needed."
+      }
+    ],
+    "services": [
+      {
+        "name": "Catamaran charter and crew",
+        "description": "Use of the fourteen-metre Lagoon catamaran for five days, with a certified skipper and a second crew member on board for the entire trip."
+      },
+      {
+        "name": "On-board breakfast and lunch",
+        "description": "Breakfast and a light lunch are prepared on board every day. Dinners ashore are not included in the price and are paid individually."
+      },
+      {
+        "name": "Snorkelling and SUP equipment",
+        "description": "Masks, snorkels, fins and a stand-up paddleboard are kept on board and can be used freely during anchorages."
+      },
+      {
+        "name": "Marina and fuel costs",
+        "description": "Marina fees in Kythnos, Serifos, Paros and Mykonos and the fuel used during the trip are included in the price."
+      },
+      {
+        "name": "Travel to Athens and from Mykonos",
+        "description": "Not included. Guests are responsible for their own flights or ferries to Athens before the trip and from Mykonos at the end."
+      }
+    ],
+    "location": {
+      "address": "Alimos Marina, Leoforos Poseidonos, 17455 Alimos, Greece",
+      "route_comment": "Alimos - Kythnos - Serifos - Paros - Mykonos.",
+      "meeting_point_comment": "Pier C of Alimos marina, in front of the catamaran with the trip name on the bow flag."
+    },
+    "contacts_block": {
+      "public_comment": "Bookings and questions are handled exclusively through the platform messaging."
+    },
+    "schedule": {
+      "format": "recurring",
+      "duration_minutes": 5640
+    },
+    "age_restriction": "12+",
+    "group_size": {
+      "min": 2,
+      "max": 8
+    },
+    "languages": [
+      "en"
+    ],
+    "images": []
+  },
+  "expected_violations": [
+    {
+      "rule_id": "TXT-30",
+      "severity": "low",
+      "field_path": "full_description",
+      "quote": "This is a five-day skippered sailing route on a fourteen-metre Lagoon catamaran across the western and central Cyclades.",
+      "rationale": "Карточка полностью написана на английском языке без перевода на русский, при этом основная аудитория и модерация — русскоязычные. Текст непонятен пользователю без необходимости, что соответствует TXT-30."
+    }
+  ],
+  "expected_clean": false,
+  "notes": null
+}

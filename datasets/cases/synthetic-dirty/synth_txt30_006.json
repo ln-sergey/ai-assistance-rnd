@@ -1,0 +1,93 @@
+{
+  "case_id": "synth_txt30_006",
+  "kind": "card_case",
+  "source": "synthetic",
+  "generator": {
+    "model": "local-ai-agent-session",
+    "prompt_version": "synthesize-card-v6",
+    "date": "2026-04-29"
+  },
+  "card": {
+    "id": "synth_txt30_006",
+    "product_type": "tour",
+    "title": "Tour en autocar de deux jours: chateaux de la Loire au depart de Paris",
+    "short_description": "Excursion en autocar de deux jours au depart de Paris vers la Vallee de la Loire, avec visites de Chambord, Chenonceau et Amboise et nuit dans un hotel trois etoiles a Tours.",
+    "full_description": "Ce circuit de deux jours en autocar conduit un petit groupe de Paris a la Vallee de la Loire pour decouvrir trois des chateaux les plus emblematiques de la Renaissance francaise. Le depart se fait a sept heures du matin Place de la Concorde, dans un autocar Setra recent equipe de la climatisation, du wifi et de toilettes a bord. Le trajet jusqu a Chambord dure environ deux heures et quart. La premiere visite est consacree au chateau de Chambord, le plus grand des chateaux de la Loire, avec son celebre escalier a double helice attribue a Leonard de Vinci. Le guide-conferencier accompagne le groupe a l interieur pendant une heure et demie, puis chacun dispose d une heure libre pour se promener dans les jardins a la francaise. Apres un dejeuner regional dans une auberge proche de Cheverny, l autocar repart vers le chateau de Chenonceau, surnomme le Chateau des Dames, qui s etend sur le Cher. La visite du chateau et de son jardin de Catherine de Medicis dure environ deux heures. En fin de journee, transfert a Tours et installation a l hotel Mercure Tours Centre, situe a proximite immediate de la place Plumereau. Le diner du soir n est pas inclus, ce qui laisse aux participants la liberte de choisir parmi les nombreux restaurants du vieux Tours. Le deuxieme jour, apres un petit dejeuner buffet a l hotel, l autocar prend la direction d Amboise. Visite du chateau royal et de la Chapelle Saint-Hubert, ou se trouve la sepulture de Leonard de Vinci, suivie d une promenade libre dans le centre historique. Dejeuner libre puis route de retour vers Paris en milieu d apres-midi, avec un arret photo au chateau de Blois sur le chemin. Arrivee Place de la Concorde aux alentours de dix-neuf heures. Le circuit est anime par un guide-conferencier diplome, francophone, qui voyage avec le groupe pendant l ensemble des deux jours.",
+    "program_items": [
+      {
+        "order": 1,
+        "title": "Jour 1 - Depart Paris et chateau de Chambord",
+        "description": "Depart a 07:00 de la Place de la Concorde. Trajet en autocar jusqu a Chambord, visite guidee du chateau et temps libre dans les jardins. Dejeuner regional pres de Cheverny."
+      },
+      {
+        "order": 2,
+        "title": "Jour 1 - Chenonceau et installation a Tours",
+        "description": "Visite guidee du chateau de Chenonceau et de ses jardins. Transfert a Tours et installation a l hotel Mercure Tours Centre. Soiree libre dans le quartier de la place Plumereau."
+      },
+      {
+        "order": 3,
+        "title": "Jour 2 - Amboise et chateau royal",
+        "description": "Petit dejeuner a l hotel et depart vers Amboise. Visite du chateau royal et de la Chapelle Saint-Hubert, puis promenade libre dans le centre historique. Dejeuner libre."
+      },
+      {
+        "order": 4,
+        "title": "Jour 2 - Arret photo a Blois et retour Paris",
+        "description": "Reprise de la route vers Paris en milieu d apres-midi avec un arret photo au chateau de Blois. Arrivee Place de la Concorde aux alentours de 19:00."
+      }
+    ],
+    "services": [
+      {
+        "name": "Transport en autocar climatise",
+        "description": "Autocar Setra recent avec climatisation, wifi et toilettes a bord. Le chauffeur respecte la legislation francaise sur les temps de conduite."
+      },
+      {
+        "name": "Guide-conferencier diplome",
+        "description": "Un guide-conferencier titulaire de la carte professionnelle accompagne le groupe pendant les deux journees et assure les visites en francais."
+      },
+      {
+        "name": "Une nuit a l hotel Mercure Tours Centre",
+        "description": "Nuit en chambre double standard avec petit dejeuner buffet inclus. Supplement pour chambre individuelle facturee separement."
+      },
+      {
+        "name": "Entrees des trois chateaux",
+        "description": "Billets coupe-file pour Chambord, Chenonceau et le chateau royal d Amboise inclus dans le prix."
+      },
+      {
+        "name": "Dejeuner regional du jour 1",
+        "description": "Dejeuner trois plats dans une auberge proche de Cheverny le premier jour. Boissons hors menu non incluses."
+      }
+    ],
+    "location": {
+      "address": "Place de la Concorde, 75008 Paris, France",
+      "route_comment": "Paris - Chambord - Cheverny - Chenonceau - Tours - Amboise - Blois - Paris.",
+      "meeting_point_comment": "Cote nord de la Place de la Concorde, devant l obelisque, a hauteur de l autocar Setra avec le panonceau du circuit."
+    },
+    "contacts_block": {
+      "public_comment": "Reservations et questions exclusivement via la messagerie de la plateforme."
+    },
+    "schedule": {
+      "format": "recurring",
+      "duration_minutes": 2160
+    },
+    "age_restriction": "10+",
+    "group_size": {
+      "min": 12,
+      "max": 36
+    },
+    "languages": [
+      "fr"
+    ],
+    "images": []
+  },
+  "expected_violations": [
+    {
+      "rule_id": "TXT-30",
+      "severity": "low",
+      "field_path": "full_description",
+      "quote": "Ce circuit de deux jours en autocar conduit un petit groupe de Paris a la Vallee de la Loire pour decouvrir trois des chateaux les plus emblematiques de la Renaissance francaise.",
+      "rationale": "Карточка полностью написана на французском языке без перевода на русский, тогда как основная аудитория и модерация площадки — русскоязычные. Текст непонятен пользователю без необходимости и попадает под TXT-30."
+    }
+  ],
+  "expected_clean": false,
+  "notes": null
+}

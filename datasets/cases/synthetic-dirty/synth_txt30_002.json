@@ -1,0 +1,88 @@
+{
+  "case_id": "synth_txt30_002",
+  "kind": "card_case",
+  "source": "synthetic",
+  "generator": {
+    "model": "local-ai-agent-session",
+    "prompt_version": "synthesize-card-v6",
+    "date": "2026-04-29"
+  },
+  "card": {
+    "id": "synth_txt30_002",
+    "product_type": "tour",
+    "title": "Drei-Tage-Tour: Wettersteingebirge mit Zugspitze und Partnachklamm",
+    "short_description": "Gefuehrte Bergtour ueber drei Tage in den Bayerischen Alpen mit Aufstieg auf die Zugspitze, Wanderung durch die Partnachklamm und Uebernachtung in zwei bewirteten Berghuetten.",
+    "full_description": "Diese Tour fuehrt in drei Tagen quer durch das Wettersteingebirge - von Garmisch-Partenkirchen ueber die Partnachklamm bis hinauf zur Zugspitze, mit 2.962 Metern dem hoechsten Berg Deutschlands. Wir gehen in einer kleinen Gruppe von hoechstens acht Teilnehmern mit zwei zertifizierten Bergfuehrern des Deutschen Alpenvereins. Am ersten Tag treffen wir uns am Bahnhof Garmisch-Partenkirchen und wandern durch die spektakulaere Partnachklamm hinauf zum Reintalanger, einer ruhig gelegenen Selbstversorgerhuette auf 1.366 Metern. Die Etappe ist mit etwa fuenf Stunden Gehzeit angenehm und gibt allen die Moeglichkeit, sich an die Hoehe und das Tempo zu gewoehnen. Am zweiten Tag steigen wir frueh am Morgen weiter durch das Reintal auf, ueber das Wiener-Neustaedter-Stueck und die Knorrhuette bis zum Schneefernerhaus knapp unter dem Gipfel. Bei guter Witterung erreichen wir den Gipfel der Zugspitze ueber den Stopselzieher, einen drahtseilversicherten Klettersteig der Schwierigkeit B. Trittsicherheit und Schwindelfreiheit sind dafuer Pflicht. Am Gipfelkreuz bleibt Zeit fuer Fotos und einen Kaffee in der Gipfelstation, bevor wir mit der Seilbahn auf die deutsche Seite des Eibsees absteigen. Die letzte Nacht verbringen wir in der traditionellen Hochlandhuette mit warmer Kueche und Halbpension. Am dritten Tag fuehrt der Rueckweg ueber einen aussichtsreichen Hoehenweg zurueck nach Grainau. Insgesamt legen wir rund 28 Kilometer und 1.900 Hoehenmeter zurueck. Die Tour ist fuer geuebte Wanderer mit erster Klettersteig-Erfahrung gedacht; wer nur einen einfachen Berggang sucht, sollte sie nicht buchen. Bei stuermischer Witterung im Gipfelbereich entscheiden die Bergfuehrer kurzfristig ueber eine Alternative im Reintal.",
+    "program_items": [
+      {
+        "order": 1,
+        "title": "Tag 1 - Garmisch-Partenkirchen bis Reintalangerhuette",
+        "description": "Treffpunkt 09:00 am Bahnhof Garmisch-Partenkirchen. Wanderung durch die Partnachklamm, Aufstieg ueber das Reintal zur Reintalangerhuette auf 1.366 Metern. Abendessen mit Halbpension und Briefing fuer den Folgetag."
+      },
+      {
+        "order": 2,
+        "title": "Tag 2 - Aufstieg zur Zugspitze",
+        "description": "Frueher Aufbruch um 05:30 nach dem Fruehstueck. Aufstieg ueber Knorrhuette und Stopselzieher-Klettersteig (Schwierigkeit B) zum Gipfel der Zugspitze auf 2.962 Metern. Abstieg per Seilbahn zur Eibsee-Station und Transfer zur Hochlandhuette."
+      },
+      {
+        "order": 3,
+        "title": "Tag 3 - Hoehenweg nach Grainau",
+        "description": "Fruehstueck und Aufbruch um 08:00. Hoehenwanderung mit Blick auf den Eibsee und Abstieg ueber den Stangensteig nach Grainau. Tourende gegen 15:00 am Bahnhof Grainau."
+      }
+    ],
+    "services": [
+      {
+        "name": "Zwei staatlich gepruefte Bergfuehrer",
+        "description": "Beide Bergfuehrer sind Mitglied im Verband Deutscher Berg- und Skifuehrer und haben ueber zehn Jahre Erfahrung im Wettersteingebirge."
+      },
+      {
+        "name": "Halbpension auf den Huetten",
+        "description": "Abendessen und Fruehstueck auf der Reintalangerhuette und der Hochlandhuette sind im Preis enthalten. Gerichte sind ueberwiegend regional."
+      },
+      {
+        "name": "Seilbahnfahrt Zugspitze - Eibsee",
+        "description": "Die Talfahrt mit der Eibsee-Seilbahn am zweiten Tag ist im Preis inbegriffen."
+      },
+      {
+        "name": "Notfallausruestung",
+        "description": "Die Bergfuehrer fuehren Erste-Hilfe-Set, Klettersteigset, Steigeisen und Funkgeraet mit. Persoenliche Ausruestungsliste wird nach der Buchung verschickt."
+      },
+      {
+        "name": "Anreise und persoenliche Ausruestung",
+        "description": "Nicht im Preis enthalten. Anreise nach Garmisch-Partenkirchen und Rueckreise von Grainau organisiert jeder Teilnehmer selbst."
+      }
+    ],
+    "location": {
+      "address": "Bahnhofplatz 1, 82467 Garmisch-Partenkirchen, Deutschland",
+      "route_comment": "Garmisch-Partenkirchen - Partnachklamm - Reintal - Knorrhuette - Zugspitze - Eibsee - Grainau.",
+      "meeting_point_comment": "Vor dem Hauptausgang des Bahnhofs Garmisch-Partenkirchen, Bergfuehrer mit roter DAV-Jacke und Schild der Tour."
+    },
+    "contacts_block": {
+      "public_comment": "Anfragen ausschliesslich ueber das Buchungsportal."
+    },
+    "schedule": {
+      "format": "recurring",
+      "duration_minutes": 4320
+    },
+    "age_restriction": "16+",
+    "group_size": {
+      "min": 4,
+      "max": 8
+    },
+    "languages": [
+      "de"
+    ],
+    "images": []
+  },
+  "expected_violations": [
+    {
+      "rule_id": "TXT-30",
+      "severity": "low",
+      "field_path": "full_description",
+      "quote": "Diese Tour fuehrt in drei Tagen quer durch das Wettersteingebirge - von Garmisch-Partenkirchen ueber die Partnachklamm bis hinauf zur Zugspitze, mit 2.962 Metern dem hoechsten Berg Deutschlands.",
+      "rationale": "Карточка целиком написана на немецком языке без перевода на русский, тогда как основная аудитория площадки русскоязычная. Текст непонятен пользователю и модерации без необходимости — попадает под TXT-30."
+    }
+  ],
+  "expected_clean": false,
+  "notes": null
+}
