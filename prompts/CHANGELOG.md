@@ -99,3 +99,37 @@ rule в `AGENTS.md`.
 `prompts/annotate-aggressive-v1.txt`). Перенесём сюда при следующей
 итерации этих промптов — на текущей шапка короткая (≤ 15 строк) и
 проблем с ролевой установкой нет.
+
+## annotate-image-conservative
+
+Канонический промпт для conservative-разметки изображений в карточках.
+Применяется через локальный AI-агент в интерактивной сессии (Claude
+Code, Codex, Cursor, Aider или любой совместимый передовой агент с
+multimodal Read): агент читает промпт, открывает фото из
+`datasets/images-review/<batch-id>/`, заполняет
+`datasets/annotations/pending/<card_id>.images.json`. Прямые
+API-вызовы к целевым провайдерам (Yandex / GigaChat) и эталонным AI
+запрещены — см. hard rule в `AGENTS.md`.
+
+- **v1** — первая итерация (Sprint P6 Этап 3). Conservative
+  («сомневаешься → clean»). Размечаются только AI-разрешимые правила
+  из `datasets/image_rules.scope.yaml` (25/30 IMG-правил;
+  heuristic-разрешимые IMG-01/02/13/15/26 явно вне scope и не
+  допущены в compact-таблицу). Семь разделов: роль, вход, формат
+  возврата, поле `evidence` (словесные ориентиры без bbox), связка
+  с текстом для IMG-03/04/25/28, жёсткие требования, дисклеймер.
+
+### Связанные артефакты (для image-разметчика)
+
+- `datasets/image_rules.compact.json` — 25 AI-only IMG-правил (id,
+  severity, title, desc), отфильтровано по
+  `datasets/image_rules.scope.yaml`. Heuristic out-of-scope правила
+  в таблицу не попадают.
+- `datasets/image_rules.scope.yaml` — список scope с обоснованиями.
+- `datasets/schema/annotation.schema.json` — JSON Schema разметки;
+  image-блок — поля `expected_image_clean` и `image_violations`.
+- `docs/image-annotation-guide.md` — workflow + дисклеймеры +
+  работа с партионной папкой `images-review/<batch-id>/`.
+- `docs/annotate-image-subagent-template.md` — шаблон делегации
+  субагенту на партию.
+- `docs/tz-image-annotate-pipeline.md` — контекст спринта P6.
