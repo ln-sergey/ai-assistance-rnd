@@ -6,9 +6,17 @@
 //   3) для каждой карточки с записью в annotations — материализуем card_case
 //        - real:      datasets/cases/real-{clean,dirty}/<case_id>.json
 //        - synthetic: datasets/cases/synthetic-{clean,dirty}/<case_id>.json
+//      Image-разметка прокидывается опционально: expected_image_clean (boolean
+//      или null) и expected_image_violations[]. Если в annotation поля нет —
+//      кейс получает expected_image_clean: null, expected_image_violations: [].
 //   4) карточки без annotations — pending (репортим в конце)
-//   5) защита от рассинхрона: если карточка переехала clean↔dirty, удаляем
-//      её файл из противоположной директории
+//   5) classification (Р9 ТЗ Sprint P6): кейс dirty если
+//        expected_clean === false ИЛИ expected_image_clean === false.
+//      expected_image_clean === null не делает кейс dirty (не размечено).
+//   6) защита от рассинхрона: если карточка переехала clean↔dirty, удаляем
+//      её файл из противоположной директории.
+//   7) идемпотентность: если новый JSON совпадает с существующим — не
+//      перезаписываем (mtime неизменённых кейсов остаётся прежним).
 
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
@@ -35,12 +43,23 @@ interface Violation {
   rationale: string;
 }
 
+interface ImageViolation {
+  rule_id: string;
+  severity: Severity;
+  image_id: string;
+  evidence: string;
+  rationale: string;
+  field_path?: string;
+}
+
 interface Annotation {
   expected_clean: boolean;
   violations: Violation[];
   notes: string | null;
   annotated_at: string;
   annotator: string;
+  expected_image_clean?: boolean | null;
+  image_violations?: ImageViolation[];
 }
 
 interface AnnotationStore {
@@ -74,6 +93,8 @@ interface CardCase {
   card: Record<string, unknown>;
   expected_violations: Violation[];
   expected_clean: boolean;
+  expected_image_clean: boolean | null;
+  expected_image_violations: ImageViolation[];
   notes: string | null;
 }
 
@@ -139,6 +160,9 @@ function buildCase(
           date: TODAY,
         }
       : { model: null, prompt_version: null, date: TODAY };
+  const expectedImageClean =
+    ann.expected_image_clean === undefined ? null : ann.expected_image_clean;
+  const expectedImageViolations = ann.image_violations ?? [];
   return {
     case_id: rec.card.id,
     kind: 'card_case',
@@ -147,8 +171,24 @@ function buildCase(
     card: rec.card,
     expected_violations: ann.violations,
     expected_clean: ann.expected_clean,
+    expected_image_clean: expectedImageClean,
+    expected_image_violations: expectedImageViolations,
     notes: ann.notes,
   };
+}
+
+// Идемпотентность: пишем только если payload отличается от того, что
+// сейчас на диске. Иначе mtime неизменённых кейсов оставляем прежним —
+// это важно для последующих инкрементальных пайплайнов и diff'ов.
+async function writeIfChanged(path: string, payload: string): Promise<boolean> {
+  try {
+    const existing = await readFile(path, 'utf8');
+    if (existing === payload) return false;
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code !== 'ENOENT') throw err;
+  }
+  await writeFile(path, payload, 'utf8');
+  return true;
 }
 
 async function main(): Promise<void> {
@@ -161,6 +201,7 @@ async function main(): Promise<void> {
   const sources = Object.keys(cfg.sources).sort();
 
   let totalWritten = 0;
+  let totalUnchanged = 0;
   let totalClean = 0;
   let totalDirty = 0;
   const pending: string[] = [];
@@ -204,20 +245,25 @@ async function main(): Promise<void> {
         continue;
       }
       const c = buildCase(rec, ann, kind);
-      const targetDir = c.expected_clean ? dirs.clean : dirs.dirty;
-      const oppositeDir = c.expected_clean ? dirs.dirty : dirs.clean;
+      // classification по правилу Р9 (Sprint P6): кейс dirty, если хотя бы
+      // одна из разметок (текст или фото) помечена как нарушение.
+      const isDirty = !c.expected_clean || c.expected_image_clean === false;
+      const targetDir = isDirty ? dirs.dirty : dirs.clean;
+      const oppositeDir = isDirty ? dirs.clean : dirs.dirty;
       const targetPath = join(targetDir, `${id}.json`);
       const oppositePath = join(oppositeDir, `${id}.json`);
       await rmIfExists(oppositePath);
-      await writeFile(targetPath, JSON.stringify(c, null, 2) + '\n', 'utf8');
-      totalWritten += 1;
-      if (c.expected_clean) totalClean += 1;
-      else totalDirty += 1;
+      const payload = JSON.stringify(c, null, 2) + '\n';
+      const changed = await writeIfChanged(targetPath, payload);
+      if (changed) totalWritten += 1;
+      else totalUnchanged += 1;
+      if (isDirty) totalDirty += 1;
+      else totalClean += 1;
     }
   }
 
   console.log(
-    `[generate] written=${totalWritten}, clean=${totalClean}, dirty=${totalDirty}`,
+    `[generate] written=${totalWritten}, unchanged=${totalUnchanged}, clean=${totalClean}, dirty=${totalDirty}`,
   );
   if (pending.length > 0) {
     const head = pending.slice(0, 5).join(', ');

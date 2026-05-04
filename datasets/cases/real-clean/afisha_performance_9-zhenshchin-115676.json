@@ -5,7 +5,7 @@
   "generator": {
     "model": null,
     "prompt_version": null,
-    "date": "2026-04-29"
+    "date": "2026-05-04"
   },
   "card": {
     "id": "afisha_performance_9-zhenshchin-115676",
@@ -96,5 +96,7 @@
   },
   "expected_violations": [],
   "expected_clean": true,
+  "expected_image_clean": null,
+  "expected_image_violations": [],
   "notes": null
 }

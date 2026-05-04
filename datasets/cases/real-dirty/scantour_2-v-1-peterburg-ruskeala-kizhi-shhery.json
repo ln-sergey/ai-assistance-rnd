@@ -5,7 +5,7 @@
   "generator": {
     "model": null,
     "prompt_version": null,
-    "date": "2026-04-29"
+    "date": "2026-05-04"
   },
   "card": {
     "id": "scantour_2-v-1-peterburg-ruskeala-kizhi-shhery",
@@ -202,5 +202,7 @@
     }
   ],
   "expected_clean": false,
+  "expected_image_clean": null,
+  "expected_image_violations": [],
   "notes": null
 }

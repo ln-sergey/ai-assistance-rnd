@@ -5,7 +5,7 @@
   "generator": {
     "model": "local-ai-agent-session",
     "prompt_version": "synthesize-card-v7",
-    "date": "2026-04-29"
+    "date": "2026-05-04"
   },
   "card": {
     "id": "synth_txt12_015",
@@ -93,5 +93,7 @@
     }
   ],
   "expected_clean": false,
+  "expected_image_clean": null,
+  "expected_image_violations": [],
   "notes": null
 }
