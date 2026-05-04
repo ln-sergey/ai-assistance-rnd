@@ -1,9 +1,20 @@
 // Переносит заполненные скаффолды из datasets/annotations/pending/ в общий
-// store datasets/annotations/<source>.json. Каждый файл нормализуется
-// (убираются служебные поля), валидируется по annotation.schema.json, и
-// для TXT-нарушений проверяется, что quote дословно встречается в
-// исходной карточке по field_path. Только после полной проверки запись
-// мёрджится в store, и pending-файл удаляется.
+// store datasets/annotations/<source>.json. Распознаёт два вида pending'а:
+//
+// 1) text-pending (без поля kind, имя <card_id>.json) — стандартная
+//    разметка expected_clean / violations. Нормализуется, валидируется по
+//    annotation.schema.json#/$defs/annotation, для TXT-нарушений
+//    проверяется, что quote дословно встречается в карточке по field_path.
+//    Запись в store перезаписывает существующую.
+//
+// 2) image-pending (kind: image_annotation_pending, имя
+//    <card_id>.images.json) — разметка expected_image_clean /
+//    image_violations. Валидируется отдельной схемой image-полей.
+//    Требуется, чтобы в store уже была text-запись для этой карточки —
+//    image-разметка мёрджится в неё, не трогая expected_clean / violations.
+//    После commit'а проверяется, остались ли *.images.json с тем же
+//    batch_id; если нет и в datasets/images-review/<batch-id>/ нет
+//    посторонних файлов — папка партии удаляется (Р7 ТЗ Sprint P6).
 //
 // Идемпотентен: уже-коммитнутые карточки в pending не лежат, повторный
 // прогон — no-op.
@@ -30,6 +41,7 @@ const DATASETS_DIR = join(REPO_ROOT, 'datasets');
 const SCHEMA_DIR = join(DATASETS_DIR, 'schema');
 const ANNOTATIONS_DIR = join(DATASETS_DIR, 'annotations');
 const PENDING_DIR = join(ANNOTATIONS_DIR, 'pending');
+const IMAGES_REVIEW_DIR = join(DATASETS_DIR, 'images-review');
 
 interface CliArgs {
   dryRun: boolean;
@@ -65,6 +77,13 @@ interface Annotation {
   image_violations?: ImageViolation[];
 }
 
+interface ImageAnnotationPatch {
+  expected_image_clean: boolean;
+  image_violations: ImageViolation[];
+  annotated_at: string;
+  annotator: string;
+}
+
 interface AnnotationStore {
   version: 1;
   annotations: Record<string, Annotation>;
@@ -73,6 +92,8 @@ interface AnnotationStore {
 interface PendingRaw {
   case_id?: unknown;
   source?: unknown;
+  kind?: unknown;
+  batch_id?: unknown;
   card_excerpt?: unknown;
   expected_clean?: unknown;
   violations?: unknown;
@@ -81,6 +102,7 @@ interface PendingRaw {
   annotated_at?: unknown;
   expected_image_clean?: unknown;
   image_violations?: unknown;
+  images?: unknown;
   _help?: unknown;
 }
 
@@ -110,7 +132,12 @@ function parseArgs(argv: readonly string[] = process.argv.slice(2)): CliArgs {
   return { dryRun, yes };
 }
 
-async function loadAnnotationValidator(): Promise<ValidateFunction<Annotation>> {
+interface Validators {
+  text: ValidateFunction<Annotation>;
+  image: ValidateFunction<ImageAnnotationPatch>;
+}
+
+async function loadValidators(): Promise<Validators> {
   const ajv = new Ajv2020({
     strict: true,
     strictTypes: false,
@@ -121,8 +148,43 @@ async function loadAnnotationValidator(): Promise<ValidateFunction<Annotation>> 
   ajv.addSchema(JSON.parse(await readFile(join(SCHEMA_DIR, 'product_card.schema.json'), 'utf8')));
   ajv.addSchema(JSON.parse(await readFile(join(SCHEMA_DIR, 'test_case.schema.json'), 'utf8')));
   ajv.addSchema(JSON.parse(await readFile(join(SCHEMA_DIR, 'annotation.schema.json'), 'utf8')));
-  // Валидируем одиночную аннотацию через $defs/annotation
-  return ajv.compile<Annotation>({ $ref: 'annotation.schema.json#/$defs/annotation' });
+
+  const text = ajv.compile<Annotation>({ $ref: 'annotation.schema.json#/$defs/annotation' });
+  // Image-pending содержит только image-поля + annotator/annotated_at —
+  // text-блок (expected_clean/violations) уже лежит в <source>.json и
+  // не дублируется в pending. Поэтому отдельная inline-схема, чтобы
+  // не требовать text-полей при валидации.
+  const imageSchema = {
+    type: 'object',
+    required: ['expected_image_clean', 'image_violations', 'annotated_at', 'annotator'],
+    properties: {
+      expected_image_clean: { type: 'boolean' },
+      image_violations: {
+        type: 'array',
+        items: { $ref: 'test_case.schema.json#/$defs/violation_image_card' },
+      },
+      annotated_at: { type: 'string', format: 'date' },
+      annotator: { type: 'string', minLength: 1 },
+    },
+    allOf: [
+      {
+        if: {
+          properties: { expected_image_clean: { const: true } },
+          required: ['expected_image_clean'],
+        },
+        then: { properties: { image_violations: { maxItems: 0 } } },
+      },
+      {
+        if: {
+          properties: { expected_image_clean: { const: false } },
+          required: ['expected_image_clean'],
+        },
+        then: { properties: { image_violations: { minItems: 1 } } },
+      },
+    ],
+  } as const;
+  const image = ajv.compile<ImageAnnotationPatch>(imageSchema);
+  return { text, image };
 }
 
 function formatErrors(errors: ErrorObject[] | null | undefined): string {
@@ -168,7 +230,7 @@ function quoteFoundIn(card: Record<string, unknown>, field_path: string, quote: 
   return cursor.includes(quote);
 }
 
-function normalize(raw: PendingRaw): Record<string, unknown> {
+function normalizeText(raw: PendingRaw): Record<string, unknown> {
   const out: Record<string, unknown> = {};
   if ('expected_clean' in raw) out.expected_clean = raw.expected_clean;
   if ('violations' in raw) out.violations = raw.violations;
@@ -179,6 +241,15 @@ function normalize(raw: PendingRaw): Record<string, unknown> {
   // совместимость с pure-text pending'ами (Sprint P4/P5).
   if ('expected_image_clean' in raw) out.expected_image_clean = raw.expected_image_clean;
   if ('image_violations' in raw) out.image_violations = raw.image_violations;
+  return out;
+}
+
+function normalizeImage(raw: PendingRaw): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  if ('expected_image_clean' in raw) out.expected_image_clean = raw.expected_image_clean;
+  if ('image_violations' in raw) out.image_violations = raw.image_violations;
+  if ('annotated_at' in raw) out.annotated_at = raw.annotated_at;
+  if ('annotator' in raw) out.annotator = raw.annotator;
   return out;
 }
 
@@ -244,6 +315,162 @@ function inferSource(raw: PendingRaw, knownSources: readonly string[]): string |
   return null;
 }
 
+function isImagePending(raw: PendingRaw, name: string): boolean {
+  if (raw.kind === 'image_annotation_pending') return true;
+  // Fallback по имени файла — на случай ручных правок.
+  return name.endsWith('.images.json');
+}
+
+interface ProcessedTextEntry {
+  source: string;
+  caseId: string;
+  ann: Annotation;
+}
+
+interface ProcessedImageEntry {
+  source: string;
+  caseId: string;
+  patch: ImageAnnotationPatch;
+  batchId: string | null;
+  // Имена файлов в datasets/images-review/<batch-id>/, которые pending
+  // закладывал в партию. Нужны, чтобы после commit'а понять, можно ли
+  // удалять папку партии целиком (только если в ней не появилось ничего
+  // постороннего).
+  batchFilenames: string[];
+}
+
+async function processText(args: {
+  raw: PendingRaw;
+  caseId: string;
+  source: string;
+  validate: ValidateFunction<Annotation>;
+  cards: Map<string, Record<string, unknown>>;
+}): Promise<{ ok: true; entry: ProcessedTextEntry } | { ok: false; errors: string[] }> {
+  const { raw, caseId, source, validate, cards } = args;
+  const normalized = normalizeText(raw);
+  if (!validate(normalized)) {
+    return { ok: false, errors: [`${caseId}: schema — ${formatErrors(validate.errors)}`] };
+  }
+  const card = cards.get(caseId);
+  if (!card) {
+    return {
+      ok: false,
+      errors: [`${caseId}: карточка отсутствует в datasets/${source}/cards.raw.jsonl`],
+    };
+  }
+  const ann = normalized as unknown as Annotation;
+  const errors: string[] = [];
+  for (const [i, v] of ann.violations.entries()) {
+    if (!v.rule_id.startsWith('TXT-')) continue;
+    if (!v.quote || v.quote.length === 0) {
+      errors.push(`${caseId}: violations[${i}] TXT-правило требует непустой quote`);
+      continue;
+    }
+    if (!quoteFoundIn(card, v.field_path, v.quote)) {
+      errors.push(`${caseId}: violations[${i}] quote не найдена дословно в ${v.field_path}`);
+    }
+  }
+  // Ссылочная целостность image_violations (если они присутствуют в
+  // text-pending'е — допустимый сценарий, см. Sprint P5 миграции).
+  const imageViolations = ann.image_violations ?? [];
+  if (imageViolations.length > 0) {
+    const validImageIds = collectImageIds(card);
+    for (const [i, v] of imageViolations.entries()) {
+      if (!validImageIds.has(v.image_id)) {
+        errors.push(
+          `${caseId}: image_violations[${i}] image_id=${v.image_id} не найден в card.images[]`,
+        );
+      }
+      if (v.field_path !== undefined && v.field_path !== `images[${v.image_id}]`) {
+        errors.push(
+          `${caseId}: image_violations[${i}] field_path=${v.field_path} не совпадает с images[${v.image_id}]`,
+        );
+      }
+    }
+  }
+  if (errors.length > 0) return { ok: false, errors };
+  return { ok: true, entry: { source, caseId, ann } };
+}
+
+async function processImage(args: {
+  raw: PendingRaw;
+  caseId: string;
+  source: string;
+  validate: ValidateFunction<ImageAnnotationPatch>;
+  cards: Map<string, Record<string, unknown>>;
+  existingStore: AnnotationStore;
+}): Promise<{ ok: true; entry: ProcessedImageEntry } | { ok: false; errors: string[] }> {
+  const { raw, caseId, source, validate, cards, existingStore } = args;
+  const normalized = normalizeImage(raw);
+  if (!validate(normalized)) {
+    return { ok: false, errors: [`${caseId}: image schema — ${formatErrors(validate.errors)}`] };
+  }
+  const card = cards.get(caseId);
+  if (!card) {
+    return {
+      ok: false,
+      errors: [`${caseId}: карточка отсутствует в datasets/${source}/cards.raw.jsonl`],
+    };
+  }
+  const existing = existingStore.annotations[caseId];
+  if (!existing) {
+    return {
+      ok: false,
+      errors: [
+        `${caseId}: text-разметка отсутствует в datasets/annotations/${source}.json. ` +
+          'Сначала pnpm annotations:scaffold + pnpm annotations:commit для текста.',
+      ],
+    };
+  }
+  const patch = normalized as unknown as ImageAnnotationPatch;
+  const errors: string[] = [];
+  const validImageIds = collectImageIds(card);
+  for (const [i, v] of patch.image_violations.entries()) {
+    if (!validImageIds.has(v.image_id)) {
+      errors.push(
+        `${caseId}: image_violations[${i}] image_id=${v.image_id} не найден в card.images[]`,
+      );
+    }
+    if (v.field_path !== undefined && v.field_path !== `images[${v.image_id}]`) {
+      errors.push(
+        `${caseId}: image_violations[${i}] field_path=${v.field_path} не совпадает с images[${v.image_id}]`,
+      );
+    }
+  }
+  if (errors.length > 0) return { ok: false, errors };
+  const batchId = typeof raw.batch_id === 'string' ? raw.batch_id : null;
+  const batchFilenames: string[] = [];
+  if (Array.isArray(raw.images)) {
+    for (const it of raw.images) {
+      if (!it || typeof it !== 'object') continue;
+      const fp = (it as Record<string, unknown>)['file_path'];
+      if (typeof fp !== 'string') continue;
+      const base = fp.split('/').pop();
+      if (base) batchFilenames.push(base);
+    }
+  }
+  return { ok: true, entry: { source, caseId, patch, batchId, batchFilenames } };
+}
+
+async function tryRemoveBatchDir(
+  batchId: string,
+  expectedFilenames: ReadonlySet<string>,
+): Promise<'removed' | 'kept' | 'absent'> {
+  const dir = join(IMAGES_REVIEW_DIR, batchId);
+  if (!existsSync(dir)) return 'absent';
+  const entries = await readdir(dir);
+  for (const name of entries) {
+    if (!expectedFilenames.has(name)) {
+      // Что-то постороннее — не наш скопированный файл. Не трогаем,
+      // чтобы случайно не унести пользовательские заметки или ручные
+      // вложения.
+      return 'kept';
+    }
+  }
+  await rm(dir, { recursive: true, force: true });
+  return 'removed';
+}
+
 async function main(): Promise<void> {
   const args = parseArgs();
   const cfg = await loadSourcesConfig();
@@ -255,7 +482,8 @@ async function main(): Promise<void> {
   }
 
   // synth-*.json — pending для синтетики, обрабатываются pnpm synth:commit;
-  // real-pending имеют префикс <source>_<id>.json.
+  // real-pending имеют префикс <source>_<id>.json (text) или
+  // <source>_<id>.images.json (image).
   const entries = (await readdir(PENDING_DIR))
     .filter((n) => n.endsWith('.json') && !n.startsWith('synth-'))
     .sort();
@@ -264,14 +492,32 @@ async function main(): Promise<void> {
     return;
   }
 
-  const validate = await loadAnnotationValidator();
+  const validators = await loadValidators();
   const cardCache = new Map<string, Map<string, Record<string, unknown>>>();
+  const updatedStores = new Map<string, AnnotationStore>();
+
+  async function getCards(source: string): Promise<Map<string, Record<string, unknown>>> {
+    let m = cardCache.get(source);
+    if (!m) {
+      m = await readCardsBySource(source);
+      cardCache.set(source, m);
+    }
+    return m;
+  }
+  async function getStore(source: string): Promise<AnnotationStore> {
+    let s = updatedStores.get(source);
+    if (!s) {
+      s = await readStore(source);
+      updatedStores.set(source, s);
+    }
+    return s;
+  }
 
   const errors: string[] = [];
   let committed = 0;
   let skipped = 0;
-  const updatedStores = new Map<string, AnnotationStore>();
   const successfulPendings: string[] = [];
+  const committedBatchFiles = new Map<string, Set<string>>();
 
   for (const name of entries) {
     const path = join(PENDING_DIR, name);
@@ -283,87 +529,92 @@ async function main(): Promise<void> {
       continue;
     }
 
-    const caseId = typeof raw.case_id === 'string' ? raw.case_id : name.replace(/\.json$/, '');
+    const isImage = isImagePending(raw, name);
+    const caseId =
+      typeof raw.case_id === 'string'
+        ? raw.case_id
+        : name.replace(/\.images\.json$/, '').replace(/\.json$/, '');
 
-    if (raw.expected_clean === null || raw.expected_clean === undefined) {
-      console.log(`[skip] ${caseId}: not annotated`);
-      skipped += 1;
-      continue;
+    if (isImage) {
+      if (raw.expected_image_clean === null || raw.expected_image_clean === undefined) {
+        console.log(`[skip] ${caseId}: image-pending не размечен (expected_image_clean=null)`);
+        skipped += 1;
+        continue;
+      }
+    } else {
+      if (raw.expected_clean === null || raw.expected_clean === undefined) {
+        console.log(`[skip] ${caseId}: not annotated`);
+        skipped += 1;
+        continue;
+      }
     }
 
     const source = inferSource(raw, knownSources);
     if (!source) {
-      errors.push(`${caseId}: не удалось определить source (нет поля source и префикс case_id не совпадает с известными источниками: ${knownSources.join(', ')})`);
+      errors.push(
+        `${caseId}: не удалось определить source (нет поля source и префикс case_id не совпадает с известными источниками: ${knownSources.join(', ')})`,
+      );
       continue;
     }
 
-    const normalized = normalize(raw);
-    const ok = validate(normalized);
-    if (!ok) {
-      errors.push(`${caseId}: schema — ${formatErrors(validate.errors)}`);
-      continue;
-    }
+    const cards = await getCards(source);
 
-    let cards = cardCache.get(source);
-    if (!cards) {
-      cards = await readCardsBySource(source);
-      cardCache.set(source, cards);
-    }
-    const card = cards.get(caseId);
-    if (!card) {
-      errors.push(`${caseId}: карточка отсутствует в datasets/${source}/cards.raw.jsonl`);
-      continue;
-    }
-
-    const ann = normalized as unknown as Annotation;
-    let txtOk = true;
-    for (const [i, v] of ann.violations.entries()) {
-      if (!v.rule_id.startsWith('TXT-')) continue;
-      if (!v.quote || v.quote.length === 0) {
-        errors.push(`${caseId}: violations[${i}] TXT-правило требует непустой quote`);
-        txtOk = false;
+    if (isImage) {
+      const store = await getStore(source);
+      const result = await processImage({
+        raw,
+        caseId,
+        source,
+        validate: validators.image,
+        cards,
+        existingStore: store,
+      });
+      if (!result.ok) {
+        errors.push(...result.errors);
         continue;
       }
-      if (!quoteFoundIn(card, v.field_path, v.quote)) {
-        errors.push(`${caseId}: violations[${i}] quote не найдена дословно в ${v.field_path}`);
-        txtOk = false;
+      const existing = store.annotations[caseId];
+      if (!existing) {
+        // Защита: processImage уже проверил, но на всякий случай
+        // подстрахуемся.
+        errors.push(`${caseId}: внутренняя ошибка — text-аннотация исчезла после проверки`);
+        continue;
       }
-    }
-    if (!txtOk) continue;
-
-    // Ссылочная целостность image_violations: каждый image_id должен
-    // соответствовать одному из card.images[].image_id. Семантика
-    // expected_image_clean × длины массива — уже проверена JSON Schema.
-    const imageViolations = ann.image_violations ?? [];
-    if (imageViolations.length > 0) {
-      const validImageIds = collectImageIds(card);
-      let imgOk = true;
-      for (const [i, v] of imageViolations.entries()) {
-        if (!validImageIds.has(v.image_id)) {
-          errors.push(
-            `${caseId}: image_violations[${i}] image_id=${v.image_id} не найден в card.images[]`,
-          );
-          imgOk = false;
-        }
-        if (v.field_path !== undefined && v.field_path !== `images[${v.image_id}]`) {
-          errors.push(
-            `${caseId}: image_violations[${i}] field_path=${v.field_path} не совпадает с images[${v.image_id}]`,
-          );
-          imgOk = false;
-        }
+      const merged: Annotation = {
+        ...existing,
+        expected_image_clean: result.entry.patch.expected_image_clean,
+        image_violations: result.entry.patch.image_violations,
+        // annotator/annotated_at в image-pending относятся к моменту
+        // image-разметки. Текст пишет свои в свой commit; здесь не
+        // перезаписываем — иначе потеряем след text-разметчика.
+      };
+      store.annotations[caseId] = merged;
+      successfulPendings.push(path);
+      if (result.entry.batchId) {
+        const set = committedBatchFiles.get(result.entry.batchId) ?? new Set<string>();
+        for (const n of result.entry.batchFilenames) set.add(n);
+        committedBatchFiles.set(result.entry.batchId, set);
       }
-      if (!imgOk) continue;
+      committed += 1;
+      console.log(`[ok-image] ${caseId} → annotations/${source}.json`);
+    } else {
+      const result = await processText({
+        raw,
+        caseId,
+        source,
+        validate: validators.text,
+        cards,
+      });
+      if (!result.ok) {
+        errors.push(...result.errors);
+        continue;
+      }
+      const store = await getStore(source);
+      store.annotations[caseId] = result.entry.ann;
+      successfulPendings.push(path);
+      committed += 1;
+      console.log(`[ok] ${caseId} → annotations/${source}.json`);
     }
-
-    let store = updatedStores.get(source);
-    if (!store) {
-      store = await readStore(source);
-      updatedStores.set(source, store);
-    }
-    store.annotations[caseId] = ann;
-    successfulPendings.push(path);
-    committed += 1;
-    console.log(`[ok] ${caseId} → annotations/${source}.json`);
   }
 
   console.log(
@@ -388,6 +639,38 @@ async function main(): Promise<void> {
   }
   for (const p of successfulPendings) {
     await rm(p, { force: true });
+  }
+
+  // Очистка партионных папок: для каждого batch_id, у которого закоммитился
+  // хотя бы один pending — проверить, остался ли в pending ещё кто-то с
+  // тем же batch_id. Если нет и в datasets/images-review/<batch-id>/
+  // остались только наши скопированные файлы (по списку из commit'нутых
+  // pending'ов) — удалить папку целиком.
+  if (committedBatchFiles.size > 0) {
+    const remainingPending = existsSync(PENDING_DIR) ? await readdir(PENDING_DIR) : [];
+    const remainingBatches = new Set<string>();
+    for (const name of remainingPending) {
+      if (!name.endsWith('.images.json')) continue;
+      try {
+        const raw = JSON.parse(await readFile(join(PENDING_DIR, name), 'utf8')) as PendingRaw;
+        if (typeof raw.batch_id === 'string') remainingBatches.add(raw.batch_id);
+      } catch {
+        // битый pending — оставим как есть, разберёмся в следующий commit
+      }
+    }
+    for (const [batchId, expectedFiles] of committedBatchFiles) {
+      if (remainingBatches.has(batchId)) {
+        console.log(`[commit] batch=${batchId}: оставшиеся pending'и есть, папку партии не трогаю`);
+        continue;
+      }
+      const status = await tryRemoveBatchDir(batchId, expectedFiles);
+      if (status === 'removed') console.log(`[commit] batch=${batchId}: папка партии удалена`);
+      else if (status === 'kept')
+        console.log(
+          `[commit] batch=${batchId}: в папке партии есть посторонние файлы, не удаляю`,
+        );
+      else console.log(`[commit] batch=${batchId}: папка партии уже отсутствует`);
+    }
   }
 
   // используем yes только чтобы не падать на нём; commit не интерактивен

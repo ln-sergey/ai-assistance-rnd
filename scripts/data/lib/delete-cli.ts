@@ -13,6 +13,7 @@ export interface DeleteCliArgs {
   yes: boolean;
   dryRun: boolean;
   flags: ReadonlySet<string>;
+  kv: ReadonlyMap<string, string>;
 }
 
 function bail(msg: string): never {
@@ -22,6 +23,7 @@ function bail(msg: string): never {
 
 export function parseDeleteCli(
   allowedExtra: readonly string[] = [],
+  allowedKv: readonly string[] = [],
   argv: readonly string[] = process.argv.slice(2),
 ): DeleteCliArgs {
   let source: string | null = null;
@@ -29,6 +31,7 @@ export function parseDeleteCli(
   let yes = false;
   let dryRun = false;
   const flags = new Set<string>();
+  const kv = new Map<string, string>();
   for (const a of argv) {
     const m = a.match(/^--source=(.+)$/);
     if (m?.[1]) {
@@ -48,6 +51,16 @@ export function parseDeleteCli(
       continue;
     }
     if (a.startsWith('--')) {
+      const eq = a.indexOf('=');
+      if (eq !== -1) {
+        const key = a.slice(2, eq);
+        const val = a.slice(eq + 1);
+        if (allowedKv.includes(key)) {
+          kv.set(key, val);
+          continue;
+        }
+        bail(`[delete] неизвестный флаг с значением: ${a}`);
+      }
       const key = a.slice(2);
       if (allowedExtra.includes(key)) {
         flags.add(key);
@@ -59,7 +72,7 @@ export function parseDeleteCli(
   }
   if (source && all) bail('[delete] --source и --all взаимоисключающие');
   if (!source && !all) bail('[delete] требуется --source=X или --all');
-  return { source, all, yes, dryRun, flags };
+  return { source, all, yes, dryRun, flags, kv };
 }
 
 export function resolveSources(args: DeleteCliArgs, cfg: SourcesConfig): string[] {
