@@ -33,6 +33,17 @@
           "type": "string",
           "minLength": 1,
           "description": "Свободная метка происхождения разметки: 'manual:sergio', 'claude-opus-4.7', 'gpt-5'. Используется для трассировки."
+        },
+        "expected_image_clean": {
+          "type": ["boolean", "null"],
+          "default": null,
+          "description": "Состояние image-разметки этой карточки: true — clean, false — dirty, null — ещё не сделана (image-разметка опциональна и движется по pipeline независимо от текстовой). Для карточек без card.images[] остаётся null."
+        },
+        "image_violations": {
+          "type": "array",
+          "default": [],
+          "items": { "$ref": "test_case.schema.json#/$defs/violation_image_card" },
+          "description": "IMG-нарушения, найденные image-разметчиком. Идентификация фото по стабильному image_id; обязательное поле evidence — словесное описание участка кадра."
         }
       },
       "allOf": [
@@ -43,6 +54,18 @@
         {
           "if": { "properties": { "expected_clean": { "const": false } }, "required": ["expected_clean"] },
           "then": { "properties": { "violations": { "minItems": 1 } } }
+        },
+        {
+          "if": { "properties": { "expected_image_clean": { "const": true } }, "required": ["expected_image_clean"] },
+          "then": { "properties": { "image_violations": { "maxItems": 0 } } }
+        },
+        {
+          "if": { "properties": { "expected_image_clean": { "const": false } }, "required": ["expected_image_clean"] },
+          "then": { "properties": { "image_violations": { "minItems": 1 } } }
+        },
+        {
+          "if": { "properties": { "expected_image_clean": { "type": "null" } }, "required": ["expected_image_clean"] },
+          "then": { "properties": { "image_violations": { "maxItems": 0 } } }
         }
       ]
     }

@@ -46,12 +46,23 @@ interface Violation {
   rationale: string;
 }
 
+interface ImageViolation {
+  rule_id: string;
+  severity: Severity;
+  image_id: string;
+  evidence: string;
+  rationale: string;
+  field_path?: string;
+}
+
 interface Annotation {
   expected_clean: boolean;
   violations: Violation[];
   notes: string | null;
   annotated_at: string;
   annotator: string;
+  expected_image_clean?: boolean | null;
+  image_violations?: ImageViolation[];
 }
 
 interface AnnotationStore {
@@ -68,6 +79,8 @@ interface PendingRaw {
   notes?: unknown;
   annotator?: unknown;
   annotated_at?: unknown;
+  expected_image_clean?: unknown;
+  image_violations?: unknown;
   _help?: unknown;
 }
 
@@ -162,6 +175,22 @@ function normalize(raw: PendingRaw): Record<string, unknown> {
   if ('notes' in raw) out.notes = raw.notes;
   if ('annotated_at' in raw) out.annotated_at = raw.annotated_at;
   if ('annotator' in raw) out.annotator = raw.annotator;
+  // Image-поля прокидываются только если присутствуют — обратная
+  // совместимость с pure-text pending'ами (Sprint P4/P5).
+  if ('expected_image_clean' in raw) out.expected_image_clean = raw.expected_image_clean;
+  if ('image_violations' in raw) out.image_violations = raw.image_violations;
+  return out;
+}
+
+function collectImageIds(card: Record<string, unknown>): Set<string> {
+  const out = new Set<string>();
+  const images = card['images'];
+  if (!Array.isArray(images)) return out;
+  for (const img of images) {
+    if (!img || typeof img !== 'object') continue;
+    const id = (img as Record<string, unknown>)['image_id'];
+    if (typeof id === 'string' && id.length > 0) out.add(id);
+  }
   return out;
 }
 
@@ -301,6 +330,30 @@ async function main(): Promise<void> {
       }
     }
     if (!txtOk) continue;
+
+    // Ссылочная целостность image_violations: каждый image_id должен
+    // соответствовать одному из card.images[].image_id. Семантика
+    // expected_image_clean × длины массива — уже проверена JSON Schema.
+    const imageViolations = ann.image_violations ?? [];
+    if (imageViolations.length > 0) {
+      const validImageIds = collectImageIds(card);
+      let imgOk = true;
+      for (const [i, v] of imageViolations.entries()) {
+        if (!validImageIds.has(v.image_id)) {
+          errors.push(
+            `${caseId}: image_violations[${i}] image_id=${v.image_id} не найден в card.images[]`,
+          );
+          imgOk = false;
+        }
+        if (v.field_path !== undefined && v.field_path !== `images[${v.image_id}]`) {
+          errors.push(
+            `${caseId}: image_violations[${i}] field_path=${v.field_path} не совпадает с images[${v.image_id}]`,
+          );
+          imgOk = false;
+        }
+      }
+      if (!imgOk) continue;
+    }
 
     let store = updatedStores.get(source);
     if (!store) {

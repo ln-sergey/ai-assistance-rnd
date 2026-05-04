@@ -29,6 +29,15 @@ interface Violation {
   rationale: string;
 }
 
+interface ImageViolation {
+  rule_id: string;
+  severity: Severity;
+  image_id: string;
+  evidence: string;
+  rationale: string;
+  field_path?: string;
+}
+
 interface CardCase {
   case_id: string;
   kind: 'card_case';
@@ -36,7 +45,21 @@ interface CardCase {
   card: Record<string, unknown>;
   expected_violations: Violation[];
   expected_clean: boolean;
+  expected_image_clean?: boolean | null;
+  expected_image_violations?: ImageViolation[];
   notes?: string | null;
+}
+
+function collectImageIds(card: Record<string, unknown>): Set<string> {
+  const out = new Set<string>();
+  const images = card['images'];
+  if (!Array.isArray(images)) return out;
+  for (const img of images) {
+    if (!img || typeof img !== 'object') continue;
+    const id = (img as Record<string, unknown>)['image_id'];
+    if (typeof id === 'string' && id.length > 0) out.add(id);
+  }
+  return out;
 }
 
 function parseRulesSeverities(yaml: string): Map<string, Severity> {
@@ -159,9 +182,13 @@ async function main(): Promise<void> {
       continue;
     }
 
-    if (expectedDirty !== !data.expected_clean) {
+    // Кейс считается dirty, если есть нарушения по тексту ИЛИ по фото.
+    // expected_image_clean === null трактуется как «image-разметки нет» —
+    // не влияет на classification (дело за expected_clean).
+    const isDirty = !data.expected_clean || data.expected_image_clean === false;
+    if (expectedDirty !== isDirty) {
       errors.push(
-        `${path}: расположение vs expected_clean — файл в ${expectedDirty ? '*-dirty' : '*-clean'}, а expected_clean=${data.expected_clean}`,
+        `${path}: расположение vs expected_{clean,image_clean} — файл в ${expectedDirty ? '*-dirty' : '*-clean'}, а expected_clean=${data.expected_clean}, expected_image_clean=${data.expected_image_clean ?? 'null'}`,
       );
       continue;
     }
@@ -200,6 +227,43 @@ async function main(): Promise<void> {
         }
       }
     }
+
+    // Image-нарушения: severity-сверка + ссылочная целостность image_id
+    // против card.images[].image_id. Семантика true/false/null уже
+    // проверена JSON Schema (if/then в test_case.schema.json).
+    const imageViolations = data.expected_image_violations ?? [];
+    if (imageViolations.length > 0) {
+      const validImageIds = collectImageIds(data.card);
+      for (const [i, v] of imageViolations.entries()) {
+        const expectedSev = ruleSeverities.get(v.rule_id);
+        if (!expectedSev) {
+          errors.push(
+            `${path}: expected_image_violations[${i}] rule_id=${v.rule_id} нет в image_rules.yaml`,
+          );
+          localOk = false;
+          continue;
+        }
+        if (v.severity !== expectedSev) {
+          errors.push(
+            `${path}: expected_image_violations[${i}] severity=${v.severity} ≠ image_rules.yaml(${v.rule_id})=${expectedSev}`,
+          );
+          localOk = false;
+        }
+        if (!validImageIds.has(v.image_id)) {
+          errors.push(
+            `${path}: expected_image_violations[${i}] image_id=${v.image_id} не найден в card.images[]`,
+          );
+          localOk = false;
+        }
+        if (v.field_path !== undefined && v.field_path !== `images[${v.image_id}]`) {
+          errors.push(
+            `${path}: expected_image_violations[${i}] field_path=${v.field_path} не совпадает с images[${v.image_id}]`,
+          );
+          localOk = false;
+        }
+      }
+    }
+
     if (localOk) passed += 1;
   }
 

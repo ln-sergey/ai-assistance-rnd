@@ -103,6 +103,36 @@
         }
       }
     },
+    "violation_image_card": {
+      "type": "object",
+      "required": ["rule_id", "severity", "image_id", "evidence", "rationale"],
+      "additionalProperties": false,
+      "description": "IMG-нарушение в составе card_case или annotation. В отличие от violation_image (для standalone image_case), здесь идентификация идёт по стабильному image_id, а не по индексу в массиве, и обязательно поле evidence — словесное описание участка кадра. bbox/координаты не используются на v1.",
+      "properties": {
+        "rule_id": { "$ref": "#/$defs/rule_id_img_only" },
+        "severity": { "$ref": "#/$defs/severity" },
+        "image_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Стабильный идентификатор фото из card.images[].image_id."
+        },
+        "evidence": {
+          "type": "string",
+          "minLength": 1,
+          "description": "1–2 предложения: что именно на кадре указывает на нарушение. Словесные ориентиры (\"левый нижний угол\", \"центральная часть кадра\", \"на майке справа\") — без bbox."
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Почему этот фрагмент — нарушение именно этого правила."
+        },
+        "field_path": {
+          "type": "string",
+          "pattern": "^images\\[[a-zA-Z0-9_-]+\\]$",
+          "description": "Опционально, для симметрии с text-нарушениями. Формат: images[<image_id>] — по стабильному id, не по индексу."
+        }
+      }
+    },
     "card_case": {
       "type": "object",
       "required": [
@@ -134,7 +164,18 @@
         },
         "expected_clean": {
           "type": "boolean",
-          "description": "true — эталон: нарушений нет; false — должны быть."
+          "description": "true — эталон по тексту: нарушений нет; false — должны быть. Image-разметка отдельно: см. expected_image_clean."
+        },
+        "expected_image_clean": {
+          "type": ["boolean", "null"],
+          "default": null,
+          "description": "Состояние image-разметки: true — clean, false — dirty, null — image-разметка ещё не сделана. Для карточек с пустым card.images[] всегда null."
+        },
+        "expected_image_violations": {
+          "type": "array",
+          "default": [],
+          "items": { "$ref": "#/$defs/violation_image_card" },
+          "description": "IMG-нарушения, найденные image-разметчиком. Идентификация фото по стабильному image_id."
         },
         "notes": { "type": ["string", "null"] }
       },
@@ -158,6 +199,39 @@
           "then": {
             "properties": {
               "expected_violations": { "minItems": 1 }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "expected_image_clean": { "const": true } },
+            "required": ["expected_image_clean"]
+          },
+          "then": {
+            "properties": {
+              "expected_image_violations": { "maxItems": 0 }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "expected_image_clean": { "const": false } },
+            "required": ["expected_image_clean"]
+          },
+          "then": {
+            "properties": {
+              "expected_image_violations": { "minItems": 1 }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "expected_image_clean": { "type": "null" } },
+            "required": ["expected_image_clean"]
+          },
+          "then": {
+            "properties": {
+              "expected_image_violations": { "maxItems": 0 }
             }
           }
         }
