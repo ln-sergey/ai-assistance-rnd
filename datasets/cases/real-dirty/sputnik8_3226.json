@@ -40,7 +40,15 @@
   },
   "expected_violations": [],
   "expected_clean": true,
-  "expected_image_clean": null,
-  "expected_image_violations": [],
+  "expected_image_clean": false,
+  "expected_image_violations": [
+    {
+      "rule_id": "IMG-09",
+      "severity": "medium",
+      "image_id": "sputnik8_3226_0",
+      "evidence": "В правом нижнем углу кадра — водяной знак стороннего туристического сервиса \"© gardaservice.tourister.ru\".",
+      "rationale": "IMG-09: на фото размещён видимый водяной знак стороннего туристического агрегатора, который маркирует кадр чужим сервисом и снижает его пригодность как фото активности."
+    }
+  ],
   "notes": null
 }

@@ -13,7 +13,9 @@
       "violations": [],
       "notes": null,
       "annotated_at": "2026-04-25",
-      "annotator": "manual:sergio"
+      "annotator": "manual:sergio",
+      "expected_image_clean": true,
+      "image_violations": []
     },
     "sputnik8_51891": {
       "expected_clean": true,
@@ -41,7 +43,31 @@
       "violations": [],
       "notes": null,
       "annotated_at": "2026-04-25",
-      "annotator": "manual:sergio"
+      "annotator": "manual:sergio",
+      "expected_image_clean": false,
+      "image_violations": [
+        {
+          "rule_id": "IMG-12",
+          "severity": "medium",
+          "image_id": "sputnik8_34689_1",
+          "evidence": "Кадр целиком оформлен как рекламный баннер: крупный заголовок \"Входной билет и аудиотур\", буллет-список фич, кнопки App Store и Google Play в нижней части.",
+          "rationale": "IMG-12: загружен текстовый рекламный баннер аудиогид-сервиса вместо реального фото активности — нет визуала Юсуповского дворца или экспозиции, только промо-материал."
+        },
+        {
+          "rule_id": "IMG-10",
+          "severity": "medium",
+          "image_id": "sputnik8_34689_1",
+          "evidence": "В нижнем левом углу — логотип \"wegotrip\" с фирменным синим знаком; вся композиция — фирменный креатив этого бренда.",
+          "rationale": "IMG-10: изображение является рекламным макетом стороннего бренда (WeGoTrip), а не фотографией активности экскурсии."
+        },
+        {
+          "rule_id": "IMG-11",
+          "severity": "high",
+          "image_id": "sputnik8_34689_1",
+          "evidence": "В нижней части кадра размещены кликабельные значки магазинов \"Download on the App Store\" и \"Get it on Google Play\".",
+          "rationale": "IMG-11: на фото размещены контакты-приглашения скачать приложение стороннего сервиса, что переводит коммуникацию и сделку вне платформы."
+        }
+      ]
     },
     "sputnik8_57480": {
       "expected_clean": false,
@@ -154,7 +180,9 @@
       "violations": [],
       "notes": null,
       "annotated_at": "2026-04-25",
-      "annotator": "manual:sergio"
+      "annotator": "manual:sergio",
+      "expected_image_clean": true,
+      "image_violations": []
     },
     "sputnik8_68623": {
       "expected_clean": true,
@@ -168,7 +196,9 @@
       "violations": [],
       "notes": null,
       "annotated_at": "2026-04-25",
-      "annotator": "manual:sergio"
+      "annotator": "manual:sergio",
+      "expected_image_clean": true,
+      "image_violations": []
     },
     "sputnik8_79656": {
       "expected_clean": true,
@@ -203,7 +233,9 @@
       "violations": [],
       "notes": null,
       "annotated_at": "2026-04-25",
-      "annotator": "manual:sergio"
+      "annotator": "manual:sergio",
+      "expected_image_clean": true,
+      "image_violations": []
     },
     "sputnik8_69440": {
       "expected_clean": true,
@@ -224,35 +256,53 @@
       "violations": [],
       "notes": null,
       "annotated_at": "2026-04-25",
-      "annotator": "claude-opus-4-7"
+      "annotator": "claude-opus-4-7",
+      "expected_image_clean": true,
+      "image_violations": []
     },
     "sputnik8_3226": {
       "expected_clean": true,
       "violations": [],
       "notes": null,
       "annotated_at": "2026-04-25",
-      "annotator": "claude-opus-4-7"
+      "annotator": "claude-opus-4-7",
+      "expected_image_clean": false,
+      "image_violations": [
+        {
+          "rule_id": "IMG-09",
+          "severity": "medium",
+          "image_id": "sputnik8_3226_0",
+          "evidence": "В правом нижнем углу кадра — водяной знак стороннего туристического сервиса \"© gardaservice.tourister.ru\".",
+          "rationale": "IMG-09: на фото размещён видимый водяной знак стороннего туристического агрегатора, который маркирует кадр чужим сервисом и снижает его пригодность как фото активности."
+        }
+      ]
     },
     "sputnik8_33340": {
       "expected_clean": true,
       "violations": [],
       "notes": null,
       "annotated_at": "2026-04-25",
-      "annotator": "claude-opus-4-7"
+      "annotator": "claude-opus-4-7",
+      "expected_image_clean": true,
+      "image_violations": []
     },
     "sputnik8_35273": {
       "expected_clean": true,
       "violations": [],
       "notes": null,
       "annotated_at": "2026-04-25",
-      "annotator": "claude-opus-4-7"
+      "annotator": "claude-opus-4-7",
+      "expected_image_clean": true,
+      "image_violations": []
     },
     "sputnik8_37752": {
       "expected_clean": true,
       "violations": [],
       "notes": null,
       "annotated_at": "2026-04-25",
-      "annotator": "claude-opus-4-7"
+      "annotator": "claude-opus-4-7",
+      "expected_image_clean": true,
+      "image_violations": []
     },
     "sputnik8_38159": {
       "expected_clean": true,

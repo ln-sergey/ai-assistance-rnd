@@ -58,7 +58,29 @@
   },
   "expected_violations": [],
   "expected_clean": true,
-  "expected_image_clean": null,
-  "expected_image_violations": [],
+  "expected_image_clean": false,
+  "expected_image_violations": [
+    {
+      "rule_id": "IMG-12",
+      "severity": "medium",
+      "image_id": "sputnik8_34689_1",
+      "evidence": "Кадр целиком оформлен как рекламный баннер: крупный заголовок \"Входной билет и аудиотур\", буллет-список фич, кнопки App Store и Google Play в нижней части.",
+      "rationale": "IMG-12: загружен текстовый рекламный баннер аудиогид-сервиса вместо реального фото активности — нет визуала Юсуповского дворца или экспозиции, только промо-материал."
+    },
+    {
+      "rule_id": "IMG-10",
+      "severity": "medium",
+      "image_id": "sputnik8_34689_1",
+      "evidence": "В нижнем левом углу — логотип \"wegotrip\" с фирменным синим знаком; вся композиция — фирменный креатив этого бренда.",
+      "rationale": "IMG-10: изображение является рекламным макетом стороннего бренда (WeGoTrip), а не фотографией активности экскурсии."
+    },
+    {
+      "rule_id": "IMG-11",
+      "severity": "high",
+      "image_id": "sputnik8_34689_1",
+      "evidence": "В нижней части кадра размещены кликабельные значки магазинов \"Download on the App Store\" и \"Get it on Google Play\".",
+      "rationale": "IMG-11: на фото размещены контакты-приглашения скачать приложение стороннего сервиса, что переводит коммуникацию и сделку вне платформы."
+    }
+  ],
   "notes": null
 }

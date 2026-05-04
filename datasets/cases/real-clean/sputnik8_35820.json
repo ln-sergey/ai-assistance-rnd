@@ -61,7 +61,7 @@
   },
   "expected_violations": [],
   "expected_clean": true,
-  "expected_image_clean": null,
+  "expected_image_clean": true,
   "expected_image_violations": [],
   "notes": null
 }
